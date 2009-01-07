@@ -7,7 +7,7 @@ require 'merb-core/tasks/merb'
 GEM_NAME = "media_rocket"
 AUTHOR = "Alexandre Girard"
 EMAIL = "alx.girard@gmail.com"
-HOMEPAGE = "http://github.com/alx/mediarocket"
+HOMEPAGE = "http://github.com/alx/media-rocket"
 SUMMARY = "Merb Slice that provides a media server to upload and retrieve all kind of files"
 GEM_VERSION = "1.0.4"
 
