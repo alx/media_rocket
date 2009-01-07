@@ -1,0 +1,7 @@
+development: &defaults
+  adapter:  sqlite3
+  database: sample_development.db
+
+test: &defaults
+  adapter:  sqlite3
+  database: sample_development.db

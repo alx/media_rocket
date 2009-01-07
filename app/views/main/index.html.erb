@@ -1,0 +1,20 @@
+<div class="span-16  push-1" id="upload">  
+	
+	<h2>Upload a new file</h2>
+	<%= media_upload_form({:description_enabled => 0}) %>
+	
+</div>
+
+<div class="span-6 last">
+
+	<div id="tag_coud" class="box">
+		<h2 class="caps">Tags</h2>
+		<%= media_tag_cloud %>
+	</div>
+
+	<div id="last_media" class="box prepend-top">
+		<h2 class="caps">Last media</h2>
+		<%= media_list_last %>
+	</div>
+
+</div>

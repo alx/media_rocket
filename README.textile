@@ -1,0 +1,46 @@
+h1. Media Rocket
+
+Media Rocket est un slice Merb qui gère l'upload de fichiers.
+
+h2. Spécifications
+
+Le but de ce slice est de garder une architecture minimale tout en
+s'assurant d'avoir les fonctionnalités de bases.
+
+h2. Upload d'un fichier
+
+N'importe quel type de ficier de n'importe quelle taille peut être uploadé.
+
+Un formulaire html est disponible grâce à un helper: 
+	
+	MediaRocket::MediaHelper.upload_form
+	
+Une interface Flex et AIR devrait être disponible pour uploader du contenu
+depuis le bureau.
+
+h2. Organisation des fichiers uploadé
+
+h3. Tags
+
+Chaque fichier peut être taggé, cela permet de récupérer les fichiers
+appartenant à un Tag plus facilement.
+
+Par exemple, si un fichier *Neptune.jpg* est taggé "_espace, planète_", et
+un autre fichier *Soleil.jpg* est taggé "_espace, étoile_" alors:
+
+* *http://merb.root/media/espace.js* donnera une liste json des fichiers 
+Neptune et Soleil
+* *http://merb.root/media/planete.xml* donnera une liste xml contenant 
+seulement le fichier Neptune
+* *http://merb.root/media/etoile* retournera le fichier *Soleil.jpg*
+
+h3. Domaines
+
+Afin de protéger certains fichiers appartenant à un domaine précis, et
+de protéger ce domaine d'ajouts de fichier non désirés, il est possible 
+d'ajouter un tag qui sera authentifié, mais qui devra se situé en préfixe
+de la route
+
+Par exemple, si *black-mesa.com* est un domaine authentifié, alors une 
+session authentifiée sera nécessaire pour uploader et accéder aux fichier 
+présent dans *http://merb.root/media/black-mesa-com/*

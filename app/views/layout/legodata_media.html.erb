@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-us" lang="en-us">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>Media Rocket</title>
+	<link rel="stylesheet" href="<%= public_path_for :stylesheet, 'master.css' %>" type="text/css" media="screen, projection">
+	<link rel="stylesheet" href="<%= public_path_for :stylesheet, 'screen.css' %>" type="text/css" media="screen, projection">
+	<link rel="stylesheet" href="<%= public_path_for :stylesheet, 'print.css' %>" type="text/css" media="print">
+	<!--[if IE]>
+	  <link rel="stylesheet" href="<%= public_path_for :stylesheet, 'ie.css' %>" type="text/css" media="screen, projection">
+	<![endif]-->
+	
+	<link rel="stylesheet" href="<%= public_path_for :stylesheet, 'plugins/fancy-type/screen.css' %>" type="text/css" media="screen, projection" />
+	<link rel="stylesheet" href="<%= public_path_for :stylesheet, 'forms.css' %>" type="text/css" media="screen, projection" />
+	
+    <script src="<%= public_path_for :javascript, 'master.js' %>" type="text/javascript" charset="utf-8"></script>
+  </head>
+
+  <body class="media_rocket-slice">
+
+  <div class="container prepend-top">
+	<div id="header" class="span-24 last">
+		<h1 id="media_rocket"><img src="<%= public_path_for :image, 'header.png' %>" alt="Media Rocket image" id="header-image" /></h1>
+    </div>
+
+	<hr />
+	<div id="subheader" class="span-24 last">
+		<h3 class="alt">Express Merb Slice to upload files on your server.</h3>
+	</div>
+	
+	<hr />
+	
+	<%= catch_content :for_layout %>
+	
+	<div id="footer"></div>
+  </div>
+  </body>
+</html>

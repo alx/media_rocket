@@ -1,0 +1,6 @@
+TODO:
+
+* create route for tags
+* create domain model
+* add authentification on domain
+* add file storage, use unique id to store files
