@@ -48,18 +48,32 @@ class MediaRocket::Media
   #   - nil if options[:upload_file] was not specified
   #   - new media
   def initialize(options = {}, &block)
-    if options[:upload_file]
-      @path = public_path_for(:upload, options[:upload_file])
-      FileUtils.mv options[:upload_file].path, @path
+    if options[:file]
+      
+      saved_file = File.join(MediaRocket.root, "/public/uploads/", File.basename(options[:file]))
+      
+      unique = 0 if File.exist?(saved_file)
+      while File.exist?(saved_file)
+        saved_file = File.join(MediaRocket.root, "/public/uploads/", File.basename(options[:file]) + unique.to_s)
+        unique += 1
+      end
+      
+      @path = "/uploads/"
+      @path << options[:site] << "/" if options[:site]
+      @path << File.basename(options[:file])
+      @path << unique if unique
+      
+      FileUtils.mv options[:file], saved_file
     else
       return nil
     end
-    self.add_tags options
-    self
+    
+    add_tags(options) unless options[:tags].nil?
   end
   
   def add_tags(options = {}, &block)
-    self.tags << options[:tags].split(options[:delimiter])
+    delimiter = options[:delimiter] || '+'
+    @tag_list = options[:tags].split(delimiter)
   end
   
   #
