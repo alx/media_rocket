@@ -31,8 +31,8 @@ class MediaRocket::Media
   has n, :associated_to, :through => :associated_files, :class_name => "MediaRocket::Media",
                        :remote_name => :media, :child_key => [:file_id]
   
-  belongs_to :category
-  belongs_to :site
+  belongs_to :category, :class_name => "MediaRocket::Category"
+  belongs_to :site, :class_name => "MediaRocket::Site"
   
   after :save, :post_process
   
@@ -50,20 +50,20 @@ class MediaRocket::Media
   def initialize(options = {}, &block)
     if options[:file]
       
-      saved_file = File.join(MediaRocket.root, "/public/uploads/", File.basename(options[:file]))
+      @path = File.join(MediaRocket.root, "/public/uploads/", File.basename(options[:file]))
       
-      unique = 0 if File.exist?(saved_file)
-      while File.exist?(saved_file)
-        saved_file = File.join(MediaRocket.root, "/public/uploads/", File.basename(options[:file]) + unique.to_s)
+      unique = 0 if File.exist?(@path)
+      while File.exist?(@path)
+        @path = File.join(MediaRocket.root, "/public/uploads/", File.basename(options[:file]) + unique.to_s)
         unique += 1
       end
       
-      @path = "/uploads/"
-      @path << options[:site] << "/" if options[:site]
-      @path << File.basename(options[:file])
-      @path << unique if unique
+      if options[:site]
+        @site = MediaRocket::Site.first(:name => options[:site])
+        @site = MediaRocket::Site.new(:name => options[:site]).save if @site.nil?
+      end
       
-      FileUtils.mv options[:file], saved_file
+      FileUtils.mv options[:file], @path
     else
       return nil
     end
@@ -80,7 +80,10 @@ class MediaRocket::Media
   # Build url that will be understand by router to downlad/display this file
   #
   def url
-    "/file/" << self.id.to_s
+    path = "/uploads/"
+    path << @site.name << "/" if @site
+    path << File.basename(@path)
+    path
   end
   
   private
