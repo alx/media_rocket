@@ -3,6 +3,7 @@ class MediaRocket::Site
   
   property :id, Serial
   property :name, String
+  property :domain, String
   
   has n, :categories
   has n, :medias

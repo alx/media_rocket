@@ -8,7 +8,7 @@ describe MediaRocket::Media do
   public_file = File.join( MediaRocket.root, 'public', 'uploads', 'image.png' )
   
   before(:each) do
-    FileUtils.rm_r Dir.glob("#{MediaRocket.root}/public/uploads/image.png*")
+    FileUtils.rm_r Dir.glob("#{MediaRocket.root}/public/uploads/image*")
     File.copy(origin_file, test_file)
   end
   
@@ -49,10 +49,26 @@ describe MediaRocket::Media do
   end
   
   it "should create a new Media belonging to a site" do
-    @media = MediaRocket::Media.new :file => test_file, :site => "domain.com"
+    site_name = "domain.com"
+    if site = MediaRocket::Site.first(:name => site_name)
+      site.destroy
+    end
+    @media = MediaRocket::Media.new :file => test_file, :site => site_name
     @media.site.should_not be(nil)
-    @media.site.name.should == "domain.com"
+    @media.site.name.should == site_name
     # Clean site
-    MediaRocket::Site.first(:name => "domain.com").destroy
+    MediaRocket::Site.first(:name => site_name).destroy
+  end
+  
+  it "should create a new Media belonging to a category" do
+    category_name = "vacances"
+    if category = MediaRocket::Category.first(:name => category_name)
+      category.destroy
+    end
+    @media = MediaRocket::Media.new :file => test_file, :category => category_name
+    @media.category.should_not be(nil)
+    @media.category.name.should == category_name
+    # Clean site
+    MediaRocket::Category.first(:name => category_name).destroy
   end
 end

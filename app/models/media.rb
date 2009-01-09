@@ -59,8 +59,13 @@ class MediaRocket::Media
       end
       
       if options[:site]
-        @site = MediaRocket::Site.first(:name => options[:site])
-        @site = MediaRocket::Site.new(:name => options[:site]).save if @site.nil?
+        @site = MediaRocket::Site.first_or_create(:name => options[:site])
+        @site.medias << self
+      end
+      
+      if options[:category]
+        @category = MediaRocket::Category.first_or_create(:name => options[:category])
+        @category.medias << self
       end
       
       FileUtils.mv options[:file], @path
