@@ -2,9 +2,8 @@ class MediaRocket::Media
   include DataMapper::Resource
   
   property :id, Serial
-  property :path, FilePath, :nullable => false
-  property :md5sum, String, :length => 32,
-                   :default => Proc.new { |r, p| Digest::MD5.hexdigest(r.path.read) if r.path }
+  property :path, String, :nullable => false
+  # property :md5sum, String, :length => 32, :default => Proc.new { |r, p| Digest::MD5.hexdigest(r.path.read) if r.path }
   property :created_at, DateTime
   property :deleted_at, ParanoidDateTime
   property :deleted,    ParanoidBoolean
@@ -50,7 +49,7 @@ class MediaRocket::Media
   def initialize(options = {}, &block)
     if options[:file]
       
-      @path = File.join(MediaRocket.root, "/public/uploads/")
+      path = File.join(MediaRocket.root, "/public/uploads/")
       
       # Find or create if options[:site] is specified
       # And link this @site to the current object
@@ -58,7 +57,7 @@ class MediaRocket::Media
         @site = MediaRocket::Site.first_or_create(:name => options[:site])
         @site.medias << self
         
-        @path = File.join(@path, @site.name)
+        path = File.join(path, @site.name)
       end
       
       # Find or create if options[:site] is specified
@@ -67,22 +66,25 @@ class MediaRocket::Media
         @category = MediaRocket::Category.first_or_create(:name => options[:category])
         @category.medias << self
         
-        @path = File.join(@path, @category.name)
+        path = File.join(path, @category.name)
       end
       
       # Add unique suffix if file already exists
       # FIX: rework using unique sha1 hash for basename
       unique = 0
-      @path = File.join(@path, File.basename(options[:file]))
-      while File.exist?(@path)
-        @path = File.join(File.dirname(@path), File.basename(options[:file]) + unique.to_s)
+      path = File.join(path, File.basename(options[:file][:filename]))
+      while File.exist?(path)
+        path = File.join(File.dirname(path), File.basename(options[:file][:filename]) + unique.to_s)
         unique += 1
       end
       
       # Create directory if doesn't exist (when new site or category)
       # and move file there
-      FileUtils.mkdir_p File.dirname(@path) unless File.exist?(File.dirname(@path))
-      FileUtils.mv options[:file], @path
+      FileUtils.mkdir_p File.dirname(path) unless File.exist?(File.dirname(path))
+      FileUtils.mv options[:file][:tempfile].path, path
+      
+      #@path = Pathname.new(path)
+      @path = path
     else
       return nil
     end
@@ -101,7 +103,7 @@ class MediaRocket::Media
   def url
     path = "/uploads/"
     path << @site.name << "/" if @site
-    path << File.basename(@path)
+    path << @path.basename
     path
   end
   

@@ -6,11 +6,10 @@ class MediaRocket::Main < MediaRocket::Application
   end
   
   def upload
-    @media = MediaRocket::Media.new :upload_file => params[:file][:tempfile], 
-                                      :tags => params[:tags],
-                                      :delimiter => params[:delimiter] || '+'
+    @media = MediaRocket::Media.new :file => params[:file], 
+                                    :tags => params[:tags],
+                                    :delimiter => params[:delimiter] || '+'
     @media.save
-    
     redirect "/"
   end
   

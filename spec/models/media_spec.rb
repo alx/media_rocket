@@ -4,14 +4,13 @@ require File.join( File.dirname(__FILE__), '..', "spec_helper" )
 describe MediaRocket::Media do
   
   origin_file = File.join( MediaRocket.root, 'public', 'images', 'rocket.png' )
-  test_file = File.join( MediaRocket.root, 'spec', 'resources', 'image.png' )
-  public_file = File.join( MediaRocket.root, 'public', 'uploads', 'image.png' )
+  test_file = {:filename => 'image.png', :tempfile => Tempfile.new('image.png')}
   
   before(:each) do
     FileUtils.rm_r Dir.glob("#{MediaRocket.root}/public/uploads/image*")
     FileUtils.rm_rf Dir.glob("#{MediaRocket.root}/public/uploads/domain.com/")
     FileUtils.rm_rf Dir.glob("#{MediaRocket.root}/public/uploads/vacances/")
-    File.copy(origin_file, test_file)
+    File.copy(origin_file, test_file[:tempfile].path)
   end
   
   it "should not create a new Media out of nothing" do
@@ -29,7 +28,7 @@ describe MediaRocket::Media do
     @media = MediaRocket::Media.new :file => test_file
     
     # File has been moved, recreate it
-    File.copy(origin_file, test_file)
+    File.copy(origin_file, test_file[:tempfile].path)
     @media2 = MediaRocket::Media.new :file => test_file
     
     @media.path.should_not == @media2.path

@@ -4,14 +4,13 @@ require File.join( File.dirname(__FILE__), '..', "spec_helper" )
 describe MediaRocket::Category do
   
   origin_file = File.join( MediaRocket.root, 'public', 'images', 'rocket.png' )
-  test_file = File.join( MediaRocket.root, 'spec', 'resources', 'image.png' )
-  public_file = File.join( MediaRocket.root, 'public', 'uploads', 'image.png' )
+  test_file = {:filename => 'image.png', :tempfile => Tempfile.new('image.png')}
   
   before(:each) do
     FileUtils.rm_r Dir.glob("#{MediaRocket.root}/public/uploads/image*")
     FileUtils.rm_rf Dir.glob("#{MediaRocket.root}/public/uploads/domain.com/")
     FileUtils.rm_rf Dir.glob("#{MediaRocket.root}/public/uploads/vacances/")
-    File.copy(origin_file, test_file)
+    File.copy(origin_file, test_file[:tempfile].path)
   end
   
   it "should contains media" do
