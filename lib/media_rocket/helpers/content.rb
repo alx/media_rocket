@@ -5,10 +5,8 @@ module MediaRocket
       def media_list_last(options = {}, &block)
         medias = ""
         limit = options[:limit] || 10
-        medias = MediaRocket::Media.all(:order => [:created_at.desc])
-        
-        medias[0...limit].each do |media|
-          medias << tag(:a, self_closing_tag(:img, :src => media.url), :href => media.url)
+        MediaRocket::Media.all(:order => [:created_at.desc])[0...limit].each do |media|
+          medias << tag(:a, self_closing_tag(:img, :src => media.url, :width => options[:width]), :href => media.url)
         end
         medias
       end
@@ -44,6 +42,10 @@ module MediaRocket
         }
         
         output
+      end
+      
+      def media_categories(options = {}, &block)
+        
       end
       
     end

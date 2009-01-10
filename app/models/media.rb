@@ -2,8 +2,11 @@ class MediaRocket::Media
   include DataMapper::Resource
   
   property :id, Serial
-  property :path, String, :nullable => false
-  # property :md5sum, String, :length => 32, :default => Proc.new { |r, p| Digest::MD5.hexdigest(r.path.read) if r.path }
+  property :path, FilePath, :nullable => false
+  property :md5sum, String, :length => 32, :default => Proc.new { |r, p| Digest::MD5.hexdigest(r.path.read) if r.path }
+  property :title, String
+  property :description, String
+  property :position, Integer
   property :created_at, DateTime
   property :deleted_at, ParanoidDateTime
   property :deleted,    ParanoidBoolean
@@ -73,8 +76,9 @@ class MediaRocket::Media
       # FIX: rework using unique sha1 hash for basename
       unique = 0
       path = File.join(path, File.basename(options[:file][:filename]))
+      extension = File.extname(options[:file][:filename])
       while File.exist?(path)
-        path = File.join(File.dirname(path), File.basename(options[:file][:filename]) + unique.to_s)
+        path = File.join(File.dirname(path), File.basename(options[:file][:filename], extension) + unique.to_s + extension)
         unique += 1
       end
       
@@ -83,8 +87,7 @@ class MediaRocket::Media
       FileUtils.mkdir_p File.dirname(path) unless File.exist?(File.dirname(path))
       FileUtils.mv options[:file][:tempfile].path, path
       
-      #@path = Pathname.new(path)
-      @path = path
+      self.path = Pathname.new path
     else
       return nil
     end

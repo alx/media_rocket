@@ -24,6 +24,11 @@ describe MediaRocket::Media do
     @media.url.should == "/uploads/image.png"
   end
   
+  it "should save a new Media with image" do
+    @media = MediaRocket::Media.new :file => test_file
+    @media.save.should == true
+  end
+  
   it "should create a unique Media if conflict on name" do
     @media = MediaRocket::Media.new :file => test_file
     
