@@ -36,9 +36,9 @@ describe MediaRocket::Media do
     File.copy(origin_file, test_file[:tempfile].path)
     @media2 = MediaRocket::Media.new :file => test_file
     
-    @media.path.should_not == @media2.path
-    @media.url.should == "/uploads/image.png"
-    @media2.url.should == "/uploads/image.png0"
+    @media.url.should == @media2.path
+    @media.url.should == "/file/image.png"
+    @media2.url.should == "/file/image0.png"
   end
   
   it "should create a new Media with image and tags" do

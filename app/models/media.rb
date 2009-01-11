@@ -52,24 +52,27 @@ class MediaRocket::Media
   def initialize(options = {}, &block)
     if options[:file]
       
+      self.title = options[:title] if options[:title]
+      self.description = options[:description] if options[:description]
+      
       path = File.join(MediaRocket.root, "/public/uploads/")
       
       # Find or create if options[:site] is specified
       # And link this @site to the current object
       if options[:site]
-        @site = MediaRocket::Site.first_or_create(:name => options[:site])
-        @site.medias << self
+        self.site = MediaRocket::Site.first_or_create(:name => options[:site])
+        self.site.medias << self
         
-        path = File.join(path, @site.name)
+        path = File.join(path, self.site.name)
       end
       
       # Find or create if options[:site] is specified
       # And link this @site to the current object
       if options[:category]
-        @category = MediaRocket::Category.first_or_create(:name => options[:category])
-        @category.medias << self
+        self.category = MediaRocket::Category.first_or_create(:name => options[:category])
+        self.category.medias << self
         
-        path = File.join(path, @category.name)
+        path = File.join(path, self.category.name)
       end
       
       # Add unique suffix if file already exists
@@ -97,16 +100,17 @@ class MediaRocket::Media
   
   def add_tags(options = {}, &block)
     delimiter = options[:delimiter] || '+'
-    @tag_list = options[:tags].split(delimiter)
+    self.tag_list = options[:tags].split(delimiter)
   end
   
   #
   # Build url that will be understand by router to downlad/display this file
   #
   def url
-    path = "/uploads/"
-    path << @site.name << "/" if @site
-    path << @path.basename
+    path = "/file/"
+    # path << self.site.name << "/" if self.site
+    # path << self.category.name << "/" if self.category
+    path << @id.to_s
     path
   end
   

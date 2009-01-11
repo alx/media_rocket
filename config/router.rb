@@ -1,10 +1,14 @@
-Merb::Router.prepare do
+Merb::Router.prepare do |r|
   # Upload route
-  match('/upload').to(:controller => 'main', :action => 'upload').name(:upload)
+  r.match('/upload').to(:controller => 'main', :action => 'upload').name(:upload)
+
+  # Route with file name
+  r.match(/\/file\/(.*)?/).to(:controller => 'main', :action => 'show', :id => "[1]").name(:show)
+
   # Route with tags and format
-  match('/:tags(.:format)').to(:controller => 'main', :action => 'list').name(:list)
-  # Route with file serial
-  match('/file/:id').to(:controller => 'main', :action => 'show').name(:show)
-  
-  match('/').to(:controller => 'main', :action => 'index').name(:index)
+  r.match('/galleries(.:format)').to(:controller => 'CategoryController', :action => 'list').name(:galleries)
+  r.match('/gallery/:id(.:format)').to(:controller => 'CategoryController', :action => 'gallery').name(:gallery)
+
+   # Route to front page
+  r.match('/').to(:controller => 'main', :action => 'index').name(:index)
 end

@@ -4,14 +4,16 @@ module MediaRocket
     def self.setup(scope)
       # Upload route
       scope.match('/upload').to(:controller => 'main', :action => 'upload').name(:upload)
-      # Route with tags and format
-      scope.match('/:tags(.:format)').to(:controller => 'main', :action => 'list').name(:home)
-      # Route with file serial
-      scope.match('/file/:id').to(:controller => 'main', :action => 'show').name(:show)
       
+      # Route with file serial
+      scope.match(/\/file\/(.*)?/).to(:controller => 'main', :action => 'show', :id => "[1]").name(:show)
+
+      # Route to gallery xml
+      scope.match('/galleries(.:format)').to(:controller => 'CategoryController', :action => 'list').name(:galleries)
+      scope.match('/gallery/:id(.:format)').to(:controller => 'CategoryController', :action => 'gallery').name(:gallery)
+      
+      # Route to front page
       scope.match('/').to(:controller => 'main', :action => 'index').name(:index)
-      # enable slice-level default routes by default
-      scope.default_routes
     end
     
   end

@@ -6,29 +6,14 @@ class MediaRocket::Main < MediaRocket::Application
   end
   
   def upload
-    @media = MediaRocket::Media.new :file => params[:file], 
-                                    :tags => params[:tags],
-                                    :delimiter => params[:delimiter] || '+'
-    @media.save
+    MediaRocket::Media.new(params).save
     redirect "/"
-  end
-  
-  def list
-    @delimiter = params[:delimiter] || '+'
-    @tags = params[:tags]
-    if params[:tags]
-      @medias = []
-      params[:tags].split(delimiter).each { |tag| @medias << MediaRocket::Media.tagged_with(tag) }
-      @medias.uniq!
-    else
-      @medias = MediaRocket::Media.all
-    end
-    display @medias
   end
   
   def show
     if params[:id]
-      render MediaRocket::Media.first :id => params[:id]
+      media = MediaRocket::Media.first(:id => params[:id])
+      display media.path
     end
   end
   
