@@ -73,6 +73,9 @@ class MediaRocket::Media
         self.category.medias << self
         
         path = File.join(path, self.category.name)
+        
+        # Add position number with medias category size if not existing in options
+        self.position = options[:position] || self.category.medias.size
       end
       
       # Add unique suffix if file already exists
