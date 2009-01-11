@@ -10,6 +10,9 @@ class MediaRocket::Main < MediaRocket::Application
     redirect "/"
   end
   
+  def list
+  end
+  
   def show
     if params[:id]
       media = MediaRocket::Media.first(:id => params[:id])
