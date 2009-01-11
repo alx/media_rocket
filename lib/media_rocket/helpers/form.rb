@@ -4,6 +4,11 @@ module MediaRocket
       
       def media_upload_form(options = {}, &block)
         
+        case options[:format]
+          when "flat" then return media_upload_form_flat(options)
+          when "full" then return media_upload_form_full(options)
+        end
+        
         form :action => url(:upload) do
           form_content = ""
           
@@ -56,6 +61,26 @@ module MediaRocket
         end
       end
       
+      def media_upload_form_flat(options = {}, &block)
+        form :action => url(:upload) do
+          media_file_field(options) + tag(:p, submit(options[:submit_label] || "Upload", :id => "media_button"))
+        end
+      end
+      
+      def media_upload_form_full(options = {}, &block)
+        form :action => url(:upload) do
+          form_content = media_title_field(options)
+          form_content << media_description_field(options)
+          form_content << media_tag_field(options)
+          form_content << media_delimiter_field(options)
+          form_content << media_site_select(options)
+          form_content << media_category_checkboxes(options)
+          form_content << media_file_field(options)
+          form_content << tag(:p, submit(options[:submit_label] || "Upload", :id => "media_button"))
+          form_content
+        end
+      end
+      
       def media_title_field(options = {}, &block)
         content = options[:title_label] || "Title"
         
@@ -87,7 +112,7 @@ module MediaRocket
       end
       
       def media_delimiter_field(options = {}, &block)
-        content = options[:delimiter_label] || "Delimiter"
+        content = options[:delimiter_label] || "Tag Delimiter"
         
         delimiter_content = tag(:label, content, {:for => content})
         delimiter_content << tag(:br)
@@ -102,7 +127,7 @@ module MediaRocket
         site_content = tag(:label, content, {:for => content})
         site_content << tag(:br)
         
-        sites = MediaRocket::Sites.find(:all)
+        sites = MediaRocket::Site.all
         choices = ""
         sites.each do |site|
           choices << tag(:option, site.name, {:value => site.id})
@@ -119,13 +144,13 @@ module MediaRocket
         category_content = tag(:label, content, {:for => content})
         category_content << tag(:br)
         
-        categories = MediaRocket::Categories.find(:all)
+        categories = MediaRocket::Category.all
         choices = ""
         categories.each do |category|
           choices << tag(:option, category.name, {:value => category.id})
         end
         
-        category_content << tag(:select, choices, {:name => content, :size => sites.size})
+        category_content << tag(:select, choices, {:name => content, :size => categories.size})
         
         tag(:p, category_content)
       end
