@@ -73,7 +73,9 @@ module MediaRocket
           form_content << media_description_field(options)
           form_content << media_tag_field(options)
           form_content << media_delimiter_field(options)
+          form_content << media_site_new_field(options)
           form_content << media_site_select(options)
+          form_content << media_category_new_field(options)
           form_content << media_category_checkboxes(options)
           form_content << media_file_field(options)
           form_content << tag(:p, submit(options[:submit_label] || "Upload", :id => "media_button"))
@@ -133,8 +135,18 @@ module MediaRocket
           choices << tag(:option, site.name, {:value => site.id})
         end
         
-        site_content << tag(:select, choices, {:name => content, :size => sites.size})
+        site_content << tag(:select, choices, {:name => "site", :size => sites.size})
         
+        tag(:p, site_content)
+      end
+      
+      def media_site_new_field(options = {}, &block)
+        content = options[:site_new_label] || "New Category"
+        
+        site_content = tag(:label, content, {:for => content})
+        site_content << tag(:br)
+        site_content << text_field(:name => "site", :id => content)
+          
         tag(:p, site_content)
       end
             
@@ -144,14 +156,21 @@ module MediaRocket
         category_content = tag(:label, content, {:for => content})
         category_content << tag(:br)
         
-        categories = MediaRocket::Category.all
-        choices = ""
-        categories.each do |category|
-          choices << tag(:option, category.name, {:value => category.id})
+        MediaRocket::Category.all.each do |category|
+          category_content << tag(:input, {:type => "checkbox", :name => "category", :value => category.id})
+          category_content << tag(:br)
         end
         
-        category_content << tag(:select, choices, {:name => content, :size => categories.size})
+        tag(:p, category_content)
+      end
+      
+      def media_category_new_field(options = {}, &block)
+        content = options[:category_new_label] || "New Category"
         
+        category_content = tag(:label, content, {:for => content})
+        category_content << tag(:br)
+        category_content << text_field(:name => "category", :id => content)
+          
         tag(:p, category_content)
       end
       
