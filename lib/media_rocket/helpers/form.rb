@@ -141,7 +141,7 @@ module MediaRocket
       end
       
       def media_site_new_field(options = {}, &block)
-        content = options[:site_new_label] || "New Category"
+        content = options[:site_new_label] || "New Site"
         
         site_content = tag(:label, content, {:for => content})
         site_content << tag(:br)
@@ -151,17 +151,23 @@ module MediaRocket
       end
             
       def media_category_checkboxes(options = {}, &block)
-        content = options[:category_label] || "Category"
+        categories = MediaRocket::Category.all
         
-        category_content = tag(:label, content, {:for => content})
-        category_content << tag(:br)
+        if categories.empty?
+          return ""
+        else
+          content = options[:category_label] || "Category"
         
-        MediaRocket::Category.all.each do |category|
-          category_content << tag(:input, {:type => "checkbox", :name => "category", :value => category.id})
+          category_content = tag(:label, content, {:for => content})
           category_content << tag(:br)
-        end
         
-        tag(:p, category_content)
+          MediaRocket::Category.all.each do |category|
+            category_content << tag(:input, {:type => "checkbox", :name => "category", :value => category.id})
+            category_content << tag(:br)
+          end
+        
+          tag(:p, category_content)
+        end
       end
       
       def media_category_new_field(options = {}, &block)
