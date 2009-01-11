@@ -124,20 +124,26 @@ module MediaRocket
       end
 
       def media_site_select(options = {}, &block)
-        content = options[:site_label] || "Site"
-        
-        site_content = tag(:label, content, {:for => content})
-        site_content << tag(:br)
-        
         sites = MediaRocket::Site.all
-        choices = ""
-        sites.each do |site|
-          choices << tag(:option, site.name, {:value => site.id})
+        
+        if sites.empty?
+          return ""
+        else
+          content = options[:site_label] || "Site"
+        
+          site_content = tag(:label, content, {:for => content})
+          site_content << tag(:br)
+        
+        
+          choices = ""
+          sites.each do |site|
+            choices << tag(:option, site.name, {:value => site.id})
+          end
+        
+          site_content << tag(:select, choices, {:name => "site", :size => sites.size})
+        
+          tag(:p, site_content)
         end
-        
-        site_content << tag(:select, choices, {:name => "site", :size => sites.size})
-        
-        tag(:p, site_content)
       end
       
       def media_site_new_field(options = {}, &block)
