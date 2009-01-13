@@ -6,7 +6,7 @@ module MediaRocket
         medias = ""
         limit = options[:limit] || 10
         MediaRocket::Media.all(:order => [:created_at.desc])[0...limit].each do |media|
-          medias << tag(:a, self_closing_tag(:img, :src => media.url, :width => options[:width]), :href => uniq_path(media.path))
+          medias << tag(:a, self_closing_tag(:img, :src => media.url, :width => options[:width]), :href => media.path)
         end
         medias
       end

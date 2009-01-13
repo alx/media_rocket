@@ -119,7 +119,7 @@ class MediaRocket::Media
   end
   
   def root_path
-    path = "/public/uploads/"
+    path = "/uploads/"
     path = File.join(path, self.site.name) if self.site
     path = File.join(path, self.category.name) if self.category
     return path

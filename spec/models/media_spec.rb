@@ -24,7 +24,7 @@ describe MediaRocket::Media do
     @media = MediaRocket::Media.new :file => test_file
     @media.should_not be(nil)
     @media.path.should_not be(nil)
-    @media.url.should == "/public/uploads/image.png"
+    @media.url.should == "/uploads/image.png"
   end
   
   it "should save a new Media with image" do
@@ -40,8 +40,8 @@ describe MediaRocket::Media do
     @media2 = MediaRocket::Media.new :file => test_file
     
     @media.path.should_not == @media2.path
-    @media.url.should == "/public/uploads/image.png"
-    @media2.url.should == "/public/uploads/image0.png"
+    @media.url.should == "/uploads/image.png"
+    @media2.url.should == "/uploads/image0.png"
   end
   
   it "should create a new Media with image and tags" do
