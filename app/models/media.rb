@@ -78,7 +78,7 @@ class MediaRocket::Media
   
   def add_tags(options = {}, &block)
     delimiter = options[:delimiter] || '+'
-    self.tag_list = options[:tags].split(delimiter).each{|tag| tag.strip}
+    self.tag_list = options[:tags].split(delimiter).inspect{|tag| tag.strip}
   end
   
   #
@@ -119,7 +119,7 @@ class MediaRocket::Media
   end
   
   def root_path
-    path = "/uploads/"
+    path = "/public/uploads/"
     path = File.join(path, self.site.name) if self.site
     path = File.join(path, self.category.name) if self.category
     return path
