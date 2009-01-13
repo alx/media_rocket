@@ -9,7 +9,7 @@ module MediaRocket
           when "full" then return media_upload_form_full(options)
         end
         
-        form :action => url(:upload) do
+        form :action => slice_url(:upload) do
           form_content = ""
           
           #
@@ -62,13 +62,13 @@ module MediaRocket
       end
       
       def media_upload_form_flat(options = {}, &block)
-        form :action => url(:upload) do
+        form :action => slice_url(:upload) do
           media_file_field(options) + tag(:p, submit(options[:submit_label] || "Upload", :id => "media_button"))
         end
       end
       
       def media_upload_form_full(options = {}, &block)
-        form :action => url(:upload) do
+        form :action => slice_url(:upload) do
           form_content = media_title_field(options)
           form_content << media_description_field(options)
           form_content << media_tag_field(options)
