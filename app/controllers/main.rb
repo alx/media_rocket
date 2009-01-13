@@ -11,6 +11,8 @@ class MediaRocket::Main < MediaRocket::Application
   end
   
   def list
+    @sites = MediaRocket::Site.all
+    render
   end
   
   def show

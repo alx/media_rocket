@@ -55,43 +55,20 @@ class MediaRocket::Media
       self.title = options[:title] if options[:title]
       self.description = options[:description] if options[:description]
       
-      path = File.join(MediaRocket.root, "/public/uploads/")
-      
       # Find or create if options[:site] is specified
       # And link this @site to the current object
       if options[:site]
-        self.site = MediaRocket::Site.first_or_create(:name => options[:site])
-        self.site.medias << self
-        
-        path = File.join(path, self.site.name)
-      end
-      
-      # Find or create if options[:site] is specified
-      # And link this @site to the current object
-      if options[:category]
-        self.category = MediaRocket::Category.first_or_create(:name => options[:category])
-        self.category.medias << self
-        
-        path = File.join(path, self.category.name)
-        
-        # Add position number with medias category size if not existing in options
-        self.position = options[:position] || self.category.medias.size
+        add_to_site options
       end
       
       # Add unique suffix if file already exists
       # FIX: rework using unique sha1 hash for basename
-      unique = 0
-      path = File.join(path, File.basename(options[:file][:filename]))
-      extension = File.extname(options[:file][:filename])
-      while File.exist?(path)
-        path = File.join(File.dirname(path), File.basename(options[:file][:filename], extension) + unique.to_s + extension)
-        unique += 1
-      end
+      path = unique_file(root_path, options[:file][:filename])
       
       # Create directory if doesn't exist (when new site or category)
       # and move file there
-      FileUtils.mkdir_p File.dirname(path) unless File.exist?(File.dirname(path))
-      FileUtils.mv options[:file][:tempfile].path, path
+      FileUtils.mkdir_p File.dirname(root_path) unless File.exist?(File.dirname(root_path))
+      FileUtils.mv options[:file][:tempfile].path, File.join(Merb.root, path)
       
       self.path = Pathname.new path
     else
@@ -110,7 +87,7 @@ class MediaRocket::Media
   # Build url that will be understand by router to downlad/display this file
   #
   def url
-    path = "/file/"
+    path = "/uploads/"
     # path << self.site.name << "/" if self.site
     # path << self.category.name << "/" if self.category
     path << @id.to_s
@@ -118,6 +95,37 @@ class MediaRocket::Media
   end
   
   private
+  
+  def add_to_site(options = {}, &block)
+    self.site = MediaRocket::Site.first_or_create(:name => options[:site])
+    self.site.medias << self
+    
+    # Find or create if options[:site] is specified
+    # And link this @site to the current object
+    if options[:category]
+      self.category = MediaRocket::Category.first_or_create(:name => options[:category])
+      self.category.medias << self
+      
+      # Add position number with medias category size if not existing in options
+      self.position = options[:position] || self.category.medias.size
+    end
+    
+    self.site << self.category
+  end
+  
+  def unique_file(path, filename)
+    unique = 0
+    path = File.join(path, File.basename(filename))
+    extension = File.extname(filename)
+    while File.exist?(path)
+      path = File.join(File.dirname(path), File.basename(filename, extension) + unique.to_s + extension)
+      unique += 1
+    end
+  end
+  
+  def root_path
+    return File.join("/public/uploads/", self.site, self.category)
+  end
   
   def post_process
   end

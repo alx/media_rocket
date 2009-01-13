@@ -11,4 +11,5 @@ Merb::Router.prepare do |r|
 
    # Route to front page
   r.match('/').to(:controller => 'main', :action => 'index').name(:index)
+  r.match('/manage').to(:controller => 'main', :action => 'list').name(:manage)
 end

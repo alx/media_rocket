@@ -14,6 +14,7 @@ module MediaRocket
       
       # Route to front page
       scope.match('/').to(:controller => 'main', :action => 'index').name(:index)
+      scope.match('/manage').to(:controller => 'main', :action => 'list').name(:manage)
     end
     
   end
