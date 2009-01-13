@@ -90,7 +90,8 @@ if defined?(Merb::Plugins)
   dependency "dm-timestamps", dm_gems_version   
   dependency "dm-types", dm_gems_version        
   dependency "dm-validations", dm_gems_version
-  dependency "dm-more", dm_gems_version
+  dependency "dm-tags", dm_gems_version
+  dependency "dm-is-tree", dm_gems_version
   
   # Various mixins and classes
   require "media_rocket/helpers"
