@@ -11,6 +11,9 @@ describe MediaRocket::Media do
     FileUtils.rm_rf Dir.glob("#{MediaRocket.root}/public/uploads/domain.com/")
     FileUtils.rm_rf Dir.glob("#{MediaRocket.root}/public/uploads/vacances/")
     File.copy(origin_file, test_file[:tempfile].path)
+    
+    MediaRocket::Category.all.destroy!
+    MediaRocket::Site.all.destroy!
   end
   
   it "should not create a new Media out of nothing" do
@@ -21,7 +24,7 @@ describe MediaRocket::Media do
     @media = MediaRocket::Media.new :file => test_file
     @media.should_not be(nil)
     @media.path.should_not be(nil)
-    @media.url.should == "/uploads/image.png"
+    @media.url.should == "/public/uploads/image.png"
   end
   
   it "should save a new Media with image" do
@@ -36,20 +39,19 @@ describe MediaRocket::Media do
     File.copy(origin_file, test_file[:tempfile].path)
     @media2 = MediaRocket::Media.new :file => test_file
     
-    @media.url.should == @media2.path
-    @media.url.should == "/file/image.png"
-    @media2.url.should == "/file/image0.png"
+    @media.path.should_not == @media2.path
+    @media.url.should == "/public/uploads/image.png"
+    @media2.url.should == "/public/uploads/image0.png"
   end
   
   it "should create a new Media with image and tags" do
     @media = MediaRocket::Media.new :file => test_file, :tags => "image+tested"
-    tag_list = @media.tag_list
-    tag_list.size.should == 2
-    tag_list.first.should == "image"
+    @media.tag_list.size.should == 2
+    @media.tag_list.first.should == "image"
   end
   
   it "should create a new Media with image and tags with delimiter" do
-    @media = MediaRocket::Media.new :file => test_file, :tags => "image, tested", :delimiter => ", "
+    @media = MediaRocket::Media.new :file => test_file, :tags => "image, tested", :delimiter => ","
     @media.tag_list.size.should == 2
     @media.tag_list.first.should == "image"
   end
@@ -59,22 +61,37 @@ describe MediaRocket::Media do
     if site = MediaRocket::Site.first(:name => site_name)
       site.destroy
     end
+    
     @media = MediaRocket::Media.new :file => test_file, :site => site_name
     @media.site.should_not be(nil)
     @media.site.name.should == site_name
-    # Clean site
-    MediaRocket::Site.first(:name => site_name).destroy
   end
   
-  it "should create a new Media belonging to a category" do
+  it "should create a new Media belonging to a site with a category" do
+    site_name = "domain.com"
+    if site = MediaRocket::Site.first(:name => site_name)
+      site.destroy
+    end
+    
+    category_name = "vacances"
+    if category = MediaRocket::Category.first(:name => category_name)
+      category.destroy
+    end
+    
+    @media = MediaRocket::Media.new :file => test_file, :site => site_name, :category => category_name
+    @media.site.should_not be(nil)
+    @media.site.name.should == site_name
+    @media.category.should_not be(nil)
+    @media.category.name.should == category_name
+  end
+  
+  it "should not create a new category if site is not specified" do
     category_name = "vacances"
     if category = MediaRocket::Category.first(:name => category_name)
       category.destroy
     end
     @media = MediaRocket::Media.new :file => test_file, :category => category_name
-    @media.category.should_not be(nil)
-    @media.category.name.should == category_name
-    # Clean site
-    MediaRocket::Category.first(:name => category_name).destroy
+    @media.site.should be(nil)
+    @media.category.should be(nil)
   end
 end

@@ -63,14 +63,12 @@ class MediaRocket::Media
       
       # Add unique suffix if file already exists
       # FIX: rework using unique sha1 hash for basename
-      path = unique_file(root_path, options[:file][:filename])
-      
+      self.path = unique_file(File.join(Merb.root, root_path), options[:file][:filename])
+
       # Create directory if doesn't exist (when new site or category)
       # and move file there
-      FileUtils.mkdir_p File.dirname(root_path) unless File.exist?(File.dirname(root_path))
-      FileUtils.mv options[:file][:tempfile].path, File.join(Merb.root, path)
-      
-      self.path = Pathname.new path
+      FileUtils.mkdir_p File.dirname(self.path) unless File.directory?(File.dirname(self.path))
+      FileUtils.mv options[:file][:tempfile].path, self.path
     else
       return nil
     end
@@ -80,18 +78,14 @@ class MediaRocket::Media
   
   def add_tags(options = {}, &block)
     delimiter = options[:delimiter] || '+'
-    self.tag_list = options[:tags].split(delimiter)
+    self.tag_list = options[:tags].split(delimiter).each{|tag| tag.strip}
   end
   
   #
   # Build url that will be understand by router to downlad/display this file
   #
   def url
-    path = "/uploads/"
-    # path << self.site.name << "/" if self.site
-    # path << self.category.name << "/" if self.category
-    path << @id.to_s
-    path
+    return "/" + Pathname.new(self.path).relative_path_from(Pathname.new(Merb.root)).to_s
   end
   
   private
@@ -105,26 +99,30 @@ class MediaRocket::Media
     if options[:category]
       self.category = MediaRocket::Category.first_or_create(:name => options[:category])
       self.category.medias << self
+      self.site.categories << self.category
       
       # Add position number with medias category size if not existing in options
       self.position = options[:position] || self.category.medias.size
     end
-    
-    self.site << self.category
   end
   
   def unique_file(path, filename)
     unique = 0
-    path = File.join(path, File.basename(filename))
+    path = File.join(path, filename)
     extension = File.extname(filename)
+    
     while File.exist?(path)
       path = File.join(File.dirname(path), File.basename(filename, extension) + unique.to_s + extension)
       unique += 1
     end
+    return path
   end
   
   def root_path
-    return File.join("/public/uploads/", self.site, self.category)
+    path = "/public/uploads/"
+    path = File.join(path, self.site.name) if self.site
+    path = File.join(path, self.category.name) if self.category
+    return path
   end
   
   def post_process
