@@ -85,7 +85,7 @@ class MediaRocket::Media
   # Build url that will be understand by router to downlad/display this file
   #
   def url
-    return "/" + Pathname.new(self.path).relative_path_from(Pathname.new(Merb.root)).to_s
+    return "/" + Pathname.new(self.path).relative_path_from(Pathname.new(File.join(Merb.root, 'public'))).to_s
   end
   
   private
