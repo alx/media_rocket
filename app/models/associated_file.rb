@@ -1,4 +1,4 @@
-class AssociatedFile
+class MediaRocket::AssociatedFile
   include DataMapper::Resource
  
   property :media_id, Integer, :key => true

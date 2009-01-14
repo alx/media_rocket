@@ -23,6 +23,7 @@ describe MediaRocket::Media do
   it "should create a new Media with image" do
     @media = MediaRocket::Media.new :file => test_file
     @media.should_not be(nil)
+    @media.is_image?.should == true
     @media.path.should_not be(nil)
     @media.url.should == "/uploads/image.png"
   end
