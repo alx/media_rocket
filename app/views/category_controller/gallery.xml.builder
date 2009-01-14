@@ -6,6 +6,14 @@ xml.gallery do
 			xml.description(media.description)
 			xml.tags(media.tag_list)
 			xml.url(media.url)
-		end
-	end
-end
+			
+			if @medias.files > 0
+			  xml.size do
+			    for file in @medias.files do
+			      xml.size(file.path, :dimension => file.dimension)
+		      end # for
+		    end # xml.size
+	    end # if
+    end # xml.image
+	end # for
+end # xml.gallery
