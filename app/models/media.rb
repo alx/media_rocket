@@ -56,6 +56,15 @@ class MediaRocket::Media
     
     if options[:file]
       
+      self.title = options[:title] if options[:title]
+      self.description = options[:description] if options[:description]
+
+      # Find or create if options[:site] is specified
+      # And link this @site to the current object
+      if options[:site]
+        add_to_site options
+      end
+      
       # Add unique suffix if file already exists
       # FIX: rework using unique sha1 hash for basename
       self.path = unique_file(root_path, options[:file][:filename])
@@ -71,15 +80,6 @@ class MediaRocket::Media
       # it'll return nil if absent
       return nil
       
-    end
-    
-    self.title = options[:title] if options[:title]
-    self.description = options[:description] if options[:description]
-    
-    # Find or create if options[:site] is specified
-    # And link this @site to the current object
-    if options[:site]
-      add_to_site options
     end
     
     add_tags(options) unless options[:tags].nil?
