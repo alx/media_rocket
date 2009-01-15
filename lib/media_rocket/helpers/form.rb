@@ -131,13 +131,13 @@ module MediaRocket
         else
           content = options[:site_label] || "Site"
         
-          site_content = tag(:label, content, {:for => content})
+          site_content = tag(:label, content, :for => content)
           site_content << tag(:br)
         
         
           choices = ""
           sites.each do |site|
-            choices << tag(:option, site.name, {:value => site.id})
+            choices << tag(:option, site.name, :value => site.name)
           end
         
           site_content << tag(:select, choices, {:name => "site", :size => sites.size})

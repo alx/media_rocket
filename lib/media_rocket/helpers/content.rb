@@ -64,7 +64,7 @@ module MediaRocket
               content << build_info_box(media)
               content << build_action_box(media)
 
-              children << tag(:div, content, :class => 'organize_media span-14 push-1')
+              children << tag(:div, content, {:id => "media_#{media.id}", :class => 'organize_media span-14 push-1'})
             end
           end # category.medias
 
@@ -92,10 +92,22 @@ module MediaRocket
 
       def build_action_box(media)
         #action = tag(:a, "Move", :href => "/")
-        action = tag(:a, "Delete", :href => url(:delete_media, :id => media.id))
+        action = link_to "Delete",
+                         url(:delete_media, :id => media.id),
+                         :rel => "#media_#{media.id}",
+                         :class => "remote"
         tag(:div, action, :class => "span-3 prepend-1 last")
       end
       
+      def link_to_remote(text, url, options = {})
+        if options.key?(:update)
+          options[:rel] = options.delete(:update)
+        end
+        
+        options[:class] = options[:class].to_s.split(" ").push("remote").join(" ")
+        
+        link_to(text, url, options)
+      end
     end
   end
 end
