@@ -90,7 +90,7 @@ module MediaRocket
 
       def build_action_box(media)
         action = tag(:a, "Move", :href => "/")
-        action << tag(:a, "Delete", :href => url(:delete_media_rocket_media, :id => media.id))
+        #action << tag(:a, "Delete", :href => url(:delete_media_rocket_media, :id => media.id))
         tag(:div, action, :class => "span-3 prepend-1 last")
       end
       
