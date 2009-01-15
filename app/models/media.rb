@@ -61,7 +61,7 @@ class MediaRocket::Media
 
       # Find or create if options[:site] is specified
       # And link this @site to the current object
-      if options[:site]
+      if (options[:new_site] || options[:site])
         add_to_site options
       end
       
@@ -122,13 +122,16 @@ class MediaRocket::Media
   # and options[:category]
   #
   def add_to_site(options = {}, &block)
-    self.site = MediaRocket::Site.first_or_create(:name => options[:site])
+    site_name = (options[:new_site] || options[:site])
+    category_name = (options[:new_category] || options[:category] || nil)
+    
+    self.site = MediaRocket::Site.first_or_create(:name => site_name)
     self.site.medias << self
     
     # Find or create if options[:site] is specified
     # And link this @site to the current object
-    if options[:category]
-      self.category = MediaRocket::Category.first_or_create(:name => options[:category], :site_id => self.site.id)
+    if category_name
+      self.category = MediaRocket::Category.first_or_create(:name => category_name, :site_id => self.site.id)
       self.category.medias << self
       self.category.reload
       
