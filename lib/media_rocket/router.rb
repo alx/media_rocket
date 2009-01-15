@@ -4,7 +4,7 @@ module MediaRocket
     def self.setup(scope)
       
       scope.identify :id do
-        resources :medias
+        scope.resources :medias
       end
       
       # Upload route
