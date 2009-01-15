@@ -168,7 +168,6 @@ module MediaRocket
           category_content << tag(:br)
         
           MediaRocket::Category.all.each do |category|
-            category_content << tag(:option, site.name, {:value => site.id})
             category_content << tag(:input, category.name, {:type => "checkbox", :name => "category", :value => category.name})
             category_content << tag(:br)
           end
