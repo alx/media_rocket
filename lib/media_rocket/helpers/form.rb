@@ -168,10 +168,33 @@ module MediaRocket
           category_content << tag(:br)
         
           MediaRocket::Category.all.each do |category|
-            category_content << tag(:input, category.name, {:type => "checkbox", :name => "category", :value => category.id})
+            category_content << tag(:option, site.name, {:value => site.id})
+            category_content << tag(:input, category.name, {:type => "checkbox", :name => "category", :value => category.name})
             category_content << tag(:br)
           end
         
+          tag(:p, category_content)
+        end
+      end
+      
+      def media_category_select(options = {}, &block)
+        categories = MediaRocket::Category.all
+        
+        if categories.empty?
+          return ""
+        else
+          content = options[:category_label] || "Category"
+        
+          category_content = tag(:label, content, {:for => content})
+          category_content << tag(:br)
+        
+          choices = ""
+          MediaRocket::Category.all.each do |category|
+            choices << tag(:option, category.name, {:value => category.name})
+          end
+          
+          category_content << tag(:select, choices, {:name => "category", :size => category.size})
+          
           tag(:p, category_content)
         end
       end
