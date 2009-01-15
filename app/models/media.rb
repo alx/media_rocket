@@ -108,6 +108,13 @@ class MediaRocket::Media
     (self.path =~ /(jpg|gif|png)$/) != nil
   end
   
+  #
+  # Return thumbnail media associated to this file
+  #
+  def thumbnail
+    (self.files.select{|media| media.dimension == "130x130"}.first || nil) if is_image?
+  end
+  
   private
   
   #
