@@ -8,8 +8,8 @@ class MediaRocket::CategoryController < MediaRocket::Application
   
   def gallery
     return nil if params[:id].nil?
-    @category = MediaRocket::Category.first :id => params[:id]
-    @medias = @category.medias.sort {|x,y| x.position <=> y.position }
+    @category = MediaRocket::Category.first(:id => params[:id])
+    @medias = @category.medias.select{|media| media.associated_to.size == 0}.sort {|x,y| x.position <=> y.position }
     render :layout => false
   end
   
