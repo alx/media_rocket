@@ -167,7 +167,7 @@ module MediaRocket
           category_content = tag(:label, content, {:for => content})
           category_content << tag(:br)
         
-          MediaRocket::Category.all.each do |category|
+          categories.each do |category|
             category_content << tag(:input, category.name, {:type => "checkbox", :name => "category", :value => category.name})
             category_content << tag(:br)
           end
@@ -188,11 +188,11 @@ module MediaRocket
           category_content << tag(:br)
         
           choices = ""
-          MediaRocket::Category.all.each do |category|
+          categories.each do |category|
             choices << tag(:option, category.name, {:value => category.name})
           end
           
-          category_content << tag(:select, choices, {:name => "category", :size => category.size})
+          category_content << tag(:select, choices, {:name => "category", :size => categories.size})
           
           tag(:p, category_content)
         end
