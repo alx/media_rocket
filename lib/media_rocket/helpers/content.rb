@@ -44,8 +44,54 @@ module MediaRocket
         output
       end
       
-      def media_categories(options = {}, &block)
+      def media_gallery_organize(options = {}, &block)
         
+        site = options[:site] || MediaRocket::Site.first
+
+        output = ""
+
+        # display each gallery with its media content
+        site.categories.each do |category|
+          children = ''
+
+          category.medias.each do |media|
+
+            # Do not try to display associated file (yet)
+            if media.original?
+              content = build_thumbnail(media)
+              content << build_info_box(media)
+              content << build_action_box(media)
+
+              children << tag(:div, content, :class => 'organize_media span-14 push-1')
+            end
+          end # category.medias
+
+          content = tag(:h4, category.name)
+          content << children
+          output << tag(:div, content, :class => 'organize_category span-15 push-1')
+
+        end # site.categories
+
+        output
+
+      end # media_gallery_organize
+
+      def build_thumbnail(media)
+        thumbnail = self_closing_tag(:img, :src => media.thumbnail.url)
+        tag(:div, thumbnail, :class => "span-4")
+      end
+
+      def build_info_box(media)
+        info = tag(:span, tag(:b, "Title: ") + media.title, :class => "info-title")
+        info << self_closing_tag(:br)
+        info << tag(:span, tag(:b, "Description: ") + media.description, :class => "info-description")
+        tag(:div, info, :class => "span-5")
+      end
+
+      def build_action_box(media)
+        action = tag(:a, "Move", :href => "/")
+        action << tag(:a, "Delete", :href => url(:delete_media_rocket_media, :id => media.id))
+        tag(:div, action, :class => "span-3 prepend-1 last")
       end
       
     end

@@ -218,6 +218,34 @@ module MediaRocket
         tag(:p, file_content)
       end
       
+      def media_validate_file
+
+        javascript = <<-END_OF_JS
+        function checkAttach() {
+                if ( document.forms.media_upload.file.value != "" ) {
+                  var reg_1 = new RegExp('^.+\.(jpg|jpeg|png|gif|bmp|tif|tiff|ai|pdf)$','i');
+                  if ( reg_1.test(document.forms['media_upload'].file.value) ) {
+                    return null;
+                  } else {
+                    return "Format d\'image non supporte";
+                  }
+                } else {
+                    return "Vous devez joindre un fichier";
+                }
+            }
+        END_OF_JS
+
+        rules = ["file|custom|checkAttach()"]
+
+        javascript << "var rules=new Array();"
+
+        rules.each do |rule|
+          javascript << "rules[#{rules.index(rule)}]='#{rule}';"
+        end
+
+        tag(:script, javascript)
+      end
+      
     end
   end
 end

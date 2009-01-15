@@ -2,6 +2,11 @@ module MediaRocket
   module Router
     
     def self.setup(scope)
+      
+      # identify :id do
+      #         scope.resources :medias, :identify => :media_rocket_media_controller
+      #       end
+      
       # Upload route
       scope.match('/upload').to(:controller => 'main', :action => 'upload').name(:upload)
       
