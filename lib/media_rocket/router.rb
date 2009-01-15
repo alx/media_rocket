@@ -3,9 +3,9 @@ module MediaRocket
     
     def self.setup(scope)
       
-      # identify :id do
-      #         scope.resources :medias, :identify => :media_rocket_media_controller
-      #       end
+      scope.identify :id do
+        scope.resources :medias
+      end
       
       # Upload route
       scope.match('/upload').to(:controller => 'main', :action => 'upload').name(:upload)

@@ -1,4 +1,4 @@
-class MediaRocket::Media
+class MediaRocket::MediaFile
   include DataMapper::Resource
   
   property :id, Serial
@@ -10,8 +10,6 @@ class MediaRocket::Media
   property :stage, Integer
   property :dimension, String
   property :created_at, DateTime
-  property :deleted_at, ParanoidDateTime
-  property :deleted,    ParanoidBoolean
   
   has_tags
   
@@ -30,15 +28,16 @@ class MediaRocket::Media
   # if there's only 1 file associated with this tag, it will return the file
   # 
   has n, :associated_files, :class_name => "MediaRocket::AssociatedFile"
-  has n, :files, :through => :associated_files, :class_name => "MediaRocket::Media",
+  has n, :files, :through => :associated_files, :class_name => "MediaRocket::MediaFile",
                    :remote_name => :file, :child_key => [:media_id]
-  has n, :associated_to, :through => :associated_files, :class_name => "MediaRocket::Media",
+  has n, :associated_to, :through => :associated_files, :class_name => "MediaRocket::MediaFile",
                        :remote_name => :media, :child_key => [:file_id]
   
   belongs_to :category, :class_name => "MediaRocket::Category"
   belongs_to :site, :class_name => "MediaRocket::Site"
   
   after :save, :post_process
+  before :destroy, :unlink_files
   
   #
   # Initialize media
@@ -185,6 +184,10 @@ class MediaRocket::Media
     if !is_processed?
       image_process if is_image?
       self.update_attributes(:stage => 1)
+      
+      # Reload site and category to take care of new comers
+      self.site.reload if self.site
+      self.category.reload if self.category
     end
   end
   
@@ -226,7 +229,7 @@ class MediaRocket::Media
     media_hash.merge!({:site => self.site.name}) if self.site
     media_hash.merge!({:category => self.category.name}) if self.category
                    
-    MediaRocket::Media.new(media_hash)
+    MediaRocket::MediaFile.new(media_hash)
   end
   
   #
@@ -235,5 +238,14 @@ class MediaRocket::Media
   #
   def is_processed?
     (self.stage == 1)
+  end
+  
+  def unlink_files
+    self.files.each{ |media| media.destroy }
+    File.delete(self.path)
+    
+    # Reload site and category to be sure everything is gone
+    self.site.reload
+    self.category.reload
   end
 end

@@ -1,5 +1,9 @@
 Merb::Router.prepare do |r|
   
+  r.identify :id do
+    r.resources :medias
+  end
+  
   # Upload route
   r.match('/upload').to(:controller => 'main', :action => 'upload').name(:upload)
 

@@ -1,34 +1,22 @@
-class MediaRocket::MediaController < MediaRocket::Application
+class MediaRocket::Medias < MediaRocket::Application
 
   # GET /media/:id/edit
   def edit
-    MediaRocket::Media.first(:id => params[:id]).update_attributes params
+    MediaRocket::MediaFile.first(:id => params[:id]).update_attributes params
   end
 
   # GET /media/:id/delete
   def delete
-    @media = MediaRocket::Media.first(:id => params[:id])
-    @site = @media.site
-    @category = @media.category
-    
-    @media.destroy
-    @site.reload
-    @category.reload
+    MediaRocket::MediaFile.first(:id => params[:id]).destroy
   end
 
   # PUT /media/:id
   def update
-    MediaRocket::Media.first(:id => params[:id]).update_attributes params
+    MediaRocket::MediaFile.first(:id => params[:id]).update_attributes params
   end
 
   # DELETE /media/:id
   def destroy
-    @media = MediaRocket::Media.first(:id => params[:id])
-    @site = @media.site
-    @category = @media.category
-    
-    @media.destroy
-    @site.reload
-    @category.reload
+    MediaRocket::MediaFile.first(:id => params[:id]).destroy
   end
 end

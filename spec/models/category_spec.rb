@@ -14,7 +14,7 @@ describe MediaRocket::Category do
   end
   
   it "should contains media" do
-    @media = MediaRocket::Media.new :file => test_file
+    @media = MediaRocket::MediaFile.new :file => test_file
     @category = MediaRocket::Category.new :name => "Vacances"
     @category.medias << @media
     

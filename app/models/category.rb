@@ -8,6 +8,6 @@ class MediaRocket::Category
   is_tree :order => "name"
   
   belongs_to :site
-  has n, :medias
+  has n, :medias, :class_name => "MediaRocket::MediaFile"
 
 end

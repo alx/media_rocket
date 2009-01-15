@@ -14,7 +14,7 @@ describe MediaRocket::AssociatedFile do
   end
 
   it "should generate resized files when media is an image" do
-    @media = MediaRocket::Media.new :file => test_file
+    @media = MediaRocket::MediaFile.new :file => test_file
     @media.save
     
     MediaRocket::AssociatedFile.all.size.should > 0
@@ -29,7 +29,7 @@ describe MediaRocket::AssociatedFile do
   end
   
   it "should have same site and category as associated_to media" do
-    @media = MediaRocket::Media.new :file => test_file, 
+    @media = MediaRocket::MediaFile.new :file => test_file, 
                                     :site => "domain.com",
                                     :category => "vacances"
     @media.save
@@ -41,7 +41,7 @@ describe MediaRocket::AssociatedFile do
   end
   
   it "should recognize original file" do
-     @media = MediaRocket::Media.new :file => test_file
+     @media = MediaRocket::MediaFile.new :file => test_file
      @media.save
 
      @media.original?.should be(true)

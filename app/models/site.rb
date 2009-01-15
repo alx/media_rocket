@@ -6,6 +6,6 @@ class MediaRocket::Site
   property :domain, String
   
   has n, :categories
-  has n, :medias
+  has n, :medias, :class_name => "MediaRocket::MediaFile"
   
 end

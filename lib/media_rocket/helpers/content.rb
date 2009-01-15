@@ -5,7 +5,7 @@ module MediaRocket
       def media_list_last(options = {}, &block)
         medias = ""
         limit = options[:limit] || 10
-        MediaRocket::Media.all(:dimension => nil, :order => [:created_at.desc])[0...limit].each do |media|
+        MediaRocket::MediaFile.all(:dimension => nil, :order => [:created_at.desc])[0...limit].each do |media|
           medias << tag(:a, self_closing_tag(:img, :src => media.url, :width => options[:width]), :href => media.url)
         end
         medias
@@ -91,8 +91,8 @@ module MediaRocket
       end
 
       def build_action_box(media)
-        action = tag(:a, "Move", :href => "/")
-        #action << tag(:a, "Delete", :href => url(:delete_media_rocket_media, :id => media.id))
+        #action = tag(:a, "Move", :href => "/")
+        action = tag(:a, "Delete", :href => url(:delete_media, :id => media.id))
         tag(:div, action, :class => "span-3 prepend-1 last")
       end
       

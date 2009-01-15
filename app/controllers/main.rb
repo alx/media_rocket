@@ -6,7 +6,7 @@ class MediaRocket::Main < MediaRocket::Application
   end
   
   def upload
-    MediaRocket::Media.new(params).save
+    MediaRocket::MediaFile.new(params).save
     redirect (params[:redirect_to] || "/")
   end
   
@@ -17,7 +17,7 @@ class MediaRocket::Main < MediaRocket::Application
   
   def show
     if params[:id]
-      media = MediaRocket::Media.first(:id => params[:id])
+      media = MediaRocket::MediaFile.first(:id => params[:id])
       display media.path
     end
   end
