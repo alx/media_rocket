@@ -1,4 +1,4 @@
-class MediaRocket::MediaController < Application
+class MediaRocket::MediaController < MediaRocket::Application
 
   # GET /media/:id/edit
   def edit
