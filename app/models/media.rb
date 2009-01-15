@@ -126,8 +126,11 @@ class MediaRocket::Media
   # and options[:category]
   #
   def add_to_site(options = {}, &block)
-    site_name = (options[:new_site] || options[:site])
-    category_name = (options[:new_category] || options[:category] || nil)
+    site_name = options[:site]
+    site_name = options[:new_site] unless (options[:new_site].nil? or options[:new_site].empty?)
+    
+    category_name = options[:category]
+    category_name = options[:new_category] unless (options[:new_category].nil? or options[:new_category].empty?)
     
     self.site = MediaRocket::Site.first_or_create(:name => site_name)
     self.site.medias << self
