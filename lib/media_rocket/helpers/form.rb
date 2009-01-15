@@ -151,7 +151,7 @@ module MediaRocket
         
         site_content = tag(:label, content, {:for => content})
         site_content << tag(:br)
-        site_content << text_field(:name => "site", :id => content)
+        site_content << text_field(:name => "new_site", :id => content)
           
         tag(:p, site_content)
       end
@@ -203,7 +203,7 @@ module MediaRocket
         
         category_content = tag(:label, content, {:for => content})
         category_content << tag(:br)
-        category_content << text_field(:name => "category", :id => content)
+        category_content << text_field(:name => "new_category", :id => content)
           
         tag(:p, category_content)
       end
