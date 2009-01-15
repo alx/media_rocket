@@ -121,9 +121,9 @@ class MediaRocket::Media
     # Find or create if options[:site] is specified
     # And link this @site to the current object
     if options[:category]
-      self.category = MediaRocket::Category.first_or_create(:name => options[:category])
+      self.category = MediaRocket::Category.first_or_create(:name => options[:category], :site_id => self.site.id)
       self.category.medias << self
-      self.site.categories << self.category
+      self.category.reload
       
       # Add position number with medias category size if not existing in options
       self.position = options[:position] || self.category.medias.size

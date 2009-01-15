@@ -59,9 +59,6 @@ describe MediaRocket::Media do
   
   it "should create a new Media belonging to a site" do
     site_name = "domain.com"
-    if site = MediaRocket::Site.first(:name => site_name)
-      site.destroy
-    end
     
     @media = MediaRocket::Media.new :file => test_file, :site => site_name
     @media.site.should_not be(nil)
@@ -70,27 +67,33 @@ describe MediaRocket::Media do
   
   it "should create a new Media belonging to a site with a category" do
     site_name = "domain.com"
-    if site = MediaRocket::Site.first(:name => site_name)
-      site.destroy
-    end
-    
     category_name = "vacances"
-    if category = MediaRocket::Category.first(:name => category_name)
-      category.destroy
-    end
     
     @media = MediaRocket::Media.new :file => test_file, :site => site_name, :category => category_name
-    @media.site.should_not be(nil)
-    @media.site.name.should == site_name
-    @media.category.should_not be(nil)
-    @media.category.name.should == category_name
+    @media.save
+    @site = @media.site
+    @category = @media.category
+    
+    @site.should_not be(nil)
+    @site.name.should == site_name
+    @category.should_not be(nil)
+    @category.name.should == category_name
+    
+    @first_site = MediaRocket::Site.first :name => site_name
+    @first_category = MediaRocket::Category.first :name => category_name
+    
+    @site.id.should == @first_site.id
+    @first_site.categories.size.should == 1
+    @first_site.categories.first.id.should == @first_category.id
+    @first_site.medias.size.should == 1
+    @first_site.medias.first.path.should == @media.path
+    
+    @first_category.medias.size.should == 1
+    @first_category.medias.first.path.should == @media.path
   end
   
   it "should not create a new category if site is not specified" do
     category_name = "vacances"
-    if category = MediaRocket::Category.first(:name => category_name)
-      category.destroy
-    end
     @media = MediaRocket::Media.new :file => test_file, :category => category_name
     @media.site.should be(nil)
     @media.category.should be(nil)
