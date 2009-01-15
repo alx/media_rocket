@@ -47,6 +47,8 @@ module MediaRocket
       def media_gallery_organize(options = {}, &block)
         
         site = options[:site] || MediaRocket::Site.first
+        
+        return "" if site.nil?
 
         output = ""
 
