@@ -9,11 +9,5 @@ class MediaRocket::Category
   
   belongs_to :site
   has n, :medias
-  
-  def initialize(options = {}, &block)
-    if options[:site]
-      @site = MediaRocket::Site.first_or_create(:name => options[:site])
-      @site.category << self
-    end
-  end
+
 end
