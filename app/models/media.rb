@@ -115,6 +115,10 @@ class MediaRocket::Media
     (self.files.select{|media| media.dimension == "130x130"}.first || nil) if is_image?
   end
   
+  def original?
+    self.associated_to.size == 0
+  end
+  
   private
   
   #

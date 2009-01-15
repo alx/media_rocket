@@ -39,4 +39,14 @@ describe MediaRocket::AssociatedFile do
       media.category.name.should == @media.category.name
     end
   end
+  
+  it "should recognize original file" do
+     @media = MediaRocket::Media.new :file => test_file
+     @media.save
+
+     @media.original?.should be(true)
+     @media.files.each do |media|
+       media.original?.should be(false)
+     end
+   end
 end
