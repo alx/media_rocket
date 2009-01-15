@@ -212,6 +212,9 @@ class MediaRocket::Media
                               :tempfile => convert_file },
                    :stage => 1,
                    :dimension => size}
+    
+    media_hash.merge!({:site => self.site.name}) if self.site
+    media_hash.merge!({:category => self.category.name}) if self.category
                    
     MediaRocket::Media.new(media_hash)
   end

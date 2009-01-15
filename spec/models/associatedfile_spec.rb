@@ -27,4 +27,16 @@ describe MediaRocket::AssociatedFile do
     associated_to.size.should == 1
     associated_to.first.path.should == @media.path
   end
+  
+  it "should have same site and category as associated_to media" do
+    @media = MediaRocket::Media.new :file => test_file, 
+                                    :site => "domain.com",
+                                    :category => "vacances"
+    @media.save
+    
+    @media.files.each do |media|
+      media.site.name.should == @media.site.name
+      media.category.name.should == @media.category.name
+    end
+  end
 end
