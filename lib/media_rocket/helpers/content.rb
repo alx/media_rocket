@@ -62,7 +62,7 @@ module MediaRocket
             if media.original?
               content = build_thumbnail(media)
               content << build_info_box(media)
-              content << build_action_box(media)
+              content << build_media_action_box(media)
 
               children << tag(:div, content, {:id => "media_#{media.id}", :class => 'organize_media span-14 push-1'})
             end
@@ -70,6 +70,7 @@ module MediaRocket
 
           content = tag(:h4, category.name)
           content << children
+          content << build_category_action_box(category)
           output << tag(:div, content, :class => 'organize_category span-15 push-1')
 
         end # site.categories
@@ -84,19 +85,20 @@ module MediaRocket
       end
 
       def build_info_box(media)
-        info = tag(:span, tag(:b, "Title: ") + media.title, :class => "info-title")
-        info << self_closing_tag(:br)
-        info << tag(:span, tag(:b, "Description: ") + media.description, :class => "info-description")
-        tag(:div, info, :class => "span-5")
+        tag(:div, media_edit_info(media), :class => "span-5")
       end
-
-      def build_action_box(media)
+      
+      def build_media_action_box(media)
         #action = tag(:a, "Move", :href => "/")
         action = link_to "Delete",
                          url(:delete_media_rocket_media, :id => media.id),
                          :rel => "#media_#{media.id}",
                          :class => "remote"
         tag(:div, action, :class => "span-3 prepend-1 last")
+      end
+      
+      def build_category_action_box(category)
+        tag(:div, media_add_category(category))
       end
       
       def link_to_remote(text, url, options = {})

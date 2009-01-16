@@ -43,7 +43,7 @@ module MediaRocket
           # Category is not set by default, you have to set options[:category_enabled]
           # to allow user to set it
           #
-          form_content << media_category_checkboxes(options) if options[:category_enabled] == 1
+          form_content << media_category_select(options) if options[:category_enabled] == 1
           
           
           #
@@ -76,7 +76,7 @@ module MediaRocket
           form_content << media_site_new_field(options)
           form_content << media_site_select(options)
           form_content << media_category_new_field(options)
-          form_content << media_category_checkboxes(options)
+          form_content << media_category_select(options)
           form_content << media_file_field(options)
           form_content << tag(:p, submit(options[:submit_label] || "Upload", :id => "media_button"))
           form_content
@@ -157,7 +157,7 @@ module MediaRocket
       end
             
       def media_category_checkboxes(options = {}, &block)
-        categories = MediaRocket::Category.all
+        categories = MediaRocket::Gallery.all
         
         if categories.empty?
           return ""
@@ -177,7 +177,7 @@ module MediaRocket
       end
       
       def media_category_select(options = {}, &block)
-        categories = MediaRocket::Category.all
+        categories = MediaRocket::Gallery.all
         
         if categories.empty?
           return ""
@@ -188,14 +188,27 @@ module MediaRocket
           category_content << tag(:br)
         
           choices = ""
-          categories.each do |category|
-            choices << tag(:option, category.name, {:value => category.name})
+          level = 1
+          categories.select{|cat| cat.parent.nil?}.each do |category|
+            choices << media_category_children_option(category)
           end
           
           category_content << tag(:select, choices, {:name => "category", :size => categories.size})
           
           tag(:p, category_content)
         end
+      end
+      
+      def media_category_children_option(category, level = 0)
+        
+        branch = ""
+        branch = ("&nbsp;&nbsp;" * level) + "+-&nbsp;" if level > 0
+        
+        content = tag(:option, branch + category.name, {:value => category.name})
+        category.children.each do |child|
+          content << media_category_children_option(child, level + 1)
+        end
+        content
       end
       
       def media_category_new_field(options = {}, &block)
@@ -206,6 +219,17 @@ module MediaRocket
         category_content << text_field(:name => "new_category", :id => content)
           
         tag(:p, category_content)
+      end
+      
+      def media_add_category(category, options = {}, &block)
+        field_label = options[:field_label] || ""
+        submit_label = options[:submit_label] || "Ajouter Sous-Cat&eacute;gorie &rarr;"
+        
+        form :action => url(:new_media_rocket_category) do
+          category_content = text_field(:name => "name", :value => field_label)
+          category_content << hidden_field(:name => "parent_id", :value => category.id)
+          category_content << submit(submit_label)
+        end
       end
       
       def media_file_field(options = {}, &block)
@@ -246,6 +270,19 @@ module MediaRocket
         tag(:script, javascript)
       end
       
+      def media_edit_info(media)
+        form :action => url(:edit_media_rocket_media, media) do
+          info = tag(:label, "Titre:", :for => "title")
+          info << text_field(:name => "title", :value => media.title)
+          info << self_closing_tag(:br)
+          
+          info << tag(:label, "Description:", :for => "description")
+          info << text_field(:name => "description", :value => media.description)
+          info << self_closing_tag(:br)
+          
+          info << submit("Modifier")
+        end
+      end
     end
   end
 end

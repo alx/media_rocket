@@ -12,7 +12,7 @@ describe MediaRocket::MediaFile do
     FileUtils.rm_rf Dir.glob("#{MediaRocket.root}/public/uploads/vacances/")
     File.copy(origin_file, test_file[:tempfile].path)
     
-    MediaRocket::Category.all.destroy!
+    MediaRocket::Gallery.all.destroy!
     MediaRocket::Site.all.destroy!
   end
   
@@ -80,7 +80,7 @@ describe MediaRocket::MediaFile do
     @category.name.should == category_name
     
     @first_site = MediaRocket::Site.first :name => site_name
-    @first_category = MediaRocket::Category.first :name => category_name
+    @first_category = MediaRocket::Gallery.first :name => category_name
     
     @site.id.should == @first_site.id
     @first_site.categories.size.should == 1

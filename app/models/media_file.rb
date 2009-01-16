@@ -33,7 +33,7 @@ class MediaRocket::MediaFile
   has n, :associated_to, :through => :associated_files, :class_name => "MediaRocket::MediaFile",
                        :remote_name => :media, :child_key => [:file_id]
   
-  belongs_to :category, :class_name => "MediaRocket::Category"
+  belongs_to :category, :class_name => "MediaRocket::Gallery"
   belongs_to :site, :class_name => "MediaRocket::Site"
   
   after :save, :post_process
@@ -133,11 +133,12 @@ class MediaRocket::MediaFile
     
     self.site = MediaRocket::Site.first_or_create(:name => site_name)
     self.site.medias << self
+    self.site.reload
     
     # Find or create if options[:site] is specified
     # And link this @site to the current object
     if category_name
-      self.category = MediaRocket::Category.first_or_create(:name => category_name, :site_id => self.site.id)
+      self.category = MediaRocket::Gallery.first_or_create(:name => category_name, :site_id => self.site.id)
       self.category.medias << self
       self.category.reload
       
@@ -168,7 +169,12 @@ class MediaRocket::MediaFile
   def root_path
     path = "/public/uploads/"
     path = File.join(path, self.site.name) if self.site
-    path = File.join(path, self.category.name) if self.category
+    
+    if self.category
+      self.category.ancestors.each{ |ancestor| path = File.join(path, ancestor.name) }
+      path = File.join(path, self.category.name)
+    end
+    
     return File.join(Merb.root, path)
   end
   
