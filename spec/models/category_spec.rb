@@ -1,4 +1,5 @@
 require "ftools"
+require 'cgi'
 require File.join( File.dirname(__FILE__), '..', "spec_helper" )
 
 describe MediaRocket::Gallery do
@@ -52,5 +53,15 @@ describe MediaRocket::Gallery do
                                         :category => @child.name
     
     @media.path.to_s.should == File.join(Merb.root, 'public', 'uploads', @site.name, @category.name, @child.name, test_file[:filename])
+  end
+  
+  it "should be URI encoded" do
+    @site = MediaRocket::Site.create :name => "domain. com"
+    @category = @site.categories.create :name => "Vacances d'hiver"
+
+    @media = MediaRocket::MediaFile.new :file => test_file,
+                                        :site => @site.name,
+                                        :category => @category.name
+    @media.path.to_s.should == File.join(Merb.root, 'public', 'uploads', CGI.escape(@site.name), CGI.escape(@category.name), test_file[:filename])
   end
 end

@@ -97,4 +97,6 @@ if defined?(Merb::Plugins)
   require "media_rocket/helpers"
   require "media_rocket/router"
   
+  require "cgi"
+  
 end

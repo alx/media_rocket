@@ -168,11 +168,11 @@ class MediaRocket::MediaFile
   #
   def root_path
     path = "/public/uploads/"
-    path = File.join(path, self.site.name) if self.site
+    path = File.join(path, CGI.escape(self.site.name)) if self.site
     
     if self.category
       self.category.ancestors.each{ |ancestor| path = File.join(path, ancestor.name) }
-      path = File.join(path, self.category.name)
+      path = File.join(path, CGI.escape(self.category.name))
     end
     
     return File.join(Merb.root, path)
