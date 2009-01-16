@@ -66,7 +66,7 @@ class MediaRocket::MediaFile
       
       # Add unique suffix if file already exists
       # FIX: rework using unique sha1 hash for basename
-      self.path = unique_file(root_path, options[:file][:filename])
+      self.path = CGI.escape(unique_file(root_path, options[:file][:filename]))
 
       # Create directory if doesn't exist (when new site or category)
       # and move file there
@@ -168,11 +168,11 @@ class MediaRocket::MediaFile
   #
   def root_path
     path = "/public/uploads/"
-    path = File.join(path, CGI.escape(self.site.name)) if self.site
+    path = File.join(path, self.site.name) if self.site
     
     if self.category
       self.category.ancestors.each{ |ancestor| path = File.join(path, ancestor.name) }
-      path = File.join(path, CGI.escape(self.category.name))
+      path = File.join(path, self.category.name)
     end
     
     return File.join(Merb.root, path)

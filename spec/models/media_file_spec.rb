@@ -92,6 +92,25 @@ describe MediaRocket::MediaFile do
     @first_category.medias.first.path.should == @media.path
   end
   
+  it "should create a new Media within a special-character category" do
+    site_name = "domain.com"
+    category_name = "vaca nces"
+    
+    @media = MediaRocket::MediaFile.new :file => test_file, :site => site_name, :category => category_name
+    @media.save
+    @site = @media.site
+    @category = @media.category
+    
+    @site.id.should == @first_site.id
+    @first_site.categories.size.should == 1
+    @first_site.categories.first.id.should == @first_category.id
+    @first_site.medias.size.should == 3
+    @first_site.medias.first.path.should == @media.path
+    
+    @first_category.medias.size.should == 3
+    @first_category.medias.first.path.should == @media.path
+  end
+  
   it "should not create a new category if site is not specified" do
     category_name = "vacances"
     @media = MediaRocket::MediaFile.new :file => test_file, :category => category_name
