@@ -1,5 +1,4 @@
 class MediaRocket::Categories < MediaRocket::Application
-  provides :xml
   
   def new
     if params[:parent_id] and params[:name]
@@ -8,11 +7,13 @@ class MediaRocket::Categories < MediaRocket::Application
   end
   
   def list
+    provides :xml
     @categories = MediaRocket::Gallery.all
     render :layout => false
   end
   
   def gallery
+    provides :xml
     return nil if params[:id].nil?
     @category = MediaRocket::Gallery.first(:id => params[:id])
     @medias = @category.medias.select{|media| media.original?}

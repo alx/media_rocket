@@ -4,15 +4,11 @@ module MediaRocket
     def self.setup(scope)
       
       scope.identify :id do
-        scope.resources :medias
+        scope.resources :medias, "MediaRocket::Medias"
       end
       
       scope.identify :id do
-        scope.resources :categories
-        
-        scope.identify :id do
-          scope.resources :medias
-        end
+        scope.resources :categories, "MediaRocket::Categories"
       end
       
       # Upload route
@@ -28,8 +24,6 @@ module MediaRocket
       # Route to front page
       scope.match('/').to(:controller => 'main', :action => 'index').name(:index)
       scope.match('/manage').to(:controller => 'main', :action => 'list').name(:manage)
-      
-      scope.default_routes
     end
     
   end

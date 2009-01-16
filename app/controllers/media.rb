@@ -2,7 +2,10 @@ class MediaRocket::Medias < MediaRocket::Application
 
   # GET /media/:id/edit
   def edit
-    MediaRocket::MediaFile.first(:id => params[:id]).update_attributes params
+    if media = MediaRocket::MediaFile.first(:id => params[:id])
+      media.update_attributes :title => params[:title],
+                              :description => params[:description]
+    end
   end
 
   # GET /media/:id/delete
@@ -12,7 +15,10 @@ class MediaRocket::Medias < MediaRocket::Application
 
   # PUT /media/:id
   def update
-    MediaRocket::MediaFile.first(:id => params[:id]).update_attributes params
+    if media = MediaRocket::MediaFile.first(:id => params[:id])
+      media.update_attributes :title => params[:title],
+                              :description => params[:description]
+    end
   end
 
   # DELETE /media/:id

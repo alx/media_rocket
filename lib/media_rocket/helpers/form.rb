@@ -225,7 +225,7 @@ module MediaRocket
         field_label = options[:field_label] || ""
         submit_label = options[:submit_label] || "Ajouter Sous-Cat&eacute;gorie &rarr;"
         
-        form :action => url(:new_media_rocket_category) do
+        form :action => url(:new_media_rocket_category), :method => "GET", :class => "add-category"  do
           category_content = text_field(:name => "name", :value => field_label)
           category_content << hidden_field(:name => "parent_id", :value => category.id)
           category_content << submit(submit_label)
@@ -271,7 +271,7 @@ module MediaRocket
       end
       
       def media_edit_info(media)
-        form :action => url(:edit_media_rocket_media, media) do
+        form :action => url(:edit_media_rocket_media, media.id), :method => "GET", :class => "media-info" do
           info = tag(:label, "Titre:", :for => "title")
           info << text_field(:name => "title", :value => media.title)
           info << self_closing_tag(:br)
