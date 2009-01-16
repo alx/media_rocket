@@ -4,17 +4,20 @@ class MediaRocket::Categories < MediaRocket::Application
     if params[:parent_id] and params[:name]
       MediaRocket::Gallery.first(:id => params[:parent_id]).add_child(params[:name])
     end
+    []
   end
   
   
   # GET /media/:id/delete
   def delete
     MediaRocket::Gallery.first(:id => params[:id]).destroy
+    []
   end
 
   # DELETE /media/:id
   def destroy
     MediaRocket::Gallery.first(:id => params[:id]).destroy
+    []
   end
   
   def list

@@ -6,11 +6,13 @@ class MediaRocket::Medias < MediaRocket::Application
       media.update_attributes :title => params[:title],
                               :description => params[:description]
     end
+    []
   end
 
   # GET /media/:id/delete
   def delete
     MediaRocket::MediaFile.first(:id => params[:id]).destroy
+    []
   end
 
   # PUT /media/:id
@@ -19,10 +21,12 @@ class MediaRocket::Medias < MediaRocket::Application
       media.update_attributes :title => params[:title],
                               :description => params[:description]
     end
+    []
   end
 
   # DELETE /media/:id
   def destroy
     MediaRocket::MediaFile.first(:id => params[:id]).destroy
+    []
   end
 end
