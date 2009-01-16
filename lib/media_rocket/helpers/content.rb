@@ -69,9 +69,13 @@ module MediaRocket
           end # category.medias
 
           content = tag(:h4, category.name)
+          content << link_to( "Delete",
+                              url(:delete_media_rocket_category, :id => category.id),
+                              :rel => "#category_#{category.id}",
+                              :class => "remote")
           content << children
           content << build_category_action_box(category)
-          output << tag(:div, content, :class => 'organize_category span-15 push-1')
+          output << tag(:div, content, {:id => "category_#{category.id}", :class => 'organize_category span-15 push-1'})
 
         end # site.categories
 

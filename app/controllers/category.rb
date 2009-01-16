@@ -6,6 +6,17 @@ class MediaRocket::Categories < MediaRocket::Application
     end
   end
   
+  
+  # GET /media/:id/delete
+  def delete
+    MediaRocket::Gallery.first(:id => params[:id]).destroy
+  end
+
+  # DELETE /media/:id
+  def destroy
+    MediaRocket::Gallery.first(:id => params[:id]).destroy
+  end
+  
   def list
     provides :xml
     @categories = MediaRocket::Gallery.all

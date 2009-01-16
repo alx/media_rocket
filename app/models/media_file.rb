@@ -248,7 +248,7 @@ class MediaRocket::MediaFile
   
   def unlink_files
     self.files.each{ |media| media.destroy }
-    File.delete(self.path)
+    File.delete(self.path) if File.exists?(self.path)
     
     # Reload site and category to be sure everything is gone
     self.site.reload
