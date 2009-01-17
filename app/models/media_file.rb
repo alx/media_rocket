@@ -5,7 +5,7 @@ class MediaRocket::MediaFile
   property :path, FilePath, :nullable => false
   property :md5sum, String, :length => 32, :default => Proc.new { |r, p| Digest::MD5.hexdigest(r.path.read) if r.path }
   property :title, String
-  property :description, String
+  property :description, Text
   property :position, Integer
   property :stage, Integer
   property :dimension, String
