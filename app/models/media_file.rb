@@ -213,7 +213,7 @@ class MediaRocket::MediaFile
                        -quality 100 #{convert_file.path}"
     `#{convert_command}`
     
-    media_hash = { :file => { :filename => File.basename(self.path),
+    media_hash = { :file => { :filename => (size + File.basename(self.path)),
                               :tempfile => convert_file },
                    :stage => 1,
                    :dimension => size}
