@@ -37,6 +37,7 @@ describe MediaRocket::MediaFile do
     
     # File has been moved, recreate it
     File.copy(origin_file, test_file[:tempfile].path)
+    sleep 2
     @media2 = MediaRocket::MediaFile.new :file => test_file
     
     @media.path.should_not == @media2.path
@@ -144,5 +145,20 @@ describe MediaRocket::MediaFile do
     MediaRocket::MediaFile.all.size == (medias_size - 3)
     @site.medias.size.should == (site_size - 3)
     @category.medias.size.should == (category_size - 3)
+  end
+  
+  it "should save modified description" do
+    description = " description image bout vin et blabla et bloblo "
+    
+    @media = MediaRocket::MediaFile.new :file => test_file, :description => description
+    @media.save
+    
+    @media.description.should == description
+    
+    new_description = " description image bout pot et blabla et bloblo "
+    @media.update_attributes :title => "title",
+                             :description => new_description
+    
+    @media.description.should == new_description
   end
 end

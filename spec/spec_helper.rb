@@ -17,8 +17,14 @@ Merb.start_environment(
   :testing => true, 
   :adapter => 'runner', 
   :environment => ENV['MERB_ENV'] || 'test',
+  :merb_root => Merb.root,
   :session_store => 'memory'
 )
+
+if MediaRocket.standalone?
+  Merb::Router.reset!
+  Merb::Router.prepare { add_slice(:media_rocket) } 
+end
 
 module Merb
   module Test
@@ -31,7 +37,7 @@ module Merb
       
       # Whether the specs are being run from a host application or standalone
       def standalone?
-        Merb.root == ::Slice.root
+        Merb.root == ::MediaRocket.root
       end
       
     end

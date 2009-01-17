@@ -1,11 +1,8 @@
 Merb::Router.prepare do |scope|
   
-  scope.identify :id do
-    scope.resources :medias, "MediaRocket::Medias"
-  end
-  
-  scope.identify :id do
-    scope.resources :categories, "MediaRocket::Categories"
+  scope.identify DataMapper::Resource => :id do |s|
+    s.resources :medias, "MediaRocket::Medias"
+    s.resources :categories, "MediaRocket::Categories"
   end
   
   # Upload route
