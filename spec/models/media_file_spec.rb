@@ -25,7 +25,6 @@ describe MediaRocket::MediaFile do
     @media.should_not be(nil)
     @media.is_image?.should == true
     @media.path.should_not be(nil)
-    @media.url.should == "/uploads/image.png"
   end
   
   it "should save a new Media with image" do
@@ -41,8 +40,6 @@ describe MediaRocket::MediaFile do
     @media2 = MediaRocket::MediaFile.new :file => test_file
     
     @media.path.should_not == @media2.path
-    @media.url.should == "/uploads/image.png"
-    @media2.url.should == "/uploads/image0.png"
   end
   
   it "should create a new Media with image and tags" do
@@ -101,14 +98,15 @@ describe MediaRocket::MediaFile do
     @site = @media.site
     @category = @media.category
     
-    @site.id.should == @first_site.id
-    @first_site.categories.size.should == 1
-    @first_site.categories.first.id.should == @first_category.id
-    @first_site.medias.size.should == 3
-    @first_site.medias.first.path.should == @media.path
+    @site.medias.size.should == 3
+    @site.medias.first.path.should == @media.path
+    @media.files.each do |media|
+      Merb.logger.info media.path
+      File.exists?(media.path).should be(true)
+    end
     
-    @first_category.medias.size.should == 3
-    @first_category.medias.first.path.should == @media.path
+    @category.medias.size.should == 3
+    @category.medias.first.path.should == @media.path
   end
   
   it "should not create a new category if site is not specified" do
