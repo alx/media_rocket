@@ -42,26 +42,4 @@ describe MediaRocket::Gallery do
     @child.ancestors.first.name.should == @category.name
     @child.site.name.should == @site.name
   end
-  
-  it "should compose url with sub-categories" do
-    @site = MediaRocket::Site.create :name => "domain.com"
-    @category = @site.categories.create :name => "Vacances"
-    @child = @category.add_child("hiver")
-    
-    @media = MediaRocket::MediaFile.new :file => test_file,
-                                        :site => @site.name,
-                                        :category => @child.name
-    
-    @media.path.to_s.should == File.join(Merb.root, 'public', 'uploads', @site.name, @category.name, @child.name, test_file[:filename])
-  end
-  
-  it "should be URI encoded" do
-    @site = MediaRocket::Site.create :name => "domain. com"
-    @category = @site.categories.create :name => "Vacances d'hiver"
-
-    @media = MediaRocket::MediaFile.new :file => test_file,
-                                        :site => @site.name,
-                                        :category => @category.name
-    @media.path.to_s.should == File.join(Merb.root, 'public', 'uploads', CGI.escape(@site.name), CGI.escape(@category.name), test_file[:filename])
-  end
 end
