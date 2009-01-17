@@ -7,5 +7,5 @@ class MediaRocket::Site
   
   has n, :categories, :class_name => "MediaRocket::Gallery"
   has n, :medias, :class_name => "MediaRocket::MediaFile"
-  
+
 end

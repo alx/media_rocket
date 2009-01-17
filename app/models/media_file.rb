@@ -66,7 +66,7 @@ class MediaRocket::MediaFile
       
       # Add unique suffix if file already exists
       # FIX: rework using unique sha1 hash for basename
-      self.path = CGI.escape(unique_file(root_path, options[:file][:filename]))
+      self.path = unique_file(root_path, options[:file][:filename])
 
       # Create directory if doesn't exist (when new site or category)
       # and move file there
@@ -152,15 +152,8 @@ class MediaRocket::MediaFile
   # to be place in the path parameter
   #
   def unique_file(path, filename)
-    unique = 0
-    path = File.join(path, filename)
-    extension = File.extname(filename)
-    
-    while File.exist?(path)
-      path = File.join(File.dirname(path), File.basename(filename, extension) + unique.to_s + extension)
-      unique += 1
-    end
-    return path
+    path = File.join(path, Time.now.strftime("%Y%m%d%I%M%S") + "_" + Digest::MD5.hexdigest(filename))
+    return (path << File.extname(filename))
   end
   
   #
@@ -169,12 +162,6 @@ class MediaRocket::MediaFile
   def root_path
     path = "/public/uploads/"
     path = File.join(path, self.site.name) if self.site
-    
-    if self.category
-      self.category.ancestors.each{ |ancestor| path = File.join(path, ancestor.name) }
-      path = File.join(path, self.category.name)
-    end
-    
     return File.join(Merb.root, path)
   end
   
@@ -202,15 +189,13 @@ class MediaRocket::MediaFile
   #
   def image_process
     
-    image_file = File.basename(self.path)
-    
     # Add _t suffix to filename for thumbnail filename
-    @thumbnail = convert_image(image_file.gsub(/(\..{3})$/, '_t\1'), "130x130")
+    @thumbnail = convert_image("130x130")
     @thumbnail.save
     MediaRocket::AssociatedFile.create(:media => self, :file => @thumbnail)
     
     # Add _m suffix to filename for medium filename
-    @medium = convert_image(image_file.gsub(/(\..{3})$/, '_m\1'), "850x550")
+    @medium = convert_image("850x550")
     @medium.save
     MediaRocket::AssociatedFile.create(:media => self, :file => @medium)
   end
@@ -219,15 +204,16 @@ class MediaRocket::MediaFile
   # Method to convert current image to filename
   # using size dimensions 
   #
-  def convert_image(filename, size)
+  def convert_image(size)
     convert_file = Tempfile.new("convert")
     
     # Run convert to generate thumbnail
-    `convert -size #{size} #{self.path} \
-            -strip -coalesce -resize #{size} \
-            -quality 100 #{convert_file.path}`
+    convert_command = "convert -size #{size} #{self.path} \
+                       -strip -coalesce -resize #{size} \
+                       -quality 100 #{convert_file.path}"
+    `#{convert_command}`
     
-    media_hash = { :file => { :filename => filename,
+    media_hash = { :file => { :filename => File.basename(self.path),
                               :tempfile => convert_file },
                    :stage => 1,
                    :dimension => size}
