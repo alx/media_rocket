@@ -280,6 +280,10 @@ module MediaRocket
           info << text_field(:name => "description", :value => media.description)
           info << self_closing_tag(:br)
           
+          info << tag(:label, "Position:", :for => "position")
+          info << text_field(:name => "position", :value => media.position)
+          info << self_closing_tag(:br)
+          
           info << submit("Modifier")
         end
       end
