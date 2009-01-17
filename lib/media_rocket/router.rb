@@ -14,9 +14,11 @@ module MediaRocket
       # Upload route
       scope.match('/upload').to(:controller => 'main', :action => 'upload').name(:upload)
       
-      # Route with file serial
-      scope.match(/\/file\/(.*)?/).to(:controller => 'main', :action => 'show', :id => "[1]").name(:show)
-
+      # Queue route
+      scope.match('/queue').to(:controller => 'queue', :action => 'index').name(:queue)
+      scope.match('/select_files').to(:controller => 'queue', :action => 'select_files').name(:select_files)
+      scope.match('/batch_edit').to(:controller => 'queue', :action => 'batch_edit').name(:batch_edit)
+      
       # Route to gallery xml
       scope.match('/galleries(.:format)').to(:controller => 'categories', :action => 'list').name(:galleries)
       scope.match('/gallery/:id(.:format)').to(:controller => 'categories', :action => 'gallery').name(:gallery)

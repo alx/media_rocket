@@ -1,5 +1,33 @@
-link to "select files/upload"
+<form method="post" action="<%= slice_url(:queue) %>">
+	
+	<h2>Rocket Loader</h2>
 
-publish button - publish top-file button
+	<div class="tablenav" class="span-24">
+		<div class="span-12 actions">
+			<input type="submit" value="Add Medias to Queue" name="select_files" class="button-primary action"/>
+			<input type="submit" onclick="return confirm('Are you sure you want to clear the entire queue?');" value="Clear Queue..." name="clear_queue" class="button-secondary action"/>
+		</div>
+	
+		<div class="span-12 actions last">
+			<input type="submit" onclick="return confirm('Are you really sure you want to publish the next entries in the queue?');" value="Publish Whole Queue..." name="publish_all" class="button-secondary action"/>
+			<input type="submit" onclick="return confirm('Are you sure you want to publish the first entry of the queue?');" value="Publish Top of Queue..." name="publish_first" class="button-secondary action"/>
+		</div>	
+	</div>
+	
+</form>
 
-list files
+<div class="qlen">
+<% 
+	if @queue.empty?
+%>
+	Queue empty, why not upload some photos?
+<%
+	else
+		@queue.medias.each do |media|
+ %>
+	Media info
+<% 
+		end
+	end
+%>
+</div>
