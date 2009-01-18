@@ -3,8 +3,9 @@ class MediaRocket::Medias < MediaRocket::Application
   # GET /medias/:id/edit
   def edit
     if media = MediaRocket::MediaFile.first(:id => params[:id])
-      media.update_attributes :title => params[:title],
-                              :description => params[:description]
+      params.each do |key, value|
+        media.update_attributes(key => value) if media.attributes.key?(key.to_sym)
+      end
     end
     []
   end
@@ -18,8 +19,9 @@ class MediaRocket::Medias < MediaRocket::Application
   # PUT /medias/:id
   def update
     if media = MediaRocket::MediaFile.first(:id => params[:id])
-      media.update_attributes :title => params[:title],
-                              :description => params[:description]
+      params.each do |key, value|
+        media.update_attributes(key => value) if media.attributes.key?(key.to_sym)
+      end
     end
     []
   end
