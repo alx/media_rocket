@@ -45,6 +45,18 @@ module MediaRocket
       end
       
       def media_gallery_organize(options = {}, &block)
+
+        # <table id="organize">
+        #   <tr id="node-1">
+        #     <td>Parent</td>
+        #   </tr>
+        #   <tr id="node-2" class="child-of-node-1">
+        #     <td>Child</td>
+        #   </tr>
+        #   <tr id="node-3" class="child-of-node-2">
+        #     <td>Child</td>
+        #   </tr>
+        # </table>
         
         site = options[:site] || MediaRocket::Site.first
         
@@ -54,34 +66,31 @@ module MediaRocket
 
         # display each gallery with its media content
         site.categories.each do |category|
-          children = ''
 
-          category.medias.sort{|x,y| x.position <=> y.position }.each do |media|
-
-            # Do not try to display associated file (yet)
-            if media.original?
-              content = build_thumbnail(media)
-              content << build_info_box(media)
-              content << build_media_action_box(media)
-
-              children << tag(:div, content, {:id => "media_#{media.id}", :class => 'organize_media span-14 push-1'})
-            end
-          end # category.medias
-
-          content = tag(:h4, category.name)
-          content << link_to( "Delete",
-                              url(:delete_media_rocket_category, :id => category.id),
-                              :rel => "#category_#{category.id}",
-                              :class => "remote")
-          content << children
-          content << build_category_action_box(category)
-          output << tag(:div, content, {:id => "category_#{category.id}", :class => 'organize_category span-15 push-1'})
+          output << build_category_tree(category)
 
         end # site.categories
 
-        output
+        tag(:table, output, :id => "organize")
 
       end # media_gallery_organize
+      
+      def build_category_tree(category, child_of = nil)
+        
+        output = tag(:tr, tag(:td, category.name), { :id => "category-#{category.id}", :class => "category #{child_of}"})
+        
+        child_of = "child-of-category-#{category.id}"
+        
+        category.children.each do |child|
+          output << build_category_tree(child, child_of)
+        end
+        
+        category.medias.select{|media| media.original?}.sort{|x,y| x.position <=> y.position }.each do |media|
+            output << tag(:tr, tag(:td, media.title), { :id => "media-#{media.id}", :class => "media child-of-category-#{category.id}"})
+        end
+        
+        return output
+      end
 
       def build_thumbnail(media)
         thumbnail = self_closing_tag(:img, :src => media.thumbnail.url)
