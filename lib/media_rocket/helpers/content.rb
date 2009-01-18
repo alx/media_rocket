@@ -56,7 +56,7 @@ module MediaRocket
         site.categories.each do |category|
           children = ''
 
-          category.medias.each do |media|
+          category.medias.sort{|x,y| x.position <=> y.position }.each do |media|
 
             # Do not try to display associated file (yet)
             if media.original?
