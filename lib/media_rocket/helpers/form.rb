@@ -140,7 +140,7 @@ module MediaRocket
             choices << tag(:option, site.name, :value => site.id)
           end
         
-          site_content << tag(:select, choices, {:name => "site", :size => sites.size})
+          site_content << tag(:select, choices, {:name => "site_id", :size => sites.size})
         
           tag(:p, site_content)
         end
@@ -193,7 +193,7 @@ module MediaRocket
             choices << media_category_children_option(category)
           end
           
-          category_content << tag(:select, choices, {:name => "category", :size => categories.size})
+          category_content << tag(:select, choices, {:name => "category_id", :size => categories.size})
           
           tag(:p, category_content)
         end

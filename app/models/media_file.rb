@@ -60,7 +60,7 @@ class MediaRocket::MediaFile
 
       # Find or create if options[:site] is specified
       # And link this @site to the current object
-      if (options[:new_site] || options[:site])
+      if (options[:site_id] || options[:site_name])
         add_to_site options
       end
       
@@ -125,28 +125,28 @@ class MediaRocket::MediaFile
   # and options[:category]
   #
   def add_to_site(options = {}, &block)
-
-    # TODO: improve DB requests
     
-    site_name = MediaRocket::Site.first(:id => options[:site]).name
-    site_name = options[:new_site] unless (options[:new_site].nil? or options[:new_site].empty?)
+    if options[:site_id]
+      self.site = MediaRocket::Site.first(:id => options[:site_id])
+    elsif options[:site_name]
+      self.site = MediaRocket::Site.first_or_create(:name => options[:site_name])
+    end  
     
-    category_name = MediaRocket::Gallery.first(:id => options[:category]).name
-    category_name = options[:new_category] unless (options[:new_category].nil? or options[:new_category].empty?)
-    
-    self.site = MediaRocket::Site.first_or_create(:name => site_name)
     self.site.medias << self
     self.site.reload
     
-    # Find or create if options[:site] is specified
-    # And link this @site to the current object
-    if category_name
-      self.category = MediaRocket::Gallery.first_or_create(:name => category_name, :site_id => self.site.id)
+    if options[:category_id] || options[:category_name]
+      
+      if options[:category_id]
+        self.category = MediaRocket::Gallery.first(:id => options[:category_id], :site_id => self.site.id)
+      elsif options[:category_name]
+        self.category = MediaRocket::Gallery.first_or_create(:name => options[:category_name], :site_id => self.site.id)
+      end
+      
       self.category.medias << self
       self.category.reload
-      
-      # Add position number with medias category size if not existing in options
       self.position = options[:position] || self.category.medias.size
+      
     end
   end
   
@@ -221,8 +221,8 @@ class MediaRocket::MediaFile
                    :stage => 1,
                    :dimension => size}
     
-    media_hash.merge!({:site => self.site.name}) if self.site
-    media_hash.merge!({:category => self.category.name}) if self.category
+    media_hash.merge!({:site_id => self.site.id}) if self.site
+    media_hash.merge!({:category_id => self.category.id}) if self.category
                    
     MediaRocket::MediaFile.new(media_hash)
   end

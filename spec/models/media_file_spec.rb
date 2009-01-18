@@ -58,7 +58,7 @@ describe MediaRocket::MediaFile do
   it "should create a new Media belonging to a site" do
     site_name = "domain.com"
     
-    @media = MediaRocket::MediaFile.new :file => test_file, :site => site_name
+    @media = MediaRocket::MediaFile.new :file => test_file, :site_name => site_name
     @media.site.should_not be(nil)
     @media.site.name.should == site_name
   end
@@ -67,7 +67,7 @@ describe MediaRocket::MediaFile do
     site_name = "domain.com"
     category_name = "vacances"
     
-    @media = MediaRocket::MediaFile.new :file => test_file, :site => site_name, :category => category_name
+    @media = MediaRocket::MediaFile.new :file => test_file, :site_name => site_name, :category_name => category_name
     @media.save
     @site = @media.site
     @category = @media.category
@@ -94,7 +94,7 @@ describe MediaRocket::MediaFile do
     site_name = "domain.com"
     category_name = "vaca nces"
     
-    @media = MediaRocket::MediaFile.new :file => test_file, :site => site_name, :category => category_name
+    @media = MediaRocket::MediaFile.new :file => test_file, :site_name => site_name, :category_name => category_name
     @media.save
     @site = @media.site
     @category = @media.category
@@ -112,7 +112,7 @@ describe MediaRocket::MediaFile do
   
   it "should not create a new category if site is not specified" do
     category_name = "vacances"
-    @media = MediaRocket::MediaFile.new :file => test_file, :category => category_name
+    @media = MediaRocket::MediaFile.new :file => test_file, :category_name => category_name
     @media.site.should be(nil)
     @media.category.should be(nil)
   end
@@ -121,7 +121,7 @@ describe MediaRocket::MediaFile do
     site_name = "domain.com"
     category_name = "vacances"
     
-    @media = MediaRocket::MediaFile.new :file => test_file, :site => site_name, :category => category_name
+    @media = MediaRocket::MediaFile.new :file => test_file, :site_name => site_name, :category_name => category_name
     @media.save
     
     medias_size = MediaRocket::MediaFile.all.size

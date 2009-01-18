@@ -30,8 +30,8 @@ describe MediaRocket::AssociatedFile do
   
   it "should have same site and category as associated_to media" do
     @media = MediaRocket::MediaFile.new :file => test_file, 
-                                    :site => "domain.com",
-                                    :category => "vacances"
+                                        :site_name => "domain.com",
+                                        :category_name => "vacances"
     @media.save
     
     @media.files.each do |media|
