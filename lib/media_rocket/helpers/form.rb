@@ -137,7 +137,7 @@ module MediaRocket
         
           choices = ""
           sites.each do |site|
-            choices << tag(:option, site.name, :value => site.name)
+            choices << tag(:option, site.name, :value => site.id)
           end
         
           site_content << tag(:select, choices, {:name => "site", :size => sites.size})
@@ -204,7 +204,7 @@ module MediaRocket
         branch = ""
         branch = ("&nbsp;&nbsp;" * level) + "+-&nbsp;" if level > 0
         
-        content = tag(:option, branch + category.name, {:value => category.name})
+        content = tag(:option, branch + category.name, {:value => category.id})
         category.children.each do |child|
           content << media_category_children_option(child, level + 1)
         end

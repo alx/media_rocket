@@ -125,10 +125,13 @@ class MediaRocket::MediaFile
   # and options[:category]
   #
   def add_to_site(options = {}, &block)
-    site_name = options[:site]
+
+    # TODO: improve DB requests
+    
+    site_name = MediaRocket::Site.first(:id => options[:site]).name
     site_name = options[:new_site] unless (options[:new_site].nil? or options[:new_site].empty?)
     
-    category_name = options[:category]
+    category_name = MediaRocket::Gallery.first(:id => options[:category]).name
     category_name = options[:new_category] unless (options[:new_category].nil? or options[:new_category].empty?)
     
     self.site = MediaRocket::Site.first_or_create(:name => site_name)
