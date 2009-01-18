@@ -31,7 +31,7 @@ describe "/medias" do
       @response = request(url(:edit_media_rocket_media, @media), :params => {:position => 4})
       @response.should be_successful
       
-      MediaRocket::MediaFile.first.description.should == 4
+      MediaRocket::MediaFile.first.position.should == 4
     end
     
     it "changes description" do
