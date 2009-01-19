@@ -40,7 +40,8 @@ $(document).ready(function() {
 
 	// Add alert when modifications on media-info form
 	$('.media-info').ajaxForm(function() { 
-		alert("Modifications enregistrees"); 
+		alert("Modifications enregistrees");
+		return false;
 	});
 
 	// Reload pages when adding a sub-category

@@ -119,7 +119,7 @@ module MediaRocket
         form :action => url(:new_media_rocket_category), :method => "GET", :class => "add-category", :rel => "#category-#{category.id}" do
           category_content = text_field(:name => "name", :value => "Ajouter sous-categorie", :class => "category_add")
           category_content << hidden_field(:name => "parent_id", :value => category.id)
-          category_content << self_closing_tag(:input, :src => "/images/icons/add.png", :alt => "Add sub-category", :type => "image", :class => "icon")
+          category_content << self_closing_tag(:input, :src => "/images/icons/add.png", :alt => "Ajouter sous-categorie", :type => "image", :class => "icon")
         end
       end
       
