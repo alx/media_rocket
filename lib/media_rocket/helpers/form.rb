@@ -9,7 +9,7 @@ module MediaRocket
           when "full" then return media_upload_form_full(options)
         end
         
-        form :action => slice_url(:upload) do
+        form :action => slice_url(:upload), :id => "uploadForm" do
           form_content = ""
           
           #
@@ -62,13 +62,13 @@ module MediaRocket
       end
       
       def media_upload_form_flat(options = {}, &block)
-        form :action => slice_url(:upload) do
+        form :action => slice_url(:upload), :id => "uploadForm" do
           media_file_field(options) + tag(:p, submit(options[:submit_label] || "Upload", :id => "media_button"))
         end
       end
       
       def media_upload_form_full(options = {}, &block)
-        form :action => slice_url(:upload) do
+        form :action => slice_url(:upload), :id => "uploadForm" do
           form_content = media_title_field(options)
           form_content << media_description_field(options)
           form_content << media_tag_field(options)
@@ -86,9 +86,9 @@ module MediaRocket
       def media_title_field(options = {}, &block)
         content = options[:title_label] || "Title"
         
-        title_content = tag(:label, content, {:for => content})
+        title_content = tag(:label, content + tag(:em, '*'), {:for => content})
         title_content << tag(:br)
-        title_content << text_field(:name => "title", :id => content)
+        title_content << text_field(:name => "title", :id => content, :class => "required")
         
         tag(:p, title_content)
       end
@@ -235,39 +235,11 @@ module MediaRocket
       def media_file_field(options = {}, &block)
         content = options[:file_label] || "File"
         
-        file_content = tag(:label, content, {:for => "media_file"})
+        file_content = tag(:label, content + tag(:em, '*'), {:for => "media_file"})
         file_content << tag(:br)
-        file_content << file_field(:name => "file", :id => "media_file")
+        file_content << file_field(:name => "file", :id => "media_file", :class => "required")
         
         tag(:p, file_content)
-      end
-      
-      def media_validate_file
-
-        javascript = <<-END_OF_JS
-        function checkAttach() {
-                if ( document.forms.media_upload.file.value != "" ) {
-                  var reg_1 = new RegExp('^.+\.(jpg|jpeg|png|gif|bmp|tif|tiff|ai|pdf)$','i');
-                  if ( reg_1.test(document.forms['media_upload'].file.value) ) {
-                    return null;
-                  } else {
-                    return "Format d\'image non supporte";
-                  }
-                } else {
-                    return "Vous devez joindre un fichier";
-                }
-            }
-        END_OF_JS
-
-        rules = ["file|custom|checkAttach()"]
-
-        javascript << "var rules=new Array();"
-
-        rules.each do |rule|
-          javascript << "rules[#{rules.index(rule)}]='#{rule}';"
-        end
-
-        tag(:script, javascript)
       end
       
       def media_edit_info(media)
