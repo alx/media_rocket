@@ -73,7 +73,7 @@ $(document).ready(function() {
 		      	//}
 
 				// Send request to modify media category
-				$.get(ui.draggable.context.lastChild.rel, { gallery_id: e.target.id.split("-")[1] });
+				$.get(ui.draggable.context.children[0].rel, { gallery_id: e.target.id.split("-")[1] });
 			},
 			hoverClass: "accept",
 			over: function(e, ui) {
@@ -82,6 +82,11 @@ $(document).ready(function() {
 				}
 			}
 		});
+	});
+	
+	// Display media in viewer
+	$("table#organize tbody tr .media").mousedown(function() {
+		$("#media_viewer").load((this.children[1].rel));
 	});
 
 	// Make visible that a row is clicked

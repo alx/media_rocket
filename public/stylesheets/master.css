@@ -105,3 +105,21 @@ input.category_add{
 input.icon {
 	vertical-align: middle;
 }
+
+#media_viewer {
+	width:400px;
+	margin-left:50px;
+}
+
+#media_viewer img{
+	float:right;
+	margin-top:30px;
+}
+
+label span{
+	display:block;
+}
+
+#media_viewer input{
+	width:200px;
+}

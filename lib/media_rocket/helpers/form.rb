@@ -244,15 +244,15 @@ module MediaRocket
       
       def media_edit_info(media)
         form :action => url(:edit_media_rocket_media, media.id), :method => "GET", :class => "media-info" do
-          info = tag(:label, "Titre:", :for => "title")
+          info = tag(:label, tag(:span, "Titre:"), :for => "title")
           info << text_field(:name => "title", :value => media.title)
           info << self_closing_tag(:br)
           
-          info << tag(:label, "Description:", :for => "description")
+          info << tag(:label, tag(:span, "Description:"), :for => "description")
           info << text_field(:name => "description", :value => media.description)
           info << self_closing_tag(:br)
           
-          info << tag(:label, "Position:", :for => "position")
+          info << tag(:label, tag(:span, "Position:"), :for => "position")
           info << text_field(:name => "position", :value => media.position)
           info << self_closing_tag(:br)
           

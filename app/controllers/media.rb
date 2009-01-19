@@ -1,5 +1,10 @@
 class MediaRocket::Medias < MediaRocket::Application
 
+  def show
+    @media = MediaRocket::MediaFile.first(:id => params[:id])
+    render :layout => false
+  end
+
   # GET /medias/:id/edit
   def edit
     if media = MediaRocket::MediaFile.first(:id => params[:id])

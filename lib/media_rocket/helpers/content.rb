@@ -76,7 +76,7 @@ module MediaRocket
 
         navigator = tag(:table, head + body, {:id => "organize", :class => "treeTable"})
         
-        viewer = tag(:div, :id => "viewer")
+        viewer = tag(:div, :id => "media_viewer")
         
         navigator + viewer
 
@@ -97,7 +97,9 @@ module MediaRocket
         
         category.medias.select{|media| media.original?}.sort{|x,y| x.position <=> y.position }.each do |media|
           
-            media_name = tag(:td, tag(:span, media.title + self_closing_tag(:a, :rel => url(:edit_media_rocket_media, :id => media.id)), :class => "media"))
+            media_urls = self_closing_tag(:a, :rel => url(:edit_media_rocket_media, :id => media.id), :class => "edit")
+            media_urls << self_closing_tag(:a, :rel => url(:media_rocket_media, :id => media.id), :class => "show")
+            media_name = tag(:td, tag(:span, media.title + media_urls, :class => "media"))
             media_action = tag(:td, media_action_delete(media), :class => "action")
           
             output << tag(:tr, media_name + media_action, { :id => "media-#{media.id}", :class => child_of})
