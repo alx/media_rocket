@@ -27,6 +27,13 @@ describe "/medias" do
       MediaRocket::MediaFile.first.description.should == initial_description
     end
     
+    it "responds successfully" do
+      @response = request(url(:edit_media_rocket_media, @media), :params => {:position => 4})
+      @response.should be_successful
+      
+      MediaRocket::MediaFile.first.position.should == 4
+    end
+    
     it "changes description" do
       new_description = <<-EOS
         Lorem Ipsum is simply dummy text of the printing and typesetting industry.
