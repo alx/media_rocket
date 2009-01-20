@@ -8,8 +8,11 @@ class MediaRocket::MediaFile
   property :description, Text
   property :position, Integer
   property :stage, Integer
-  property :dimension, String
   property :created_at, DateTime
+  
+  property :dimension_max, String
+  property :dimension_x, Integer
+  property :dimension_y, Integer
   
   has_tags
   
@@ -85,7 +88,9 @@ class MediaRocket::MediaFile
     
     # If options[:stage] == 1, file has been processed
     self.stage = options[:stage] if options[:stage]
-    self.dimension = options[:dimension] if options[:dimension]
+    
+    self.dimension_max = options[:dimension] if options[:dimension]
+    self.dimension_x, self.dimension_y = image_dimension(self.path)
   end
   
   def add_tags(options = {}, &block)
@@ -111,7 +116,7 @@ class MediaRocket::MediaFile
   # Return thumbnail media associated to this file
   #
   def thumbnail
-    (self.files.select{|media| media.dimension == "130x130"}.first || nil) if is_image?
+    (self.files.select{|media| media.dimension_max == "130x130"}.first || nil) if is_image?
   end
   
   def original?
@@ -191,7 +196,6 @@ class MediaRocket::MediaFile
   # Process image to resize it
   #
   def image_process
-    
     # Add _t suffix to filename for thumbnail filename
     @thumbnail = convert_image("130x130")
     @thumbnail.save
@@ -201,6 +205,11 @@ class MediaRocket::MediaFile
     @medium = convert_image("850x550")
     @medium.save
     ::MediaRocket::AssociatedFile.create(:media => self, :file => @medium)
+  end
+  
+  def image_dimension(filename)
+    image = Magick::Image.read(filename)[0]
+    return image.columns, image.rows
   end
   
   #
