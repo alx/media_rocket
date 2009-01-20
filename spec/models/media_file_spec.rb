@@ -117,6 +117,16 @@ describe MediaRocket::MediaFile do
     @media.category.should be(nil)
   end
   
+  it "should not create a new category if site is not specified" do
+    site_name = "domain.com"
+    category_name = "vacances"
+    
+    @media = MediaRocket::MediaFile.new :file => test_file, :site_name => "site_name", :new_category => "", :category_name => category_name
+    
+    @media.category.should_not be(nil)
+    @media.category.name.should == category_name
+  end
+  
   it "should cleanly destroy a media" do
     site_name = "domain.com"
     category_name = "vacances"
