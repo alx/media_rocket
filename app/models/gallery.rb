@@ -5,7 +5,7 @@ class MediaRocket::Gallery
   property :parent_id, Integer
   property :name, String
   
-  is_tree :order => "name"
+  is_tree :order => "id"
   
   belongs_to :site, :class_name => "MediaRocket::Site"
   has n, :medias, :class_name => "MediaRocket::MediaFile"
