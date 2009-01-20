@@ -95,8 +95,11 @@ $(document).ready(function() {
 	$("#organize .media").each(function() {
 		$($(this).parents("tr")[0]).droppable({
 			accept: ".media",
-			drop: function(e, ui) { 
-				$($(ui.draggable).parents("tr")[0]).insertBefore(this);
+			drop: function(e, ui) {
+				selected_media = $(ui.draggable).parents("tr")[0]
+				media_viewer = selected_media.nextElementSibling
+				$(media_viewer).insertBefore(this);
+				$(selected_media).insertBefore(media_viewer);
 				// Send request to modify media position
 				$.get($(ui.draggable.context).children("a.edit")[0].rel, { position: e.target.id.split("-")[1] });
 			},
