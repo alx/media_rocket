@@ -15,12 +15,6 @@ $(document).ready(function() {
 		this.value = "";
 	})
 
-	$("a.add_category").click(function() {
-		if(this.rel) $(this.rel).load(this.href);
-		else $.get(this.href);
-		return false;
-	})
-
 	// Control remote links, like delete button
 	$("a.remote").click(function() {
 		if(this.rel) $(this.rel).load(this.href);
@@ -60,6 +54,19 @@ $(document).ready(function() {
 		revertDuration: 300,
 		scroll: true
 	});
+	
+	$('.expander').click(function(){
+		if($(this.nextElementSibling).hasClass("media")){
+			viewer_id = "#viewer-" + $(this).parents("tr")[0].id;
+			viewer = $($(this).parents("tbody")[0]).find(viewer_id);
+			content_url = $(this.nextElementSibling).children("a.show")[0].rel;
+			
+			if(!viewer.hasClass("loaded")){
+				viewer.load(content_url);
+				viewer.addClass("loaded");
+			}
+		}
+	});
 
 	$("#organize .category").each(function() {
 		$($(this).parents("tr")[0]).droppable({
@@ -74,7 +81,7 @@ $(document).ready(function() {
 		      	//}
 
 				// Send request to modify media category
-				$.get(ui.draggable.context.children[0].rel, { gallery_id: e.target.id.split("-")[1] });
+				$.get($(ui.draggable.context).children("a.edit")[0].rel, { gallery_id: e.target.id.split("-")[1] });
 			},
 			hoverClass: "accept",
 			over: function(e, ui) {
@@ -83,11 +90,6 @@ $(document).ready(function() {
 				}
 			}
 		});
-	});
-	
-	// Display media in viewer
-	$("table#organize tbody tr .media").mousedown(function() {
-		$("#media_viewer").load((this.children[1].rel));
 	});
 
 	// Make visible that a row is clicked

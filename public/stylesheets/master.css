@@ -106,12 +106,12 @@ input.icon {
 	vertical-align: middle;
 }
 
-#media_viewer {
+.viewer {
 	width:400px;
 	margin-left:50px;
 }
 
-#media_viewer img{
+.viewer img{
 	float:right;
 	margin-top:30px;
 }
@@ -120,6 +120,6 @@ label span{
 	display:block;
 }
 
-#media_viewer input{
+.viewer input{
 	width:200px;
 }

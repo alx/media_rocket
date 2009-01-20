@@ -124,7 +124,7 @@ module MediaRocket
       end
 
       def media_site_select(options = {}, &block)
-        sites = MediaRocket::Site.all
+        sites = ::MediaRocket::Site.all
         
         if sites.empty?
           return ""
@@ -157,7 +157,7 @@ module MediaRocket
       end
             
       def media_category_checkboxes(options = {}, &block)
-        categories = MediaRocket::Gallery.all
+        categories = ::MediaRocket::Gallery.all
         
         if categories.empty?
           return ""
@@ -177,7 +177,7 @@ module MediaRocket
       end
       
       def media_category_select(options = {}, &block)
-        categories = MediaRocket::Gallery.all
+        categories = ::MediaRocket::Gallery.all
         
         if categories.empty?
           return ""

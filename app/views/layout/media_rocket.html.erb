@@ -3,32 +3,32 @@
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <title>Media Rocket</title>
-	<link rel="stylesheet" href="<%= public_path_for :stylesheet, 'screen.css' %>" type="text/css" media="screen, projection">
-	<link rel="stylesheet" href="<%= public_path_for :stylesheet, 'print.css' %>" type="text/css" media="print">
+	<link rel="stylesheet" href="<%= media_rocket_stylesheet_path 'screen.css' %>" type="text/css" media="screen, projection">
+	<link rel="stylesheet" href="<%= media_rocket_stylesheet_path 'print.css' %>" type="text/css" media="print">
 	<!--[if IE]>
-	  <link rel="stylesheet" href="<%= public_path_for :stylesheet, 'ie.css' %>" type="text/css" media="screen, projection">
+	  <link rel="stylesheet" href="<%= media_rocket_stylesheet_path 'ie.css' %>" type="text/css" media="screen, projection">
 	<![endif]-->
 	
-	<link rel="stylesheet" href="<%= public_path_for :stylesheet, 'plugins/fancy-type/screen.css' %>" type="text/css" media="screen, projection" />
-	<link rel="stylesheet" href="<%= public_path_for :stylesheet, 'forms.css' %>" type="text/css" media="screen, projection" />
-	<link rel="stylesheet" href="<%= public_path_for :stylesheet, 'jquery.treetable.css' %>" type="text/css" media="screen, projection" />
-	<link rel="stylesheet" href="<%= public_path_for :stylesheet, 'master.css' %>" type="text/css" media="screen, projection">
+	<link rel="stylesheet" href="<%= media_rocket_stylesheet_path 'plugins/fancy-type/screen.css' %>" type="text/css" media="screen, projection" />
+	<link rel="stylesheet" href="<%= media_rocket_stylesheet_path 'forms.css' %>" type="text/css" media="screen, projection" />
+	<link rel="stylesheet" href="<%= media_rocket_stylesheet_path 'jquery.treetable.css' %>" type="text/css" media="screen, projection" />
+	<link rel="stylesheet" href="<%= media_rocket_stylesheet_path 'master.css' %>" type="text/css" media="screen, projection">
 	
-	<script src="<%= public_path_for :javascript, 'jquery/jquery.js' %>" type="text/javascript" charset="utf-8"></script>
-    <script src="<%= public_path_for :javascript, 'jquery/jquery.ui.js' %>" type="text/javascript" charset="utf-8"></script>
-    <script src="<%= public_path_for :javascript, 'jquery/jquery.confirm.js' %>" type="text/javascript" charset="utf-8"></script>
-    <script src="<%= public_path_for :javascript, 'jquery/jquery.form.js' %>" type="text/javascript" charset="utf-8"></script>
-    <script src="<%= public_path_for :javascript, 'jquery/jquery.treetable.js' %>" type="text/javascript" charset="utf-8"></script>
-    <script src="<%= public_path_for :javascript, 'jquery/jquery.validate.js' %>" type="text/javascript" charset="utf-8"></script>
+	<script src="<%= media_rocket_javascript_path 'jquery/jquery.js' %>" type="text/javascript" charset="utf-8"></script>
+    <script src="<%= media_rocket_javascript_path 'jquery/jquery.ui.js' %>" type="text/javascript" charset="utf-8"></script>
+    <script src="<%= media_rocket_javascript_path 'jquery/jquery.confirm.js' %>" type="text/javascript" charset="utf-8"></script>
+    <script src="<%= media_rocket_javascript_path 'jquery/jquery.form.js' %>" type="text/javascript" charset="utf-8"></script>
+    <script src="<%= media_rocket_javascript_path 'jquery/jquery.treetable.js' %>" type="text/javascript" charset="utf-8"></script>
+    <script src="<%= media_rocket_javascript_path 'jquery/jquery.validate.js' %>" type="text/javascript" charset="utf-8"></script>
 
-    <script src="<%= public_path_for :javascript, 'master.js' %>" type="text/javascript" charset="utf-8"></script>
+    <script src="<%= media_rocket_javascript_path 'master.js' %>" type="text/javascript" charset="utf-8"></script>
   </head>
 
   <body class="media_rocket-slice">
 
   <div class="container prepend-top">
 	<div id="header" class="span-24 last">
-		<h1 id="media_rocket"><img src="<%= public_path_for :image, 'header.png' %>" alt="Media Rocket image" id="header-image" /></h1>
+		<h1 id="media_rocket"><img src="<%= media_rocket_image_path 'header.png' %>" alt="Media Rocket image" id="header-image" /></h1>
     </div>
 
 	<hr />
