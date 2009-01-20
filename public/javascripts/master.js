@@ -101,7 +101,7 @@ $(document).ready(function() {
 				$(media_viewer).insertBefore(this);
 				$(selected_media).insertBefore(media_viewer);
 				// Send request to modify media position
-				$.get($(ui.draggable.context).children("a.edit")[0].rel, { position: e.target.id.split("-")[1] });
+				$.get($(ui.draggable.context).children("a.edit")[0].rel, { gallery_id: e.target.id.split("-")[1], position: e.target.id.split("-")[1] });
 			},
 			hoverClass: "media_over"
 		});
