@@ -47,10 +47,6 @@ module MediaRocket
         
         child_of = "child-of-#{category_id}"
         
-        category.children.each do |child|
-          output << build_category_tree(child, child_of)
-        end
-        
         category.medias.select{|media| media.original?}.sort{|x,y| x.position <=> y.position }.each do |media|
           
             media_id = "media-#{media.id}"
@@ -65,6 +61,10 @@ module MediaRocket
             # Add media viewer
             viewer_content = tag(:td, "Chargement...", { :id => "viewer-#{media_id}", :class => "viewer", :colspan => 2})
             output << tag(:tr, viewer_content, :class => "child-of-#{media_id}")
+        end
+
+        category.children.each do |child|
+          output << build_category_tree(child, child_of)
         end
         
         return output
