@@ -10,7 +10,7 @@ xml.gallery do
 			if media.files
 			  xml.sizes do
 			    for file in media.files do
-			      xml.size(file.url, :dimension => file.dimension)
+			      xml.size(file.url, :width => file.dimension_x, :height => file.dimension_y)
 		      end # for
 		    end # xml.size
 	    end # if
