@@ -66,7 +66,7 @@ $(document).ready(function() {
 				viewer.addClass("loaded");
 			}
 		}
-	})
+	});
 
 	$("#organize .category").each(function() {
 		$($(this).parents("tr")[0]).droppable({
