@@ -56,10 +56,10 @@ $(document).ready(function() {
 	});
 	
 	$('.expander').click(function(){
-		if($(this.nextElementSibling).hasClass("media")){
+		if($(this.nextSibling).hasClass("media")){
 			viewer_id = "#viewer-" + $(this).parents("tr")[0].id;
 			viewer = $($(this).parents("tbody")[0]).find(viewer_id);
-			content_url = $(this.nextElementSibling).children("a.show")[0].rel;
+			content_url = $(this.nextSibling).children("a.show")[0].rel;
 			
 			if(!viewer.hasClass("loaded")){
 				viewer.load(content_url);
