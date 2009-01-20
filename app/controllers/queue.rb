@@ -13,7 +13,7 @@ class MediaRocket::Queue < MediaRocket::Application
   end
   
   def select_files
-    @site = MediaRocket::Site.first
+    @site = ::MediaRocket::Site.first
     render
   end
   

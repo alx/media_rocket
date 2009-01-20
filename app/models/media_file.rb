@@ -127,9 +127,9 @@ class MediaRocket::MediaFile
   def add_to_site(options = {}, &block)
     
     if options[:site_id]
-      self.site = MediaRocket::Site.first(:id => options[:site_id])
+      self.site = ::MediaRocket::Site.first(:id => options[:site_id])
     elsif options[:site_name]
-      self.site = MediaRocket::Site.first_or_create(:name => options[:site_name])
+      self.site = ::MediaRocket::Site.first_or_create(:name => options[:site_name])
     end  
     
     self.site.medias << self
@@ -138,9 +138,9 @@ class MediaRocket::MediaFile
     if options[:category_id] || options[:category_name]
       
       if options[:category_id]
-        self.category = MediaRocket::Gallery.first(:id => options[:category_id], :site_id => self.site.id)
+        self.category = ::MediaRocket::Gallery.first(:id => options[:category_id], :site_id => self.site.id)
       elsif options[:category_name]
-        self.category = MediaRocket::Gallery.first_or_create(:name => options[:category_name], :site_id => self.site.id)
+        self.category = ::MediaRocket::Gallery.first_or_create(:name => options[:category_name], :site_id => self.site.id)
       end
       
       self.category.medias << self
@@ -195,12 +195,12 @@ class MediaRocket::MediaFile
     # Add _t suffix to filename for thumbnail filename
     @thumbnail = convert_image("130x130")
     @thumbnail.save
-    MediaRocket::AssociatedFile.create(:media => self, :file => @thumbnail)
+    ::MediaRocket::AssociatedFile.create(:media => self, :file => @thumbnail)
     
     # Add _m suffix to filename for medium filename
     @medium = convert_image("850x550")
     @medium.save
-    MediaRocket::AssociatedFile.create(:media => self, :file => @medium)
+    ::MediaRocket::AssociatedFile.create(:media => self, :file => @medium)
   end
   
   #
@@ -224,7 +224,7 @@ class MediaRocket::MediaFile
     media_hash.merge!({:site_id => self.site.id}) if self.site
     media_hash.merge!({:category_id => self.category.id}) if self.category
                    
-    MediaRocket::MediaFile.new(media_hash)
+    ::MediaRocket::MediaFile.new(media_hash)
   end
   
   #

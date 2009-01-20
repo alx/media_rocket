@@ -6,7 +6,7 @@ class MediaRocket::Main < MediaRocket::Application
   end
   
   def upload
-    MediaRocket::MediaFile.new(params).save
+    ::MediaRocket::MediaFile.new(params).save
     redirect (params[:redirect_to] || "/")
   end
   

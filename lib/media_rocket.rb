@@ -53,7 +53,7 @@ if defined?(Merb::Plugins)
     # @note prefix your named routes with :media_rocket_
     #   to avoid potential conflicts with global named routes.
     def self.setup_router(scope)
-      MediaRocket::Router.setup(scope)
+      ::MediaRocket::Router.setup(scope)
     end
     
   end

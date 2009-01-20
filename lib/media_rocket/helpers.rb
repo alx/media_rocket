@@ -7,7 +7,7 @@ module MediaRocket
   module Helpers
     def self.setup
       [Assets, Content, Form].each do |helper|
-        Merb::GlobalHelpers.send(:include, helper)
+        ::Merb::GlobalHelpers.send(:include, helper)
       end
     end
   end

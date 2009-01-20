@@ -18,7 +18,7 @@ module MediaRocket
       end
 
       def media_rocket_public_path_for(type, *segments)
-        ::MediaTocket.public_path_for(type, *segments)
+        ::MediaRocket.public_path_for(type, *segments)
       end
     end
   end
