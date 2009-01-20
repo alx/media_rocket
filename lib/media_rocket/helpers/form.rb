@@ -86,9 +86,9 @@ module MediaRocket
       def media_title_field(options = {}, &block)
         content = options[:title_label] || "Title"
         
-        title_content = tag(:label, content + tag(:em, '*'), {:for => content})
+        title_content = tag(:label, content, {:for => content})
         title_content << tag(:br)
-        title_content << text_field(:name => "title", :id => content, :class => "required")
+        title_content << text_field(:name => "title", :id => content)
         
         tag(:p, title_content)
       end
