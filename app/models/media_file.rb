@@ -13,6 +13,8 @@ class MediaRocket::MediaFile
   
   has_tags
   
+  default_scope(:default).update(:order => [:position])
+  
   #
   # Media can have associated files, with has and belongs to many association
   #
