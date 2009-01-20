@@ -123,3 +123,7 @@ label span{
 .viewer input{
 	width:200px;
 }
+
+.media_over{
+	border-top: 2px solid #999;
+}

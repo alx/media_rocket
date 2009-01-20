@@ -91,6 +91,18 @@ $(document).ready(function() {
 			}
 		});
 	});
+	
+	$("#organize .media").each(function() {
+		$($(this).parents("tr")[0]).droppable({
+			accept: ".media",
+			drop: function(e, ui) { 
+				$($(ui.draggable).parents("tr")[0]).insertBefore(this);
+				// Send request to modify media position
+				$.get($(ui.draggable.context).children("a.edit")[0].rel, { position: e.target.id.split("-")[1] });
+			},
+			hoverClass: "media_over"
+		});
+	});
 
 	// Make visible that a row is clicked
 	$("table#organize tbody tr").mousedown(function() {
