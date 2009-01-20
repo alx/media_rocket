@@ -97,5 +97,5 @@ if defined?(Merb::Plugins)
   require "media_rocket/helpers"
   require "media_rocket/router"
   
-  require "rmagick"
+  dependencies "RMagick"
 end
