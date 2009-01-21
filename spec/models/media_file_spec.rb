@@ -171,4 +171,20 @@ describe MediaRocket::MediaFile do
     
     @media.description.should == new_description
   end
+  
+  it "should inform about image size" do
+    @media = MediaRocket::MediaFile.new :file => test_file
+    @media.save
+    
+    @media.should_not be(nil)
+    @media.is_image?.should == true
+    
+    @media.dimension_max.should be(nil)
+    @media.dimension_x.should == 170
+    @media.dimension_y.should == 170
+    
+    @media.thumbnail.dimension_max.should == "130x130"
+    @media.thumbnail.dimension_x.should == 130
+    @media.thumbnail.dimension_y.should == 130
+  end
 end
