@@ -26,6 +26,18 @@ class MediaRocket::Categories < MediaRocket::Application
     render :layout => false
   end
   
+  def edit
+    # reoroder list
+    if media_order = params[:media_list].split(",")
+      i = 0
+      media_order.each do |media_id|
+        MediaRocket::MediaFile.first(:id => media_id).update_attributes(:position => i)
+        i += 1
+      end
+    end
+    []
+  end
+  
   def gallery
     provides :xml
     return nil if params[:id].nil?

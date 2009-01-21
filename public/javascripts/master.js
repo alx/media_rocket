@@ -51,7 +51,7 @@ $(document).ready(function() {
 		opacity: .75,
 		refreshPositions: true, // Performance?
 		revert: "invalid",
-		revertDuration: 300,
+		revertDuration: 800,
 		scroll: true
 	});
 	
@@ -96,12 +96,27 @@ $(document).ready(function() {
 		$($(this).parents("tr")[0]).droppable({
 			accept: ".media",
 			drop: function(e, ui) {
-				selected_media = $(ui.draggable).parents("tr")[0]
-				media_viewer = selected_media.nextElementSibling
+				selected_media = $(ui.draggable).parents("tr")[0];
+				media_viewer = selected_media.nextSibling;
 				$(media_viewer).insertBefore(this);
 				$(selected_media).insertBefore(media_viewer);
+				
+				table_body = $(this).parents("tbody")[0];
+				gallery_id = this.className.match(/child-of-category-(\d+)/)[1];
+				selected_media_gallery_id = selected_media.className.match(/child-of-category-(\d+)/)[1];
+				
+				// Send request to modify media category (if media change category)
+				if(selected_media_gallery_id != gallery_id){
+					$.get($(ui.draggable.context).children("a.edit")[0].rel, { gallery_id: gallery_id });
+				}
+				
 				// Send request to modify media position
-				$.get($(ui.draggable.context).children("a.edit")[0].rel, { gallery_id: e.target.id.split("-")[1], position: e.target.id.split("-")[1] });
+				gallery_url = $(table_body).find(".category a.edit")[0].rel;
+				var media_list = selected_media.id.split("-")[1];
+				$(table_body).children("tr.child-of-category-" + gallery_id).each(function(){
+					media_list += "," + this.id.split("-")[1];
+				});
+				$.get(gallery_url, { media_list: media_list });
 			},
 			hoverClass: "media_over"
 		});

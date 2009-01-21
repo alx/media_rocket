@@ -133,22 +133,26 @@ class MediaRocket::MediaFile
   #
   def add_to_site(options = {}, &block)
     
-    if options[:site_id]
-      self.site = ::MediaRocket::Site.first(:id => options[:site_id])
-    elsif options[:site_name]
+    if !options[:site_name].nil? && !options[:site_name].empty?
       self.site = ::MediaRocket::Site.first_or_create(:name => options[:site_name])
+    elsif !options[:site_id].nil? && !options[:site_id].to_s.empty?
+      self.site = ::MediaRocket::Site.first(:id => options[:site_id])
     end  
+    
+    return false if self.site.nil?
     
     self.site.medias << self
     self.site.reload
     
     if options[:category_id] || options[:category_name]
       
-      if options[:category_id]
+      if !options[:category_name].nil? && !options[:category_name].empty?
+        self.category = ::MediaRocket::Gallery.first_or_create(:name => options[:category_name], :site_id => self.site.id)        
+      elsif !options[:category_id].nil? && !options[:category_id].to_s.empty?
         self.category = ::MediaRocket::Gallery.first(:id => options[:category_id], :site_id => self.site.id)
-      elsif options[:category_name]
-        self.category = ::MediaRocket::Gallery.first_or_create(:name => options[:category_name], :site_id => self.site.id)
       end
+      
+      return false if self.category.nil?
       
       self.category.medias << self
       self.category.reload

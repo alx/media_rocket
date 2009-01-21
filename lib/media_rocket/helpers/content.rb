@@ -40,7 +40,8 @@ module MediaRocket
         
         category_id = "category-#{category.id}"
         
-        category_name = tag(:td, tag(:span, category.name, :class => "category"))
+        categorya_urls = self_closing_tag(:a, :rel => url(:edit_media_rocket_category, :id => category.id), :class => "edit")
+        category_name = tag(:td, tag(:span, category.name + categorya_urls, :class => "category"))
         category_action = tag(:td, category_action_add(category) + category_action_delete(category), :class => "action")
         
         output = tag(:tr, category_name + category_action, { :id => category_id, :class => "#{child_of}"})
