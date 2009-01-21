@@ -60,7 +60,7 @@ class MediaRocket::MediaFile
     
     if options[:file]
       
-      self.title = options[:title] if options[:title]
+      self.title = (options[:title] || options[:file][:filename])
       self.description = options[:description] if options[:description]
 
       # Find or create if options[:site] is specified
@@ -166,7 +166,7 @@ class MediaRocket::MediaFile
   # to be place in the path parameter
   #
   def unique_file(path, filename)
-    path = File.join(path, Time.now.strftime("%Y%m%d%I%M%S") + "_" + Digest::MD5.hexdigest(filename))
+    path = File.join(path, Digest::MD5.hexdigest(filename))
     return (path << File.extname(filename))
   end
   
@@ -176,6 +176,7 @@ class MediaRocket::MediaFile
   def root_path
     path = "/public/uploads/"
     path = File.join(path, self.site.name) if self.site
+    path = File.join(path, Time.now.strftime("%Y/%I/%d"))
     return File.join(Merb.root, path)
   end
   

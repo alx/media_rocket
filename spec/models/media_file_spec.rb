@@ -12,6 +12,7 @@ describe MediaRocket::MediaFile do
     FileUtils.rm_rf Dir.glob("#{MediaRocket.root}/public/uploads/vacances/")
     File.copy(origin_file, test_file[:tempfile].path)
     
+    MediaRocket::MediaFile.all.destroy!
     MediaRocket::Gallery.all.destroy!
     MediaRocket::Site.all.destroy!
   end
@@ -40,7 +41,7 @@ describe MediaRocket::MediaFile do
     sleep 2
     @media2 = MediaRocket::MediaFile.new :file => test_file
     
-    @media.path.should_not == @media2.path
+    @media.title.should == @media2.title
   end
   
   it "should create a new Media with image and tags" do
