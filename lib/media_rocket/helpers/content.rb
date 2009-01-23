@@ -51,7 +51,8 @@ module MediaRocket
         category.medias.select{|media| media.original?}.sort{|x,y| x.position <=> y.position }.each do |media|
           
             media_id = "media-#{media.id}"
-            media_title = media.title.empty? ? media_id : media.title
+            media_title = media.title
+            media_title = media_id if media_title.empty?
           
             media_urls = self_closing_tag(:a, :rel => url(:edit_media_rocket_media, :id => media.id), :class => "edit")
             media_urls << self_closing_tag(:a, :rel => url(:media_rocket_media, :id => media.id), :class => "show")
