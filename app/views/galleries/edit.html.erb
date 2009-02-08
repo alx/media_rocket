@@ -1,0 +1,13 @@
+<%= form :action =>  url(:edit_media_rocket_gallery, @gallery.id), :method => "GET", :class => :liveform do %>
+
+<label for="gallery_name">Nom:</label>
+<input id="gallery_name" class="text" type="text" name="name" value="<%= @gallery.name %>"/>
+<br/>
+
+<label for="gallery_description">Description:</label>
+<input id="gallery_description" class="text" type="text" name="description" value="<%= @gallery.description %>"/>
+<br/>
+
+<input type="submit" name="submit" value="Modifier"/>
+
+<% end =%>

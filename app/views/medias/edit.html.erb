@@ -1,0 +1,13 @@
+<img src="<%= @media.thumbnail.url %>" class="viewer" />
+
+<form action="<%= url(:edit_media_rocket_media, @media.id) %>" class="liveform media-info" method="post">
+	<input type="hidden" name="_method" value="PUT"/>
+	
+	<label for="title"><span>Titre:</span></label>
+	<input type="text" value="<%= @media.title %>" name="title" class="text"/><br/>
+	
+	<label for="description"><span>Description:</span></label>
+	<input type="text" value="<%= @media.description %>" name="description" class="text"/><br/>
+	
+	<input type="submit" name="submit" value="Modifier"/>
+</form>
