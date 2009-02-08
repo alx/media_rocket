@@ -15,8 +15,8 @@
 			action: '<%= slice_url(:upload) %>',
 			name: 'media',
 			data: {
-				<% unless @category.nil? %>
-	    		category : '<%= @category.name %>',
+				<% unless @gallery.nil? %>
+	    		gallery : '<%= @gallery.name %>',
 				<% end %>
 		    	site : '<%= @site.name %>'
 		  	},

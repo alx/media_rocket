@@ -19,27 +19,27 @@ describe MediaRocket::Gallery do
   
   it "should contains media" do
     @media = MediaRocket::MediaFile.new :file => test_file
-    @category = MediaRocket::Gallery.new :name => "Vacances"
-    @category.medias << @media
+    @gallery = MediaRocket::Gallery.new :name => "Vacances"
+    @gallery.medias << @media
     
-    @category.medias.should_not be(nil)
-    @category.medias.size.should == 1
+    @gallery.medias.should_not be(nil)
+    @gallery.medias.size.should == 1
   end
   
   it "should belongs to a site" do
-    @category = MediaRocket::Gallery.new :name => "Vacances"
+    @gallery = MediaRocket::Gallery.new :name => "Vacances"
     @site = MediaRocket::Site.new :name => "domain.com"
     
-    @site.categories << @category
-    @site.categories.size.should == 1
+    @site.galleries << @gallery
+    @site.galleries.size.should == 1
   end
   
-  it "should accept sub-categories" do
+  it "should accept sub-galleries" do
     @site = MediaRocket::Site.create :name => "domain.com"
-    @category = @site.categories.create :name => "Vacances"
-    @child = @category.add_child("hiver")
+    @gallery = @site.galleries.create :name => "Vacances"
+    @child = @gallery.add_child("hiver")
     
-    @child.ancestors.first.name.should == @category.name
+    @child.ancestors.first.name.should == @gallery.name
     @child.site.name.should == @site.name
   end
 end

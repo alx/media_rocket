@@ -20,35 +20,46 @@ module MediaRocket
         
         return "" if site.nil?
 
-        head = tag(:thead, tag(:tr, tag(:th, "Name") + tag(:th, "Action", {:class => "action"})))
-
         # display each gallery with its media content
         output = ""
-        site.categories.roots.each do |category|
+        site.galleries.roots.each do |gallery|
 
-          output << build_category_tree(category)
+          output << build_gallery_tree(gallery)
 
-        end # site.categories
+        end # site.galleries
         
         body = tag(:tbody, output)
 
-        tag(:table, head + body, {:id => "organize", :class => "treeTable"})
+        tag :table, {:id => "organize", :class => "treeTable"} do
+          tag(:thead,
+            tag :tr do
+              tag(:th, "Name") <<
+              tag(:th, "Action", {:class => "action"})
+            end
+          ) << 
+          tag(:tbody, output)
+        end
 
       end # media_gallery_organize
       
-      def build_category_tree(category, child_of = nil)
+      def build_gallery_tree(gallery, child_of = nil)
         
-        category_id = "category-#{category.id}"
+        gallery_id = "gallery-#{gallery.id}"
         
-        categorya_urls = self_closing_tag(:a, :rel => url(:edit_media_rocket_category, :id => category.id), :class => "edit")
-        category_name = tag(:td, tag(:span, category.name + categorya_urls, :class => "category"))
-        category_action = tag(:td, category_action_add(category) + category_action_delete(category), :class => "action")
+        gallery_urls = self_closing_tag(:a, :rel => url(:edit_media_rocket_gallery, :id => gallery.id), :class => "edit")
+        gallery_name = tag(:td, tag(:span, gallery.name + gallery_urls, :class => "gallery"))
         
-        output = tag(:tr, category_name + category_action, { :id => category_id, :class => "#{child_of}"})
+        gallery_action = tag :td, :class => "action" do 
+            gallery_action_add(gallery) <<
+            gallery_action_edit(gallery) <<
+            gallery_action_delete(gallery)
+          end
         
-        child_of = "child-of-#{category_id}"
+        output = tag(:tr, gallery_name + gallery_action, { :id => gallery_id, :class => "#{child_of}"})
         
-        category.medias.select{|media| media.original?}.sort{|x,y| x.position <=> y.position }.each do |media|
+        child_of = "child-of-#{gallery_id}"
+        
+        gallery.medias.select{|media| media.original?}.sort{|x,y| x.position <=> y.position }.each do |media|
           
             media_id = "media-#{media.id}"
             media_title = media.title
@@ -57,40 +68,54 @@ module MediaRocket
             media_urls = self_closing_tag(:a, :rel => url(:edit_media_rocket_media, :id => media.id), :class => "edit")
             media_urls << self_closing_tag(:a, :rel => url(:media_rocket_media, :id => media.id), :class => "show")
             media_name = tag(:td, tag(:span, media_title + media_urls, :class => "media"))
-            media_action = tag(:td, media_action_delete(media), :class => "action")
+            
+            media_action = tag :td, :class => "action" do 
+              media_action_edit(media) <<
+              media_action_delete(media)
+            end
+              
           
             output << tag(:tr, media_name + media_action, { :id => media_id, :class => child_of})
             
             # Add media viewer
-            viewer_content = tag(:td, "Chargement...", { :id => "viewer-#{media_id}", :class => "viewer", :colspan => 2})
-            output << tag(:tr, viewer_content, :class => "child-of-#{media_id}")
+            # viewer_content = tag(:td, "Chargement...", { :id => "viewer-#{media_id}", :class => "viewer", :colspan => 2})
+            # output << tag(:tr, viewer_content, :class => "child-of-#{media_id}")
         end
 
-        category.children.each do |child|
-          output << build_category_tree(child, child_of)
+        gallery.children.each do |child|
+          output << build_gallery_tree(child, child_of)
         end
         
         return output
       end
 
-      def category_action_delete(category)
+      def gallery_action_delete(gallery)
         link_to self_closing_tag(:img, :src => media_rocket_image_path("/icons/delete.png"),
-                                 :title => "Delete #{category.name}", :class => "icon"),
-                url(:delete_media_rocket_category, :id => category.id),
-                :rel => "#category-#{category.id}",
+                                 :title => "Delete #{gallery.name}", :class => "icon"),
+                url(:delete_media_rocket_gallery, :id => gallery.id),
+                :rel => "#gallery-#{gallery.id}",
                 :class => "remote delete"
       end
       
-      def category_action_add(category)
-        form :action => url(:new_media_rocket_category), :method => "GET",
-             :class => "add-category", :rel => "#category-#{category.id}" do
+      
+      def gallery_action_add(gallery)
+        form :action => url(:new_media_rocket_gallery), :method => "GET",
+             :class => "add-gallery", :rel => "#gallery-#{gallery.id}" do
                
-          category_content = text_field(:name => "name", :value => "Ajouter sous-categorie", :class => "category_add")
-          category_content << hidden_field(:name => "parent_id", :value => category.id)
-          
-          category_content << self_closing_tag(:input, :src => media_rocket_image_path("/icons/add.png"), 
-                                               :alt => "Ajouter sous-categorie", :type => "image", :class => "icon")
+          text_field(:name => "name", :value => "Ajouter sous-categorie", :class => "gallery_add") <<
+          hidden_field(:name => "parent_id", :value => gallery.id) <<
+          self_closing_tag(:input, :src => media_rocket_image_path("/icons/add.png"), 
+                           :alt => "Ajouter sous-categorie", :type => "image", :class => "icon")
         end
+      end
+      
+      
+      def gallery_action_edit(gallery)
+        link_to self_closing_tag(:img, :src => media_rocket_image_path("/icons/folder_edit.png"),
+                                 :title => "Edit #{gallery.name}", :class => :icon),
+                url(:edit_media_rocket_gallery, :id => gallery.id) << "?height=150&width=320&modal=true",
+                :title => "Edit #{gallery.name}",
+                :class => :thickbox
       end
       
       def media_action_delete(media)
@@ -99,6 +124,14 @@ module MediaRocket
                 url(:delete_media_rocket_media, :id => media.id),
                 :rel => "#media-#{media.id}",
                 :class => "remote delete"
+      end
+      
+      def media_action_edit(media)
+        link_to self_closing_tag(:img, :src => media_rocket_image_path("/icons/image_edit.png"), 
+                                 :title => "Edit #{media.title}", :class => :icon),
+                url(:edit_media_rocket_media, :id => media.id) << "?height=200&width=500&modal=true",
+                :title => "Edit #{media.title}",
+                :class => :thickbox
       end
     end
   end

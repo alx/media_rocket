@@ -28,15 +28,15 @@ describe MediaRocket::AssociatedFile do
     associated_to.first.path.should == @media.path
   end
   
-  it "should have same site and category as associated_to media" do
+  it "should have same site and gallery as associated_to media" do
     @media = MediaRocket::MediaFile.new :file => test_file, 
                                         :site_name => "domain.com",
-                                        :category_name => "vacances"
+                                        :gallery_name => "vacances"
     @media.save
     
     @media.files.each do |media|
       media.site.name.should == @media.site.name
-      media.category.name.should == @media.category.name
+      media.gallery.name.should == @media.gallery.name
     end
   end
   

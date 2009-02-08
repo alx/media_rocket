@@ -40,10 +40,10 @@ module MediaRocket
           form_content << media_site_select(options) if options[:site_enabled] == 1
           
           #
-          # Category is not set by default, you have to set options[:category_enabled]
+          # gallery is not set by default, you have to set options[:gallery_enabled]
           # to allow user to set it
           #
-          form_content << media_category_select(options) if options[:category_enabled] == 1
+          form_content << media_gallery_select(options) if options[:gallery_enabled] == 1
           
           
           #
@@ -75,8 +75,8 @@ module MediaRocket
           form_content << media_delimiter_field(options)
           form_content << media_site_new_field(options)
           form_content << media_site_select(options)
-          form_content << media_category_new_field(options)
-          form_content << media_category_select(options)
+          form_content << media_gallery_new_field(options)
+          form_content << media_gallery_select(options)
           form_content << media_file_field(options)
           form_content << tag(:p, submit(options[:submit_label] || "Upload", :id => "media_button"))
           form_content
@@ -156,79 +156,79 @@ module MediaRocket
         tag(:p, site_content)
       end
             
-      def media_category_checkboxes(options = {}, &block)
-        categories = ::MediaRocket::Gallery.all
+      def media_gallery_checkboxes(options = {}, &block)
+        galleries = ::MediaRocket::Gallery.all
         
-        if categories.empty?
+        if galleries.empty?
           return ""
         else
-          content = options[:category_label] || "Category"
+          content = options[:gallery_label] || "Gallery"
         
-          category_content = tag(:label, content, {:for => content})
-          category_content << tag(:br)
+          gallery_content = tag(:label, content, {:for => content})
+          gallery_content << tag(:br)
         
-          categories.each do |category|
-            category_content << tag(:input, category.name, {:type => "checkbox", :name => "category", :value => category.name})
-            category_content << tag(:br)
+          galleries.each do |gallery|
+            gallery_content << tag(:input, gallery.name, {:type => "checkbox", :name => "gallery", :value => gallery.name})
+            gallery_content << tag(:br)
           end
         
-          tag(:p, category_content)
+          tag(:p, gallery_content)
         end
       end
       
-      def media_category_select(options = {}, &block)
-        categories = ::MediaRocket::Gallery.all
+      def media_gallery_select(options = {}, &block)
+        galleries = ::MediaRocket::Gallery.all
         
-        if categories.empty?
+        if galleries.empty?
           return ""
         else
-          content = options[:category_label] || "Category"
+          content = options[:gallery_label] || "Gallery"
         
-          category_content = tag(:label, content, {:for => content})
-          category_content << tag(:br)
+          gallery_content = tag(:label, content, {:for => content})
+          gallery_content << tag(:br)
         
           choices = ""
           level = 1
-          categories.select{|cat| cat.parent.nil?}.each do |category|
-            choices << media_category_children_option(category)
+          galleries.select{|cat| cat.parent.nil?}.each do |gallery|
+            choices << media_gallery_children_option(gallery)
           end
           
-          category_content << tag(:select, choices, {:name => "category_id", :size => categories.size})
+          gallery_content << tag(:select, choices, {:name => "gallery_id", :size => galleries.size})
           
-          tag(:p, category_content)
+          tag(:p, gallery_content)
         end
       end
       
-      def media_category_children_option(category, level = 0)
+      def media_gallery_children_option(gallery, level = 0)
         
         branch = ""
         branch = ("&nbsp;&nbsp;" * level) + "+-&nbsp;" if level > 0
         
-        content = tag(:option, branch + category.name, {:value => category.id})
-        category.children.each do |child|
-          content << media_category_children_option(child, level + 1)
+        content = tag(:option, branch + gallery.name, {:value => gallery.id})
+        gallery.children.each do |child|
+          content << media_gallery_children_option(child, level + 1)
         end
         content
       end
       
-      def media_category_new_field(options = {}, &block)
-        content = options[:category_new_label] || "New Category"
+      def media_gallery_new_field(options = {}, &block)
+        content = options[:gallery_new_label] || "New Gallery"
         
-        category_content = tag(:label, content, {:for => content})
-        category_content << tag(:br)
-        category_content << text_field(:name => "category_name", :id => content)
+        gallery_content = tag(:label, content, {:for => content})
+        gallery_content << tag(:br)
+        gallery_content << text_field(:name => "gallery_name", :id => content)
           
-        tag(:p, category_content)
+        tag(:p, gallery_content)
       end
       
-      def media_add_category(category, options = {}, &block)
+      def media_add_gallery(gallery, options = {}, &block)
         field_label = options[:field_label] || ""
         submit_label = options[:submit_label] || "Ajouter Sous-Cat&eacute;gorie &rarr;"
         
-        form :action => url(:new_media_rocket_category), :method => "GET", :class => "add-category"  do
-          category_content = text_field(:name => "name", :value => field_label)
-          category_content << hidden_field(:name => "parent_id", :value => category.id)
-          category_content << submit(submit_label)
+        form :action => url(:new_media_rocket_gallery), :method => "GET", :class => "add-gallery"  do
+          gallery_content = text_field(:name => "name", :value => field_label)
+          gallery_content << hidden_field(:name => "parent_id", :value => gallery.id)
+          gallery_content << submit(submit_label)
         end
       end
       

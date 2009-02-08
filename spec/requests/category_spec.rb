@@ -1,7 +1,7 @@
 require File.join(File.dirname(__FILE__), '..', 'spec_helper.rb')
 
-describe "/category" do
+describe "/gallery" do
   before(:each) do
-    @response = request("/category")
+    @response = request("/gallery")
   end
 end

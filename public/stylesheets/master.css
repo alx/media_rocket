@@ -90,11 +90,11 @@ table span.media {
   background-image: url(../images/icons/page_white_text.png);
 }
 
-table span.category {
+table span.gallery {
   background-image: url(../images/icons/folder.png);
 }
 
-input.category_add{
+input.gallery_add{
 	font-size:10px;
 	height:15px;
 	padding:0;
@@ -106,14 +106,8 @@ input.icon {
 	vertical-align: middle;
 }
 
-.viewer {
-	width:400px;
-	margin-left:50px;
-}
-
-.viewer img{
+img.viewer {
 	float:right;
-	margin-top:30px;
 }
 
 label span{

@@ -64,41 +64,41 @@ describe MediaRocket::MediaFile do
     @media.site.name.should == site_name
   end
   
-  it "should create a new Media belonging to a site with a category" do
+  it "should create a new Media belonging to a site with a gallery" do
     site_name = "domain.com"
-    category_name = "vacances"
+    gallery_name = "vacances"
     
-    @media = MediaRocket::MediaFile.new :file => test_file, :site_name => site_name, :category_name => category_name
+    @media = MediaRocket::MediaFile.new :file => test_file, :site_name => site_name, :gallery_name => gallery_name
     @media.save
     @site = @media.site
-    @category = @media.category
+    @gallery = @media.gallery
     
     @site.should_not be(nil)
     @site.name.should == site_name
-    @category.should_not be(nil)
-    @category.name.should == category_name
+    @gallery.should_not be(nil)
+    @gallery.name.should == gallery_name
     
     @first_site = MediaRocket::Site.first :name => site_name
-    @first_category = MediaRocket::Gallery.first :name => category_name
+    @first_gallery = MediaRocket::Gallery.first :name => gallery_name
     
     @site.id.should == @first_site.id
-    @first_site.categories.size.should == 1
-    @first_site.categories.first.id.should == @first_category.id
+    @first_site.galleries.size.should == 1
+    @first_site.galleries.first.id.should == @first_gallery.id
     @first_site.medias.size.should == 3
     @first_site.medias.first.path.should == @media.path
     
-    @first_category.medias.size.should == 3
-    @first_category.medias.first.path.should == @media.path
+    @first_gallery.medias.size.should == 3
+    @first_gallery.medias.first.path.should == @media.path
   end
   
-  it "should create a new Media within a special-character category" do
+  it "should create a new Media within a special-character gallery" do
     site_name = "domain.com"
-    category_name = "vaca nces"
+    gallery_name = "vaca nces"
     
-    @media = MediaRocket::MediaFile.new :file => test_file, :site_name => site_name, :category_name => category_name
+    @media = MediaRocket::MediaFile.new :file => test_file, :site_name => site_name, :gallery_name => gallery_name
     @media.save
     @site = @media.site
-    @category = @media.category
+    @gallery = @media.gallery
     
     @site.medias.size.should == 3
     @site.medias.first.path.should == @media.path
@@ -107,32 +107,32 @@ describe MediaRocket::MediaFile do
       File.exists?(media.path).should be(true)
     end
     
-    @category.medias.size.should == 3
-    @category.medias.first.path.should == @media.path
+    @gallery.medias.size.should == 3
+    @gallery.medias.first.path.should == @media.path
   end
   
-  it "should not create a new category if site is not specified" do
-    category_name = "vacances"
-    @media = MediaRocket::MediaFile.new :file => test_file, :category_name => category_name
+  it "should not create a new gallery if site is not specified" do
+    gallery_name = "vacances"
+    @media = MediaRocket::MediaFile.new :file => test_file, :gallery_name => gallery_name
     @media.site.should be(nil)
-    @media.category.should be(nil)
+    @media.gallery.should be(nil)
   end
   
-  it "should not create a new category if site is not specified" do
+  it "should not create a new gallery if site is not specified" do
     site_name = "domain.com"
-    category_name = "vacances"
+    gallery_name = "vacances"
     
-    @media = MediaRocket::MediaFile.new :file => test_file, :site_name => "site_name", :new_category => "", :category_name => category_name
+    @media = MediaRocket::MediaFile.new :file => test_file, :site_name => "site_name", :new_gallery => "", :gallery_name => gallery_name
     
-    @media.category.should_not be(nil)
-    @media.category.name.should == category_name
+    @media.gallery.should_not be(nil)
+    @media.gallery.name.should == gallery_name
   end
   
   it "should cleanly destroy a media" do
     site_name = "domain.com"
-    category_name = "vacances"
+    gallery_name = "vacances"
     
-    @media = MediaRocket::MediaFile.new :file => test_file, :site_name => site_name, :category_name => category_name
+    @media = MediaRocket::MediaFile.new :file => test_file, :site_name => site_name, :gallery_name => gallery_name
     @media.save
     
     medias_size = MediaRocket::MediaFile.all.size
@@ -140,8 +140,8 @@ describe MediaRocket::MediaFile do
     @site = @media.site
     site_size = @site.medias.size
     
-    @category = @media.category
-    category_size = @category.medias.size
+    @gallery = @media.gallery
+    gallery_size = @gallery.medias.size
     
     file_path = @media.path
     @children = @media.files
@@ -155,7 +155,7 @@ describe MediaRocket::MediaFile do
     
     MediaRocket::MediaFile.all.size == (medias_size - 3)
     @site.medias.size.should == (site_size - 3)
-    @category.medias.size.should == (category_size - 3)
+    @gallery.medias.size.should == (gallery_size - 3)
   end
   
   it "should save modified description" do

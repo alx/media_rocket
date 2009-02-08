@@ -38,7 +38,7 @@ class MediaRocket::MediaFile
   has n, :associated_to, :through => :associated_files, :class_name => "MediaRocket::MediaFile",
                        :remote_name => :media, :child_key => [:file_id]
   
-  belongs_to :category, :class_name => "MediaRocket::Gallery"
+  belongs_to :gallery, :class_name => "MediaRocket::Gallery"
   belongs_to :site, :class_name => "MediaRocket::Site"
   
   after :save, :post_process
@@ -73,7 +73,7 @@ class MediaRocket::MediaFile
       # FIX: rework using unique sha1 hash for basename
       self.path = unique_file(root_path, options[:file][:filename])
 
-      # Create directory if doesn't exist (when new site or category)
+      # Create directory if doesn't exist (when new site or gallery)
       # and move file there
       FileUtils.mkdir_p File.dirname(self.path) unless File.directory?(File.dirname(self.path))
       FileUtils.mv options[:file][:tempfile].path, self.path
@@ -129,7 +129,7 @@ class MediaRocket::MediaFile
   
   #
   # Create hierarchy with options[:site]
-  # and options[:category]
+  # and options[:gallery]
   #
   def add_to_site(options = {}, &block)
     
@@ -144,19 +144,19 @@ class MediaRocket::MediaFile
     self.site.medias << self
     self.site.reload
     
-    if options[:category_id] || options[:category_name]
+    if options[:gallery_id] || options[:gallery_name]
       
-      if !options[:category_name].nil? && !options[:category_name].empty?
-        self.category = ::MediaRocket::Gallery.first_or_create(:name => options[:category_name], :site_id => self.site.id)        
-      elsif !options[:category_id].nil? && !options[:category_id].to_s.empty?
-        self.category = ::MediaRocket::Gallery.first(:id => options[:category_id], :site_id => self.site.id)
+      if !options[:gallery_name].nil? && !options[:gallery_name].empty?
+        self.gallery = ::MediaRocket::Gallery.first_or_create(:name => options[:gallery_name], :site_id => self.site.id)        
+      elsif !options[:gallery_id].nil? && !options[:gallery_id].to_s.empty?
+        self.gallery = ::MediaRocket::Gallery.first(:id => options[:gallery_id], :site_id => self.site.id)
       end
       
-      return false if self.category.nil?
+      return false if self.gallery.nil?
       
-      self.category.medias << self
-      self.category.reload
-      self.position = options[:position] || self.category.medias.size
+      self.gallery.medias << self
+      self.gallery.reload
+      self.position = options[:position] || self.gallery.medias.size
       
     end
   end
@@ -193,9 +193,9 @@ class MediaRocket::MediaFile
       image_process if is_image?
       self.update_attributes(:stage => 1)
       
-      # Reload site and category to take care of new comers
+      # Reload site and gallery to take care of new comers
       self.site.reload if self.site
-      self.category.reload if self.category
+      self.gallery.reload if self.gallery
     end
   end
   
@@ -238,7 +238,7 @@ class MediaRocket::MediaFile
                    :dimension => size}
     
     media_hash.merge!({:site_id => self.site.id}) if self.site
-    media_hash.merge!({:category_id => self.category.id}) if self.category
+    media_hash.merge!({:gallery_id => self.gallery.id}) if self.gallery
                    
     ::MediaRocket::MediaFile.new(media_hash)
   end
@@ -255,8 +255,8 @@ class MediaRocket::MediaFile
     self.files.each{ |media| media.destroy }
     File.delete(self.path) if File.exists?(self.path)
     
-    # Reload site and category to be sure everything is gone
+    # Reload site and gallery to be sure everything is gone
     self.site.reload
-    self.category.reload
+    self.gallery.reload
   end
 end

@@ -10,8 +10,8 @@ $(document).ready(function() {
 		}
 	});
 
-	// Add category
-	$(".category_add").click(function() {
+	// Add gallery
+	$(".gallery_add").click(function() {
 		this.value = "";
 	})
 
@@ -32,14 +32,17 @@ $(document).ready(function() {
 		}  
 	});
 
-	// Add alert when modifications on media-info form
-	$('.media-info').ajaxForm(function() { 
-		alert("Modifications enregistrees");
+	// Add alert when modifications on liveform
+	$('.liveform').livequery(function(){
+		$('.liveform').ajaxForm(function() { 
+			alert("Modifications enregistrees");
+			tb_remove();
+		});
 		return false;
 	});
 
-	// Reload pages when adding a sub-category
-	$('.add-category').ajaxForm(function() { 
+	// Reload pages when adding a sub-gallery
+	$('.add-gallery').ajaxForm(function() { 
 		location.reload();
 	});
 
@@ -68,7 +71,7 @@ $(document).ready(function() {
 		}
 	});
 
-	$("#organize .category").each(function() {
+	$("#organize .gallery").each(function() {
 		$($(this).parents("tr")[0]).droppable({
 			accept: ".media",
 			drop: function(e, ui) { 
@@ -80,7 +83,7 @@ $(document).ready(function() {
 				// Append expander
 		      	//}
 
-				// Send request to modify media category
+				// Send request to modify media gallery
 				$.get($(ui.draggable.context).children("a.edit")[0].rel, { gallery_id: e.target.id.split("-")[1] });
 			},
 			hoverClass: "accept",
@@ -102,18 +105,18 @@ $(document).ready(function() {
 				$(selected_media).insertBefore(media_viewer);
 				
 				table_body = $(this).parents("tbody")[0];
-				gallery_id = this.className.match(/child-of-category-(\d+)/)[1];
-				selected_media_gallery_id = selected_media.className.match(/child-of-category-(\d+)/)[1];
+				gallery_id = this.className.match(/child-of-gallery-(\d+)/)[1];
+				selected_media_gallery_id = selected_media.className.match(/child-of-gallery-(\d+)/)[1];
 				
-				// Send request to modify media category (if media change category)
+				// Send request to modify media gallery (if media change gallery)
 				if(selected_media_gallery_id != gallery_id){
 					$.get($(ui.draggable.context).children("a.edit")[0].rel, { gallery_id: gallery_id });
 				}
 				
 				// Send request to modify media position
-				gallery_url = $(table_body).find(".category a.edit")[0].rel;
+				gallery_url = $(table_body).find(".gallery a.edit")[0].rel;
 				var media_list = selected_media.id.split("-")[1];
-				$(table_body).children("tr.child-of-category-" + gallery_id).each(function(){
+				$(table_body).children("tr.child-of-gallery-" + gallery_id).each(function(){
 					media_list += "," + this.id.split("-")[1];
 				});
 				$.get(gallery_url, { media_list: media_list });
