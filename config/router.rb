@@ -9,7 +9,7 @@ Merb::Router.prepare do |scope|
   
   # Route to gallery xml
   scope.match('/galleries(.:format)').to(:controller => 'galleries', :action => 'list').name(:galleries)
-  scope.match(%r[/gallery/(\d+)-.*\.(.*$)]).to(:controller => 'galleries', :action => 'gallery', :id => "[1]", :format => "[2]").name(:gallery)
+  scope.match('/gallery/:id(.:format)').to(:controller => 'galleries', :action => 'gallery').name(:gallery)
   
   # Route to front page
   scope.match('/').to(:controller => 'main', :action => 'index').name(:index)
