@@ -4,8 +4,18 @@
 <input id="gallery_name" class="text" type="text" name="name" value="<%= @gallery.name %>"/>
 <br/>
 
+<h4>Référecement<h4>
+
+<label for="gallery_title">Title:</label>
+<input id="gallery_title" class="text" type="text" name="ref_title" value="<%= @gallery.ref_title %>"/>
+<br/>
+
 <label for="gallery_description">Description:</label>
 <input id="gallery_description" class="text" type="text" name="description" value="<%= @gallery.description %>"/>
+<br/>
+
+<label for="gallery_meta">meta-keywords:</label>
+<input id="gallery_meta" class="text" type="text" name="ref_meta" value="<%= @gallery.ref_meta %>"/>
 <br/>
 
 <input type="submit" name="submit" value="Modifier"/>

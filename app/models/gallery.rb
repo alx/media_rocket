@@ -5,6 +5,8 @@ class MediaRocket::Gallery
   property :parent_id, Integer
   property :name, String
   property :description, Text
+  property :ref_title, Text
+  property :ref_meta, Text
   
   has_tags
   
