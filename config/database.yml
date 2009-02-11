@@ -1,7 +1,40 @@
+---
+# This is a sample database file for the DataMapper ORM
 development: &defaults
-  adapter:  sqlite3
-  database: sample_development.db
-
-test: &defaults
-  adapter:  sqlite3
-  database: sample_development.db
+  # These are the settings for repository :default
+  #socket: /Applications/MAMP/tmp/mysql/mysql.sock
+  adapter: mysql
+  database: galibert
+  username: root
+  password: 
+  host: localhost
+ 
+  # Add more repositories
+  # repositories:
+  #   repo1:
+  #     adapter:  sqlite3
+  #     database: sample_1_development.db
+  #   repo2:
+  #     ...
+ 
+test:
+  <<:       *defaults
+  database: sample_test.db
+ 
+  # repositories:
+  #   repo1:
+  #     database: sample_1_test.db
+ 
+production:
+  adapter: mysql
+  database: galibert
+  username: galibert
+  password: galibert31
+  host: localhost
+  
+  # repositories:
+  #   repo1:
+  #     database: sample_production.db
+ 
+rake:
+  <<: *defaults
