@@ -4,14 +4,14 @@
 <input id="gallery_name" class="text" type="text" name="name" value="<%= @gallery.name %>"/>
 <br/>
 
-<h4>Référecement<h4>
+<h4>Référencement<h4>
 
 <label for="gallery_title">Title:</label>
 <input id="gallery_title" class="text" type="text" name="ref_title" value="<%= @gallery.ref_title %>"/>
 <br/>
 
 <label for="gallery_description">Description:</label>
-<input id="gallery_description" class="text" type="text" name="description" value="<%= @gallery.description %>"/>
+<textarea id="gallery_description" name="description" rows="3" cols="20"><%= @gallery.description %></textarea>
 <br/>
 
 <label for="gallery_meta">meta-keywords:</label>
