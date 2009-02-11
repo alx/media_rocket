@@ -113,7 +113,7 @@ module MediaRocket
       def gallery_action_edit(gallery)
         link_to self_closing_tag(:img, :src => media_rocket_image_path("/icons/folder_edit.png"),
                                  :title => "Edit #{gallery.name}", :class => :icon),
-                url(:edit_media_rocket_gallery, :id => gallery.id) << "?height=350&width=350&modal=true",
+                url(:edit_media_rocket_gallery, :id => gallery.id) << "?height=350&width=350",
                 :title => "Edit #{gallery.name}",
                 :class => :thickbox
       end
@@ -129,7 +129,7 @@ module MediaRocket
       def media_action_edit(media)
         link_to self_closing_tag(:img, :src => media_rocket_image_path("/icons/image_edit.png"), 
                                  :title => "Edit #{media.title}", :class => :icon),
-                url(:edit_media_rocket_media, :id => media.id) << "?height=200&width=500&modal=true",
+                url(:edit_media_rocket_media, :id => media.id) << "?height=200&width=500",
                 :title => "Edit #{media.title}",
                 :class => :thickbox
       end
