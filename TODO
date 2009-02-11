@@ -1,6 +1,5 @@
 TODO:
 
-* create route for tags
-* create domain model
-* add authentification on domain
-* add file storage, use unique id to store files
+
+* http://www.webappers.com/2008/03/05/galleria-simple-but-nice-jquery-image-gallery/ 
+* http://www.comparenetworks.com/developers/jqueryplugins/jbreadcrumb.html
