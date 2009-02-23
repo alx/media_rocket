@@ -81,7 +81,7 @@ if defined?(Merb::Plugins)
   dependency 'merb-assets',     merb_version
   dependency 'merb-helpers',    merb_version
   dependency 'merb_datamapper', merb_version
-  dependency 'merb-builder', "0.9.8"
+  dependency 'merb-builder', ">= 0.9.8"
   
   dm_gems_version   = ">= 0.9.9"
   dependency "dm-core", dm_gems_version         
