@@ -50,6 +50,7 @@ $(document).ready(function() {
 	$("#organize").treeTable();
 
 	$("#organize .media").draggable({
+		cursor: 'move',
 		helper: "clone",
 		opacity: .75,
 		refreshPositions: true, // Performance?
@@ -135,8 +136,14 @@ $(document).ready(function() {
 	$("table#organize tbody tr span").mousedown(function() {
 		$($(this).parents("tr")[0]).trigger("mousedown");
 	});
+	
+	$('.media-row').hover(function(e) {
+		$(e.target).parent('tr').find('.drag').removeClass('hidden');
+	}, function(e) {
+   		$(e.target).parent('tr').find('.drag').addClass('hidden');
+	});
 
-
+   
 
 });
 

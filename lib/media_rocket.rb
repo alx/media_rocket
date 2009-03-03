@@ -3,7 +3,7 @@ if defined?(Merb::Plugins)
   $:.unshift File.dirname(__FILE__)
 
   dependency 'merb-slices'
-  Merb::Plugins.add_rakefiles "media_rocket/tasks/merbtasks", "media_rocket/tasks/slicetasks", "media_rocket/tasks/spectasks"
+  Merb::Plugins.add_rakefiles "media_rocket/tasks/merbtasks", "media_rocket/tasks/slicetasks"
 
   # Register the Slice for the current host application
   Merb::Slices::register(__FILE__)

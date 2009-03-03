@@ -23,6 +23,12 @@
 .tag_size5 {font-size: 1.8em;}
 .tag_size6 {font-size: 2.0em;}
 
+.hidden{visibility: hidden;}
+
+.drag:hover {
+	cursor: move;
+}
+
 /*****************************************************************************/
 /*
 /* treetable

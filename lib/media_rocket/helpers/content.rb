@@ -57,7 +57,7 @@ module MediaRocket
         
         output = tag(:tr, gallery_name + gallery_action, { :id => gallery_id, :class => "#{child_of}"})
         
-        child_of = "child-of-#{gallery_id}"
+        child_of = "media-row child-of-#{gallery_id}"
         
         gallery.medias.select{|media| media.original?}.sort{|x,y| x.position <=> y.position }.each do |media|
           
@@ -71,15 +71,12 @@ module MediaRocket
             
             media_action = tag :td, :class => "action" do 
               media_action_edit(media) <<
-              media_action_delete(media)
+              media_action_delete(media) <<
+              media_action_drag(media)
             end
               
           
             output << tag(:tr, media_name + media_action, { :id => media_id, :class => child_of})
-            
-            # Add media viewer
-            # viewer_content = tag(:td, "Chargement...", { :id => "viewer-#{media_id}", :class => "viewer", :colspan => 2})
-            # output << tag(:tr, viewer_content, :class => "child-of-#{media_id}")
         end
 
         gallery.children.each do |child|
@@ -116,6 +113,13 @@ module MediaRocket
                 url(:edit_media_rocket_gallery, :id => gallery.id) << "?height=350&width=350",
                 :title => "Edit #{gallery.name}",
                 :class => :thickbox
+      end
+      
+      
+      def media_action_drag(media)
+        self_closing_tag(:img, :src => media_rocket_image_path("/icons/arrow_refresh.png"), 
+                         :title => "move #{media.title}",
+                         :class => "drag-media-#{media.id}", :class => "icon hidden drag")
       end
       
       def media_action_delete(media)
