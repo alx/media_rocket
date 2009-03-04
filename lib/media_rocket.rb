@@ -28,6 +28,7 @@ if defined?(Merb::Plugins)
     # Stub classes loaded hook - runs before LoadClasses BootLoader
     # right after a slice's classes have been loaded internally.
     def self.loaded
+      require "media_rocket/helpers"
       Helpers.setup
     end
     
@@ -94,7 +95,6 @@ if defined?(Merb::Plugins)
   dependency "dm-is-tree", dm_gems_version
   
   # Various mixins and classes
-  require "media_rocket/helpers"
   require "media_rocket/router"
   
   require "RMagick"
