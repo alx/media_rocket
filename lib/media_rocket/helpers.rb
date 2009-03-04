@@ -2,7 +2,7 @@ helpers = Pathname(__FILE__).dirname.expand_path / "helpers"
 require helpers / "assets"
 require helpers / "content"
 require helpers / "form"
-require helpers / "widgets"
+require helpers / "widgets" if Merb.const_defined? :Webbastic
 
 module MediaRocket
   module Helpers
@@ -11,9 +11,7 @@ module MediaRocket
         ::Merb::GlobalHelpers.send(:include, helper)
       end
       
-      if Merb.const_defined? :Webbastic
-        ::Merb::GlobalHelpers.send(:include, Widget)
-      end
+      ::Merb::GlobalHelpers.send(:include, Widget) if Merb.const_defined? :Webbastic
     end
   end
 end
