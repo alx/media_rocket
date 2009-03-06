@@ -5,7 +5,7 @@ class MediaRocket::MediaFile
   property :path, FilePath, :nullable => false
   property :md5sum, String, :length => 32, :default => Proc.new { |r, p| Digest::MD5.hexdigest(r.path.read) if r.path }
   property :title, String
-  property :description, Text
+  property :description, Text, :default => ""
   property :position, Integer
   property :stage, Integer
   property :created_at, DateTime
@@ -91,8 +91,10 @@ class MediaRocket::MediaFile
     # If options[:stage] == 1, file has been processed
     self.stage = options[:stage] if options[:stage]
     
-    self.dimension_max = options[:dimension] if options[:dimension]
-    self.dimension_x, self.dimension_y = image_dimension(self.path)
+    if is_image?
+      self.dimension_max = options[:dimension] if options[:dimension]
+      self.dimension_x, self.dimension_y = image_dimension(self.path)
+    end
   end
   
   def add_tags(options = {}, &block)
