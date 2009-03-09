@@ -177,7 +177,12 @@ module MediaRocket
       end
       
       def media_gallery_select(options = {}, &block)
-        galleries = ::MediaRocket::Gallery.all
+        
+        if options[:site_id]
+          galleries = ::MediaRocket::Gallery.first :site_id => options[:site_id]
+        else
+          galleries = ::MediaRocket::Gallery.all
+        end
         
         if galleries.empty?
           return ""
