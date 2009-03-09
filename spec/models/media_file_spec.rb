@@ -4,13 +4,14 @@ require File.join( File.dirname(__FILE__), '..', "spec_helper" )
 describe MediaRocket::MediaFile do
   
   origin_file = File.join( MediaRocket.root, 'public', 'images', 'rocket.png' )
-  test_file = {:filename => 'image.png', :tempfile => Tempfile.new('image.png')}
+  image_file = {:filename => 'image.png', :tempfile => Tempfile.new('image.png')}
+  flash_file = {:filename => 'flash.swf', :tempfile => Tempfile.new('flash.swf')}
   
   before(:each) do
     FileUtils.rm_r Dir.glob("#{MediaRocket.root}/public/uploads/image*")
     FileUtils.rm_rf Dir.glob("#{MediaRocket.root}/public/uploads/domain.com/")
     FileUtils.rm_rf Dir.glob("#{MediaRocket.root}/public/uploads/vacances/")
-    File.copy(origin_file, test_file[:tempfile].path)
+    File.copy(origin_file, image_file[:tempfile].path)
     
     MediaRocket::MediaFile.all.destroy!
     MediaRocket::Gallery.all.destroy!
@@ -22,36 +23,43 @@ describe MediaRocket::MediaFile do
   end
   
   it "should create a new Media with image" do
-    @media = MediaRocket::MediaFile.new :file => test_file
+    @media = MediaRocket::MediaFile.new :file => image_file
     @media.should_not be(nil)
     @media.is_image?.should == true
     @media.path.should_not be(nil)
   end
   
+  it "should create a new Media that isn't an image" do
+    @media = MediaRocket::MediaFile.new :file => flash_file
+    @media.should_not be(nil)
+    @media.is_image?.should == false
+    @media.path.should_not be(nil)
+  end
+  
   it "should save a new Media with image" do
-    @media = MediaRocket::MediaFile.new :file => test_file
+    @media = MediaRocket::MediaFile.new :file => image_file
     @media.save.should == true
   end
   
   it "should create a unique Media if conflict on name" do
-    @media = MediaRocket::MediaFile.new :file => test_file
+    @media = MediaRocket::MediaFile.new :file => image_file
     
     # File has been moved, recreate it
-    File.copy(origin_file, test_file[:tempfile].path)
+    File.copy(origin_file, image_file[:tempfile].path)
     sleep 2
-    @media2 = MediaRocket::MediaFile.new :file => test_file
+    @media2 = MediaRocket::MediaFile.new :file => image_file
     
     @media.title.should == @media2.title
   end
   
   it "should create a new Media with image and tags" do
-    @media = MediaRocket::MediaFile.new :file => test_file, :tags => "image+tested"
+    @media = MediaRocket::MediaFile.new :file => image_file, :tags => "image+tested"
     @media.tag_list.size.should == 2
     @media.tag_list.first.should == "image"
   end
   
   it "should create a new Media with image and tags with delimiter" do
-    @media = MediaRocket::MediaFile.new :file => test_file, :tags => "image, tested", :delimiter => ","
+    @media = MediaRocket::MediaFile.new :file => image_file, :tags => "image, tested", :delimiter => ","
     @media.tag_list.size.should == 2
     @media.tag_list.first.should == "image"
   end
@@ -59,7 +67,7 @@ describe MediaRocket::MediaFile do
   it "should create a new Media belonging to a site" do
     site_name = "domain.com"
     
-    @media = MediaRocket::MediaFile.new :file => test_file, :site_name => site_name
+    @media = MediaRocket::MediaFile.new :file => image_file, :site_name => site_name
     @media.site.should_not be(nil)
     @media.site.name.should == site_name
   end
@@ -68,7 +76,7 @@ describe MediaRocket::MediaFile do
     site_name = "domain.com"
     gallery_name = "vacances"
     
-    @media = MediaRocket::MediaFile.new :file => test_file, :site_name => site_name, :gallery_name => gallery_name
+    @media = MediaRocket::MediaFile.new :file => image_file, :site_name => site_name, :gallery_name => gallery_name
     @media.save
     @site = @media.site
     @gallery = @media.gallery
@@ -95,7 +103,7 @@ describe MediaRocket::MediaFile do
     site_name = "domain.com"
     gallery_name = "vaca nces"
     
-    @media = MediaRocket::MediaFile.new :file => test_file, :site_name => site_name, :gallery_name => gallery_name
+    @media = MediaRocket::MediaFile.new :file => image_file, :site_name => site_name, :gallery_name => gallery_name
     @media.save
     @site = @media.site
     @gallery = @media.gallery
@@ -113,7 +121,7 @@ describe MediaRocket::MediaFile do
   
   it "should not create a new gallery if site is not specified" do
     gallery_name = "vacances"
-    @media = MediaRocket::MediaFile.new :file => test_file, :gallery_name => gallery_name
+    @media = MediaRocket::MediaFile.new :file => image_file, :gallery_name => gallery_name
     @media.site.should be(nil)
     @media.gallery.should be(nil)
   end
@@ -122,7 +130,7 @@ describe MediaRocket::MediaFile do
     site_name = "domain.com"
     gallery_name = "vacances"
     
-    @media = MediaRocket::MediaFile.new :file => test_file, :site_name => "site_name", :new_gallery => "", :gallery_name => gallery_name
+    @media = MediaRocket::MediaFile.new :file => image_file, :site_name => "site_name", :new_gallery => "", :gallery_name => gallery_name
     
     @media.gallery.should_not be(nil)
     @media.gallery.name.should == gallery_name
@@ -132,7 +140,7 @@ describe MediaRocket::MediaFile do
     site_name = "domain.com"
     gallery_name = "vacances"
     
-    @media = MediaRocket::MediaFile.new :file => test_file, :site_name => site_name, :gallery_name => gallery_name
+    @media = MediaRocket::MediaFile.new :file => image_file, :site_name => site_name, :gallery_name => gallery_name
     @media.save
     
     medias_size = MediaRocket::MediaFile.all.size
@@ -161,7 +169,7 @@ describe MediaRocket::MediaFile do
   it "should save modified description" do
     description = " description image bout vin et blabla et bloblo "
     
-    @media = MediaRocket::MediaFile.new :file => test_file, :description => description
+    @media = MediaRocket::MediaFile.new :file => image_file, :description => description
     @media.save
     
     @media.description.should == description
@@ -174,7 +182,7 @@ describe MediaRocket::MediaFile do
   end
   
   it "should inform about image size" do
-    @media = MediaRocket::MediaFile.new :file => test_file
+    @media = MediaRocket::MediaFile.new :file => image_file
     @media.save
     
     @media.should_not be(nil)
