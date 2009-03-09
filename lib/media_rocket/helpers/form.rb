@@ -178,11 +178,8 @@ module MediaRocket
       
       def media_gallery_select(options = {}, &block)
         
-        if options[:site_id]
-          galleries = ::MediaRocket::Gallery.first :site_id => options[:site_id]
-        else
-          galleries = ::MediaRocket::Gallery.all
-        end
+        site_id = options[:site_id] || MediaRocket::Site.first.id
+        galleries = ::MediaRocket::Gallery.first :site_id => site_id
         
         if galleries.empty?
           return ""
@@ -198,7 +195,9 @@ module MediaRocket
             choices << media_gallery_children_option(gallery)
           end
           
-          gallery_content << tag(:select, choices, {:name => "gallery_id", :size => galleries.size})
+          gallery_content << tag(:select, choices, {:name => "gallery_id",
+                                                    :size => galleries.size,
+                                                    :class => "media_gallery_select"})
           
           tag(:p, gallery_content)
         end
