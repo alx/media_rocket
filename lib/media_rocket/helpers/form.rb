@@ -197,7 +197,8 @@ module MediaRocket
           
           gallery_content << tag(:select, choices, {:name => "gallery_id",
                                                     :size => galleries.size,
-                                                    :class => "media_gallery_select"})
+                                                    :class => "media_gallery_select",
+                                                    :id => options[:media_gallery_select_id]})
           
           tag(:p, gallery_content)
         end
