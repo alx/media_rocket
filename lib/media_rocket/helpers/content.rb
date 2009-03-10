@@ -16,7 +16,11 @@ module MediaRocket
         #   </tr>
         # </table>
         
-        site = options[:site] || MediaRocket::Site.first
+        if options[:site_id]
+          site = MediaRocket::Site.first_or_create :id => options[:site_id]
+        else
+          site = options[:site] || MediaRocket::Site.first
+        end
         
         return "" if site.nil?
 
