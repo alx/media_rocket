@@ -178,10 +178,9 @@ module MediaRocket
       
       def media_gallery_select(options = {}, &block)
         
-        site_id = options[:site_id] || MediaRocket::Site.first.id
-        galleries = ::MediaRocket::Gallery.first :site_id => site_id
+        galleries = ::MediaRocket::Gallery.all :site_id => (options[:site_id] || MediaRocket::Site.first.id)
         
-        if galleries.empty?
+        if galleries.nil?
           return ""
         else
           content = options[:gallery_label] || "Gallery"
