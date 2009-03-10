@@ -20,8 +20,9 @@ class MediaRocket::Galleries < MediaRocket::Application
     []
   end
   
+  # GET /galleries
   def index
-    provides :xml, :json
+    provides :xml
     @galleries = ::MediaRocket::Gallery.all
     render :layout => false
   end

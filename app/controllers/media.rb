@@ -1,5 +1,18 @@
 class MediaRocket::Medias < MediaRocket::Application
 
+  def index
+    provides :json
+    @medias = ::MediaRocket::MediaFile.all(:gallery_id => params[:gallery_id])
+    
+    JSON.pretty_generate( @medias.inject(Hash.new) do |json, media|
+        Merb.logger.info "pass: #{json.class}"
+        json["medias"] = [] unless json.key?("medias")
+        json["medias"] << {:url => media.url, :title => media.title}
+        json
+      end
+    )
+  end
+
   def show
     @media = ::MediaRocket::MediaFile.first(:id => params[:id])
     render :layout => false

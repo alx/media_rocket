@@ -3,8 +3,16 @@ module MediaRocket
     
     def self.setup(scope)
       scope.identify DataMapper::Resource => :id do |s|
-        s.resources :medias, "MediaRocket::Medias"
-        s.resources :galleries, "MediaRocket::Galleries"
+        s.resources :sites, ::MediaRocket::Medias do |r|
+          r.resources :medias,    ::MediaRocket::Medias
+          r.resources :galleries, ::MediaRocket::Galleries do |p|
+            p.resources :medias,    ::MediaRocket::Medias
+          end
+        end
+        s.resources :galleries, ::MediaRocket::Galleries do |r|
+          r.resources :medias, ::MediaRocket::Medias
+        end
+        s.resources :medias,    ::MediaRocket::Medias
       end
       
       # Upload route
