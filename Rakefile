@@ -26,6 +26,7 @@ spec = Gem::Specification.new do |s|
   s.add_dependency('merb-slices', '>= 1.0.4')
   s.require_path = 'lib'
   s.files = %w(LICENSE README.textile Rakefile TODO) + Dir.glob("{lib,spec,app,public,stubs}/**/*")
+  s.files.reject! { |fn| fn.include? "public/uploads/" }
 end
 
 Rake::GemPackageTask.new(spec) do |pkg|
