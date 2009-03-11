@@ -127,9 +127,12 @@ class MediaRocket::MediaFile
     if is_image? && original?
       self.files.select{|media| media.dimension_max == "130x130"}.first.url
     else
-      extension = File.extname( self.path ).gsub( /^\./, '' ).downcase
-      ::MediaRocket.public_path_for :image, "icons/mimetypes/#{extension}.png"
+      ::MediaRocket.public_path_for :image, "icons/mimetypes/#{self.mime}.png"
     end
+  end
+  
+  def mime
+    File.extname( self.path ).gsub( /^\./, '' ).downcase
   end
   
   def original?
