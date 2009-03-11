@@ -127,7 +127,8 @@ class MediaRocket::MediaFile
     if is_image? && original?
       self.files.select{|media| media.dimension_max == "130x130"}.first.url
     else
-      media_rocket_image_path "icons/mimetypes/#{File.extname(self.path)}.png"
+      extension = File.extname( self.path ).gsub( /^\./, '' ).downcase
+      ::MediaRocket.public_path_for :image, "icons/mimetypes/#{extension}.png"
     end
   end
   

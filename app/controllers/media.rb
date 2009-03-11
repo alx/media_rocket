@@ -12,6 +12,11 @@ class MediaRocket::Medias < MediaRocket::Application
     #   ]
     # }
     JSON.pretty_generate( @medias.inject(Hash.new) do |json, media|
+      
+        Merb.logger.info "==pretty_generate== Media id: #{media.id}"
+        Merb.logger.info "==pretty_generate== Media originality: #{media.original?}"
+        Merb.logger.info "==pretty_generate== Media icon: #{media.icon}"
+        
         if media.original?
           json["medias"] = [] unless json.key?("medias")
           json["medias"] << {:title => media.title, 
