@@ -123,6 +123,14 @@ class MediaRocket::MediaFile
     (self.files.select{|media| media.dimension_max == "130x130"}.first || nil) if is_image?
   end
   
+  def icon
+    if is_image? && original?
+      self.files.select{|media| media.dimension_max == "130x130"}.first.url
+    else
+      media_rocket_image_path "icons/mimetypes/#{File.extname(self.path)}.png"
+    end
+  end
+  
   def original?
     self.associated_to.size == 0
   end
