@@ -22,8 +22,8 @@ class MediaRocket::Medias < MediaRocket::Application
           json["medias"] << {:title => media.title, 
                              :url => media.url, 
                              :icon => media.icon}
-          json
         end
+        json
       end
     )
   end
