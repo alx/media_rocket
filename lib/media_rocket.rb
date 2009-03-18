@@ -85,8 +85,6 @@ if defined?(Merb::Plugins)
   dependency 'merb_datamapper',           merb_version
   dependency 'merb-builder',              ">= 0.9.8"
   dependency "merb-mailer",               merb_version
-  dependency "merb-auth-core",            merb_version
-  dependency "merb-auth-more",            merb_version
   dependency "merb-param-protection",     merb_version
   dependency "merb-exceptions",           merb_version
   

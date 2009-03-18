@@ -1,7 +1,5 @@
 class MediaRocket::Medias < MediaRocket::Application
 
-  before :ensure_authenticated
-
   # GET /medias/:id/edit
   def edit
     if @media = ::MediaRocket::MediaFile.first(:id => params[:id])
