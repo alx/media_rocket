@@ -1,7 +1,7 @@
 class MediaRocket::Queue < MediaRocket::Application
   layout :queue
   
-  before :ensure_authenticated
+  #before :ensure_authenticated
   
   def index
     

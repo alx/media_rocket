@@ -1,6 +1,6 @@
 class MediaRocket::Medias < MediaRocket::Application
 
-  before :ensure_authenticated, :exclude => [:index, :show]
+  #before :ensure_authenticated, :exclude => [:index, :show]
 
   def index
     provides :json
