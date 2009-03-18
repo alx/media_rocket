@@ -1,6 +1,6 @@
 class MediaRocket::Galleries < MediaRocket::Application
   
-  #before :ensure_authenticated, :exclude => [:index, :gallery]
+  before :ensure_authenticated, :exclude => [:index, :gallery]
   
   def new
     if params[:parent_id] and params[:name]
@@ -52,12 +52,36 @@ class MediaRocket::Galleries < MediaRocket::Application
   end
   
   def gallery
-    provides :xml
+    provides :xml, :json
     return nil if params[:id].nil?
     @gallery = ::MediaRocket::Gallery.first(:id => params[:id])
     @medias = @gallery.medias.select{|media| media.original?}
     @medias.sort! {|x,y| x.position <=> y.position }
-    render :layout => false
+    
+    
+    if params[:format] == "json"
+      # Send the list of original media using json
+      # {
+      #   "Medias":
+      #   [
+      #     {"title": media.title, "url": media.url, "icon": media.thumbnail || media.icon}
+      #   ]
+      # }
+      JSON.pretty_generate( @medias.inject(Hash.new) do |json, media|
+          if media.original?
+            json["medias"] = [] unless json.key?("medias")
+            json["medias"] << {:title => media.title, 
+                               :url => media.url, 
+                               :icon => media.icon, 
+                               :mime => media.mime}
+          end
+          json
+        end
+      )
+    elsif params[:format] == "xml"
+      # Render xml
+      render :layout => false
+    end
   end
   
 end

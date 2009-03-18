@@ -1,35 +1,6 @@
 class MediaRocket::Medias < MediaRocket::Application
 
-  #before :ensure_authenticated, :exclude => [:index, :show]
-
-  def index
-    provides :json
-    @medias = ::MediaRocket::MediaFile.all(:gallery_id => params[:gallery_id])
-    
-    # Send the list of original media using json
-    # {
-    #   "Medias":
-    #   [
-    #     {"title": media.title, "url": media.url, "icon": media.thumbnail || media.icon}
-    #   ]
-    # }
-    JSON.pretty_generate( @medias.inject(Hash.new) do |json, media|
-        if media.original?
-          json["medias"] = [] unless json.key?("medias")
-          json["medias"] << {:title => media.title, 
-                             :url => media.url, 
-                             :icon => media.icon, 
-                             :mime => media.mime}
-        end
-        json
-      end
-    )
-  end
-
-  def show
-    @media = ::MediaRocket::MediaFile.first(:id => params[:id])
-    render :layout => false
-  end
+  before :ensure_authenticated
 
   # GET /medias/:id/edit
   def edit
