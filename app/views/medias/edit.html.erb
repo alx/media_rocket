@@ -1,7 +1,6 @@
 <img src="<%= @media.icon %>" class="viewer" />
 
 <%= form :action =>  url(:edit_media_rocket_media, @media.id), :method => "GET", :class => "liveform media-info" do %>
-	<input type="hidden" name="_method" value="PUT"/>
 	
 	<label for="title"><span>Titre:</span></label>
 	<input type="text" value="<%= @media.title %>" name="title" class="text"/><br/>
