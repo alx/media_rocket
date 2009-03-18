@@ -1,5 +1,7 @@
 class MediaRocket::Medias < MediaRocket::Application
 
+  before :ensure_authenticated, :exclude => [:index, :show]
+
   def index
     provides :json
     @medias = ::MediaRocket::MediaFile.all(:gallery_id => params[:gallery_id])

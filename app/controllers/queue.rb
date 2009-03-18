@@ -1,6 +1,8 @@
 class MediaRocket::Queue < MediaRocket::Application
   layout :queue
   
+  before :ensure_authenticated
+  
   def index
     
     redirect slice_url(:select_files) if params[:select_files]
