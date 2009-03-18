@@ -1,4 +1,4 @@
-<img src="<%= @media.icon %>" class="viewer" />
+<img src="<%= @media.icon %>" class="viewer" /><br>url: <%= @media.url %>
 
 <%= form :action =>  url(:edit_media_rocket_media, @media.id), :method => "GET", :class => "liveform media-info" do %>
 	
