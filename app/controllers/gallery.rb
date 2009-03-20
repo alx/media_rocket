@@ -1,4 +1,6 @@
 class MediaRocket::Galleries < MediaRocket::Application
+
+  before :ensure_authenticated, :exclude => ["index", "gallery"]
   
   def new
     if params[:parent_id] and params[:name]

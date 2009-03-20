@@ -1,6 +1,8 @@
 class MediaRocket::Main < MediaRocket::Application
   provides :html, :xml, :json
   
+  before :ensure_authenticated, :only => ["upload"]
+  
   def index
     render
   end
