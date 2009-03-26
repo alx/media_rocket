@@ -3,8 +3,8 @@
 <ul>
 	<% @medias.each do |media| -%>
 	<li>
-		<%= @media.name %><br/>
-		<img src="<%= @media.url %>"/><br/>
+		<%= media.title %><br/>
+		<img src="<%= media.url %>"/><br/>
 	</li>
 	<%- end %>
 </ul>

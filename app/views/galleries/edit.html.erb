@@ -19,7 +19,7 @@
 <br/>
 
 <label for="gallery_password">password:</label>
-<input id="gallery_password" class="text" type="password" name="password" value="<%= @gallery.password %>"/>
+<input id="gallery_password" class="text" type="password" name="password" value="<%= "001122334455" unless @gallery.crypted_password.empty? %>"/>
 <br/>
 
 <input type="submit" name="submit" value="Modifier"/>
