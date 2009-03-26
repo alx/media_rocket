@@ -8,6 +8,9 @@ class MediaRocket::Gallery
   property :ref_title, Text
   property :ref_meta, Text
   
+  property :crypted_password, Text, :default => ""
+  property :salt, Text, :default => Digest::SHA1.hexdigest("--#{Time.now.to_s}--")
+  
   has_tags
   
   is_tree :order => "id"
@@ -38,4 +41,30 @@ class MediaRocket::Gallery
       '%' + $1.unpack('H2' * $1.size).join('%').upcase
     end.tr(' ', '-')
   end
+  
+  # =====
+  #
+  # Protection
+  #
+  # =====
+  
+  def protect(password)
+    return if password.blank?
+    encrypt(password)
+  end
+  
+  def authenticated?(password)
+    self.crypted_password == encrypt(password)
+  end
+  
+  # Encrypts some data with the salt.
+  def encrypt(password)
+    Digest::SHA1.hexdigest("--#{self.salt}--#{password}--")
+  end
+  
+  def create_salt
+    self.salt = Digest::SHA1.hexdigest("--#{Time.now.to_s}--") if new_record?
+    self.update_attributes :salt => Digest::SHA1.hexdigest("--#{Time.now.to_s}--")
+  end
+  
 end
