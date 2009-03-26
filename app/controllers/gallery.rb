@@ -47,6 +47,10 @@ class MediaRocket::Galleries < MediaRocket::Application
         @gallery.update_attributes(key => value) if @gallery.attributes.key?(key.to_sym)
       end
       
+      if params[:password]
+        @gallery.protect params[:password]
+      end
+      
       display @gallery, :layout => false
     end
   end

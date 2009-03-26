@@ -48,8 +48,13 @@ class MediaRocket::Gallery
   #
   # =====
   
+  def protected?
+    return !self.crypted_password.strip.empty?
+  end
+  
   def protect(password)
-    return if password.blank?
+    if password.strip.empty?
+      self.update_attributes :salt => 
     encrypt(password)
   end
   
@@ -59,11 +64,10 @@ class MediaRocket::Gallery
   
   # Encrypts some data with the salt.
   def encrypt(password)
-    Digest::SHA1.hexdigest("--#{self.salt}--#{password}--")
+    self.update_attributes :crypted_password => Digest::SHA1.hexdigest("--#{self.salt}--#{password}--")
   end
   
   def create_salt
-    self.salt = Digest::SHA1.hexdigest("--#{Time.now.to_s}--") if new_record?
     self.update_attributes :salt => Digest::SHA1.hexdigest("--#{Time.now.to_s}--")
   end
   
