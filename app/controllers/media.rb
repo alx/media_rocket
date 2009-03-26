@@ -1,6 +1,8 @@
 class MediaRocket::Medias < MediaRocket::Application
 
-  before :ensure_authenticated
+  if method_defined? :ensure_authenticated
+    before :ensure_authenticated
+  end
   
   # GET /medias/:id/edit
   def edit
