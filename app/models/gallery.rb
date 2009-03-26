@@ -18,7 +18,8 @@ class MediaRocket::Gallery
   belongs_to :site, :class_name => "MediaRocket::Site"
   has n, :medias, :class_name => "MediaRocket::MediaFile"
   
-  before :destroy, :clean_gallery
+  after   :create,  :update_unique_salt
+  before  :destroy, :clean_gallery
 
   def add_child(name)
     children.first_or_create :name => name, 
@@ -58,6 +59,7 @@ class MediaRocket::Gallery
     if password.strip.empty?
       self.update_attributes :crypted_password => ""
     else
+      update_unique_salt if self.salt.empty?
       self.update_attributes :crypted_password => encrypt(password)
     end
   end
@@ -73,7 +75,7 @@ class MediaRocket::Gallery
   end
   
   # Salt the current gallery
-  def create_salt
+  def update_unique_salt
     self.update_attributes :salt => Digest::SHA1.hexdigest("--#{Time.now.to_s}--")
   end
 end

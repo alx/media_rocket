@@ -57,15 +57,14 @@ class MediaRocket::Galleries < MediaRocket::Application
   
   # GET /gallery/:id(.:format)
   def gallery
-    provides :xml, :json
+    provides :xml, :json, :html
     return nil if params[:id].nil?
     
     @gallery = ::MediaRocket::Gallery.first(:id => params[:id])
     
-    # Gallery is protected
     if @gallery.protected?
       # Ask password to user
-      # if not present or if password not correct
+      # if password not included in request or if password not correct
       redirect :password_request if !params[:password] ||
                                     @gallery.authenticated?(params[:password])
     end
