@@ -10,13 +10,13 @@ class MediaRocket::Galleries < MediaRocket::Application
   end
   
   
-  # GET /media/:id/delete
+  # GET /gallery/:id/delete
   def delete
     ::MediaRocket::Gallery.first(:id => params[:id]).destroy
     []
   end
 
-  # DELETE /media/:id
+  # DELETE /gallery/:id
   def destroy
     ::MediaRocket::Gallery.first(:id => params[:id]).destroy
     []
@@ -25,7 +25,7 @@ class MediaRocket::Galleries < MediaRocket::Application
   # GET /galleries
   def index
     provides :xml
-    @galleries = ::MediaRocket::Gallery.all
+    @galleries = ::MediaRocket::Gallery.all.select{|gallery| gallery.protected? == false}
     render :layout => false
   end
   
@@ -55,23 +55,53 @@ class MediaRocket::Galleries < MediaRocket::Application
     end
   end
   
+  # GET /gallery/:id(.:format)
   def gallery
     provides :xml, :json
     return nil if params[:id].nil?
+    
     @gallery = ::MediaRocket::Gallery.first(:id => params[:id])
+    
+    # Gallery is protected
+    if @gallery.protected?
+      # Ask password to user
+      # if not present or if password not correct
+      redirect :password_request if !params[:password] ||
+                                    @gallery.authenticated?(params[:password])
+    end
+    
     @medias = @gallery.medias.select{|media| media.original?}
     @medias.sort! {|x,y| x.position <=> y.position }
     
-    
-    if params[:format] == "json"
-      # Send the list of original media using json
-      # {
-      #   "Medias":
-      #   [
-      #     {"title": media.title, "url": media.url, "icon": media.thumbnail || media.icon}
-      #   ]
-      # }
-      JSON.pretty_generate( @medias.inject(Hash.new) do |json, media|
+    case params[:format]
+    when :json
+      display_json @medias
+    when :xml
+      render :layout => false
+    when :html
+      render
+    end
+  end
+  
+  def password_request
+    render
+  end
+  
+  protected
+  
+    # Send the list of original media using json
+    # {
+    #   "Medias":
+    #   [
+    #     {
+    #      "title": media.title, 
+    #      "url": media.url,
+    #      "icon": media.thumbnail || media.icon
+    #     }
+    #   ]
+    # }
+    def display_json(medias)
+      JSON.pretty_generate(medias.inject(Hash.new) do |json, media|
           if media.original?
             json["medias"] = [] unless json.key?("medias")
             json["medias"] << {:title => media.title, 
@@ -82,10 +112,6 @@ class MediaRocket::Galleries < MediaRocket::Application
           json
         end
       )
-    elsif params[:format] == "xml"
-      # Render xml
-      render :layout => false
     end
-  end
   
 end
