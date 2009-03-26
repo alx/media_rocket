@@ -48,27 +48,32 @@ class MediaRocket::Gallery
   #
   # =====
   
+  # Verify if the current gallery is protected
   def protected?
     return !self.crypted_password.strip.empty?
   end
   
+  # Protect or remov protection on the gallery
   def protect(password)
     if password.strip.empty?
-      self.update_attributes :salt => 
-    encrypt(password)
+      self.update_attributes :crypted_password => ""
+    else
+      self.update_attributes :crypted_password => encrypt(password)
+    end
   end
   
+  # Verify that the password givn correspond to the gallery
   def authenticated?(password)
     self.crypted_password == encrypt(password)
   end
   
   # Encrypts some data with the salt.
   def encrypt(password)
-    self.update_attributes :crypted_password => Digest::SHA1.hexdigest("--#{self.salt}--#{password}--")
+    Digest::SHA1.hexdigest("--#{self.salt}--#{password}--")
   end
   
+  # Salt the current gallery
   def create_salt
     self.update_attributes :salt => Digest::SHA1.hexdigest("--#{Time.now.to_s}--")
   end
-  
 end
