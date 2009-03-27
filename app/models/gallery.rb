@@ -54,11 +54,13 @@ class MediaRocket::Gallery
     return !self.crypted_password.strip.empty?
   end
   
-  # Protect or remov protection on the gallery
+  # Protect or remove protection on the gallery
   def protect(password)
     if password.strip.empty?
+      # No password has bee specified, remove protection
       self.update_attributes :crypted_password => ""
     else
+      # Password specified, verify that salt exists and protect gallery
       update_unique_salt if self.salt.empty?
       self.update_attributes :crypted_password => encrypt(password)
     end
