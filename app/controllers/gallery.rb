@@ -75,8 +75,8 @@ class MediaRocket::Galleries < MediaRocket::Application
 
       case params[:format]
       when :json  then  display_json @medias
-      when :xml   then  render :layout => false
-      else              render
+      when :html  then  render
+      else render :layout => false
       end
     end
   end
