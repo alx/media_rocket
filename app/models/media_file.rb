@@ -32,14 +32,14 @@ class MediaRocket::MediaFile
   # /calabacina/associated/eps <- to get the list of associated files with "eps" tag,
   # if there's only 1 file associated with this tag, it will return the file
   # 
-  has n, :associated_files, :class_name => "MediaRocket::AssociatedFile"
-  has n, :files, :through => :associated_files, :class_name => "MediaRocket::MediaFile",
+  has n, :associated_files, :class_name => ::MediaRocket::AssociatedFile
+  has n, :files, :through => :associated_files, :class_name => ::MediaRocket::MediaFile,
                    :remote_name => :file, :child_key => [:media_id]
-  has n, :associated_to, :through => :associated_files, :class_name => "MediaRocket::MediaFile",
+  has n, :associated_to, :through => :associated_files, :class_name => ::MediaRocket::MediaFile,
                        :remote_name => :media, :child_key => [:file_id]
   
-  belongs_to :gallery, :class_name => "MediaRocket::Gallery"
-  belongs_to :site, :class_name => "MediaRocket::Site"
+  belongs_to :gallery,  :class_name => ::MediaRocket::Gallery,  :child_key => [:gallery_id]
+  belongs_to :site,     :class_name => ::MediaRocket::Site,     :child_key => [:site_id]
   
   after :save, :post_process
   before :destroy, :unlink_files

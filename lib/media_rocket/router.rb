@@ -8,10 +8,12 @@ module MediaRocket
           r.resources :medias, ::MediaRocket::Medias
           r.resources :galleries, ::MediaRocket::Galleries do |p|
             p.resources :medias, ::MediaRocket::Medias
+            p.resources :permissions, ::MediaRocket::Permissions
           end
         end  
         s.resources :galleries, ::MediaRocket::Galleries do |r|
           r.resources :medias, ::MediaRocket::Medias
+          r.resources :permissions, ::MediaRocket::Permissions
         end
         s.resources :medias, ::MediaRocket::Medias
       end

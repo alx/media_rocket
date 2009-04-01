@@ -15,7 +15,7 @@ class MediaRocket::Gallery
   
   is_tree :order => "id"
   
-  belongs_to :site, :class_name => ::MediaRocket::Site
+  belongs_to :site, :class_name => ::MediaRocket::Site, :child_key => [:site_id]
   
   has n, :medias,       :class_name => ::MediaRocket::MediaFile
   has n, :permissions,  :class_name => ::MediaRocket::GalleryPermission

@@ -56,8 +56,9 @@ module MediaRocket
         gallery_action = tag :td, :class => "action" do 
             gallery_action_add(gallery) <<
             gallery_action_edit(gallery) <<
+            gallery_action_permission(gallery) <<
             gallery_action_delete(gallery)
-          end
+        end
         
         output = tag(:tr, gallery_name + gallery_action, { :id => gallery_id, :class => "#{child_of}"})
         
@@ -75,7 +76,7 @@ module MediaRocket
             
             media_action = tag :td, :class => "action" do 
               media_action_edit(media) <<
-              media_action_delete(media) <<
+              media_action_delete(media) << 
               media_action_drag(media)
             end
               
@@ -117,6 +118,16 @@ module MediaRocket
                 url(:edit_media_rocket_gallery, :id => gallery.id) << "?height=350&width=350",
                 :title => "Edit #{gallery.name}",
                 :class => :thickbox
+      end
+      
+      def gallery_action_permission(gallery)
+        if (defined? User)
+          link_to self_closing_tag(:img, :src => media_rocket_image_path("/icons/lock.png"),
+                      :title => "Edit #{gallery.name} Permissions", :class => :icon),
+                      url(:edit_media_rocket_gallery_permissions, :id => gallery.id) << "?height=350&width=350",
+                      :title => "Edit #{gallery.name} Permissions",
+                      :class => :thickbox
+        end
       end
       
       
