@@ -19,13 +19,6 @@ class MediaRocket::Permissions < MediaRocket::Application
     session[:user] == 1
   end
   
-  
-  def edit
-    @gallery = ::MediaRocket::Gallery.first(:id => params[:gallery_id])
-    @users = User.all
-    @users.shift
-  end
-  
   def index
     
     if params[:permission_act]
@@ -41,7 +34,7 @@ class MediaRocket::Permissions < MediaRocket::Application
       
     @users = User.all
     @users.shift # Do not fetch admin User
-    render
+    render :layout => false
       
   end
   

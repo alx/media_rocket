@@ -124,7 +124,7 @@ module MediaRocket
         if (defined? User)
           link_to self_closing_tag(:img, :src => media_rocket_image_path("/icons/lock.png"),
                       :title => "Edit #{gallery.name} Permissions", :class => :icon),
-                      url(:edit_media_rocket_gallery_permissions, :id => gallery.id) << "?height=350&width=350",
+                      url(:media_rocket_gallery_permissions, :gallery_id => gallery.id) << "?height=350&width=350",
                       :title => "Edit #{gallery.name} Permissions",
                       :class => :thickbox
         end
