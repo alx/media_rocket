@@ -8,9 +8,6 @@ class MediaRocket::Gallery
   property :ref_title, Text
   property :ref_meta, Text
   
-  property :crypted_password, Text, :default => ""
-  property :salt, Text, :default => Digest::SHA1.hexdigest("--#{Time.now.to_s}--")
-  
   has_tags
   
   is_tree :order => "id"
@@ -65,43 +62,5 @@ class MediaRocket::Gallery
   
   def is_allowed?(user_id)
     !MediaRocket::GalleryPermission.first(:gallery_id => self, :user_id => user_id).nil?
-  end
-  
-  # =====
-  #
-  # Protection
-  #
-  # =====
-  
-  # Verify if the current gallery is protected
-  def protected?
-    return !self.crypted_password.strip.empty?
-  end
-  
-  # Protect or remove protection on the gallery
-  def protect(password)
-    if password.strip.empty?
-      # No password has bee specified, remove protection
-      self.update_attributes :crypted_password => ""
-    else
-      # Password specified, verify that salt exists and protect gallery
-      update_unique_salt if self.salt.empty?
-      self.update_attributes :crypted_password => encrypt(password)
-    end
-  end
-  
-  # Verify that the password givn correspond to the gallery
-  def authenticated?(password)
-    self.crypted_password == encrypt(password)
-  end
-  
-  # Encrypts some data with the salt.
-  def encrypt(password)
-    Digest::SHA1.hexdigest("--#{self.salt}--#{password}--")
-  end
-  
-  # Salt the current gallery
-  def update_unique_salt
-    self.update_attributes :salt => Digest::SHA1.hexdigest("--#{Time.now.to_s}--")
   end
 end

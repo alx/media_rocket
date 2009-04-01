@@ -49,11 +49,6 @@ class MediaRocket::Galleries < MediaRocket::Application
         @gallery.update_attributes(key => value) if @gallery.attributes.key?(key.to_sym)
       end
       
-      # "001122334455" is reset value for password
-      if params[:password] and params[:password] != "001122334455"
-        @gallery.protect params[:password]
-      end
-      
       display @gallery, :layout => false
     end
   end
@@ -65,24 +60,14 @@ class MediaRocket::Galleries < MediaRocket::Application
     @gallery = ::MediaRocket::Gallery.first(:id => params[:id])
     return nil if @gallery.nil?
     
-    if @gallery.protected? and !@gallery.authenticated?(params[:password])
-      # Ask password to user
-      render :template => 'galleries/password_request'
-    else
-      
-      @medias = @gallery.medias.select{|media| media.original?}
-      @medias.sort! {|x,y| x.position <=> y.position }
+    @medias = @gallery.medias.select{|media| media.original?}
+    @medias.sort! {|x,y| x.position <=> y.position }
 
-      case params[:format]
+    case params[:format]
       when :json  then  display_json @medias
       when :html  then  render
       else render :layout => false
-      end
     end
-  end
-  
-  def password_request
-    render
   end
   
   protected

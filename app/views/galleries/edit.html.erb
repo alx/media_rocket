@@ -18,10 +18,6 @@
 <input id="gallery_meta" class="text" type="text" name="ref_meta" value="<%= @gallery.ref_meta %>"/>
 <br/>
 
-<label for="gallery_password">password:</label>
-<input id="gallery_password" class="text" type="password" name="password" value="<%= "001122334455" unless @gallery.crypted_password.empty? %>"/>
-<br/>
-
 <input type="submit" name="submit" value="Modifier"/>
 
 <% end =%>
