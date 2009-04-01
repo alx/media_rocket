@@ -31,13 +31,13 @@
 
 /*****************************************************************************/
 /*
-/* treetable
+/* treeTable
 /*
 /*****************************************************************************/
 
 /* TABLE
  * ========================================================================= */
-table {
+table.treeTable {
   border: 1px solid #888;
   border-collapse: collapse;
   line-height: 1;
@@ -47,56 +47,56 @@ table {
 
 /* Caption
  * ------------------------------------------------------------------------- */
-table caption {
+table.treeTable caption {
   font-size: .9em;
   font-weight: bold;
 }
 
 /* Header
  * ------------------------------------------------------------------------- */
-table thead {
+table.treeTable thead {
   background: #aaa url(../images/icons/bg-table-thead.png) repeat-x top left;
   font-size: .9em;
 }
 
-table thead tr th {
+table.treeTable thead tr th {
   border: 1px solid #888;
   font-weight: normal;
   padding: .3em 1.67em .1em 1.67em;
   text-align: left;
 }
 
-th.action, td.action {
+table.treeTable th.action, td.action {
 	width: 200px;
 	text-align: right;
 }
 
 /* Body
  * ------------------------------------------------------------------------- */
-table tbody tr td {
+table.treeTable tbody tr td {
   cursor: default;
   padding: .3em 1.5em;
 }
 
-table tbody tr.even {
+table.treeTable tbody tr.even {
   background: #f3f3f3;
 }
 
-table tbody tr.odd {
+table.treeTable tbody tr.odd {
   background: #fff;
 }
 
-table span {
+table.treeTable span {
   background-position: center left;
   background-repeat: no-repeat;
   padding: .2em 0 .2em 1.5em;
 }
 
-table span.media {
+table.treeTable span.media {
   background-image: url(../images/icons/page_white_text.png);
 }
 
-table span.gallery {
+table.treeTable span.gallery {
   background-image: url(../images/icons/folder.png);
 }
 
