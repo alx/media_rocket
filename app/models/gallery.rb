@@ -15,8 +15,10 @@ class MediaRocket::Gallery
   
   is_tree :order => "id"
   
-  belongs_to :site, :class_name => "MediaRocket::Site"
-  has n, :medias, :class_name => "MediaRocket::MediaFile"
+  belongs_to :site, :class_name => ::MediaRocket::Site
+  
+  has n, :medias,       :class_name => ::MediaRocket::MediaFile
+  has n, :permissions,  :class_name => ::MediaRocket::GalleryPermission
   
   after   :create,  :update_unique_salt
   before  :destroy, :clean_gallery
@@ -41,6 +43,28 @@ class MediaRocket::Gallery
     string.gsub(/([^ a-zA-Z0-9_.-]+)/n) do
       '%' + $1.unpack('H2' * $1.size).join('%').upcase
     end.tr(' ', '-')
+  end
+  
+  # =====
+  #
+  # Permissions
+  #
+  # =====
+  
+  def is_public?
+    self.permissions.empty?
+  end
+  
+  def is_private?
+    self.permissions.empty?
+  end
+  
+  def set_permission(user_id)
+    self.permissions.create :user_id => user_id
+  end
+  
+  def is_allowed?(user_id)
+    !MediaRocket::GalleryPermission.first(:gallery_id => self, :user_id => user_id).nil?
   end
   
   # =====

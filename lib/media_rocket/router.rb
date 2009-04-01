@@ -23,6 +23,9 @@ module MediaRocket
       scope.match('/galleries(.:format)').to(:controller => 'galleries', :action => 'list').name(:galleries)
       scope.match('/gallery/:id(.:format)').to(:controller => 'galleries', :action => 'gallery').name(:gallery)
 
+      # Route to permission page
+      scope.match('/permissions').to(:controller => 'permissions', :action => 'index').name(:permissions)
+
       # Route to front page
       scope.match('/').to(:controller => 'main', :action => 'index').name(:index)
 
