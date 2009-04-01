@@ -34,7 +34,7 @@ class MediaRocket::Permissions < MediaRocket::Application
       
     @users = User.all
     @users.shift # Do not fetch admin User
-    render :layout => "media_rocket"
+    render
       
   end
   
@@ -58,14 +58,14 @@ class MediaRocket::Permissions < MediaRocket::Application
   
   def add_gallery_permission_to_user(params)
     Merb.logger.info "add_gallery_permission_to_user"
-    if params[:user_id] && params[:gallery_id] && user = User.first(:id => params[:user_id])
-      user.permissions.create :gallery_id => params[:gallery_id]
+    if params[:user_id] && params[:gallery_id] && gallery = MediaRocket::Gallery.first(:id => params[:gallery_id])
+      gallery.set_permission params[:user_id]
     end
   end
   
   def remove_gallery_permission_to_user(params)
     Merb.logger.info "remove_gallery_permission_to_user"
-    if params[:perm_id] && perm = GalleryPermission.first(params[:perm_id])
+    if params[:perm_id] && perm = MediaRocket::GalleryPermission.first(params[:perm_id])
       perm.destroy
     end
   end
