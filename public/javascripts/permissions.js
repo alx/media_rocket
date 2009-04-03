@@ -13,7 +13,6 @@ $(document).ready(function() {
 	// -----
 	$('form.userform').livequery(function(){
 		$('form.userform').ajaxForm();
-		alert("User added");
 		return false;
 	});
 	
