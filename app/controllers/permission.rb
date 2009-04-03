@@ -41,10 +41,15 @@ class MediaRocket::Permissions < MediaRocket::Application
   
   def add_user(params)
     Merb.logger.info "add_user"
+    user = nil
     if params[:login] && params[:password]
-      u = User.new(:login => params[:login])
-      u.password = u.password_confirmation = params[:password]
-      u.save
+      user = User.new(:login => params[:login])
+      user.password = u.password_confirmation = params[:password]
+      user.save
+    end
+    
+    if user && params[:gallery_id] && gallery = MediaRocket::Gallery.first(:id => params[:gallery_id])
+      gallery.set_permission user.id
     end
   end
   
