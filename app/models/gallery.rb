@@ -17,7 +17,6 @@ class MediaRocket::Gallery
   has n, :medias,       :class_name => ::MediaRocket::MediaFile
   has n, :permissions,  :class_name => ::MediaRocket::GalleryPermission
   
-  after   :create,  :update_unique_salt
   before  :destroy, :clean_gallery
 
   def add_child(name)
@@ -53,7 +52,7 @@ class MediaRocket::Gallery
   end
   
   def is_private?
-    self.permissions.empty?
+    !self.is_public?
   end
   
   def set_permission(user_id)
