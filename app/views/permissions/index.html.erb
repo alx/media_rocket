@@ -1,11 +1,15 @@
 <p>Select user allowed to view this gallery:</p>
 
 <div id="permission-list">
-<% @permissions.each do |perm| -%>
-<span id="user_<%= perm.user_id %>">
-<input type='checkbox' id='perm_<%= perm.id %>' name='perm_<%= perm.gallery_id %>_<%= perm.user_id %>' class='permission-item'>
-	<%= User.first(:id => perm.user_id).login %>
-	<a href='#' class='remove_user' rel='user_<%= perm.user_id %>'><img src='<%= media_rocket_image_path("/icons/delete.png") %>' alt='delete user'/></a>
+	<% User.all.each do |user| -%>
+	<span id="user_<%= perm.user_id %>">
+		<% if permission = !MediaRocket::GalleryPermission.first(:gallery_id => params[:gallery_id], :user_id => user.id).nil? %>
+		<input type='checkbox' id='perm_<%= perm.id %>' name='perm_<%= params[:gallery_id] %>_<%= user.id %>' class='permission-item' CHECKED>
+		<% else %>
+		<input type='checkbox' name='perm_<%= pparams[:gallery_id] %>_<%= user.id %>' class='permission-item'>
+		<% end %>
+	<%= user.login %>
+	<a href='#' class='remove_user' rel='user_<%= user.id %>'><img src='<%= media_rocket_image_path("/icons/delete.png") %>' alt='delete user'/></a>
 <br>
 </span>
 <%- end %>
