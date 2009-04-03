@@ -66,8 +66,5 @@ $(document).ready(function() {
 			// query on permission url with "remove_perm" action
 			$.post("/permissions", { permission_act: "rem_perm", perm_id: perm } );
 		}
-		
-		$(this).checked.toggle();
-		return false;
 	});
 });
