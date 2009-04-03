@@ -41,7 +41,7 @@ class MediaRocket::Gallery
     end.tr(' ', '-')
   end
   
-  def thumbnail
+  def icon
     medias.first.icon
   end
   
