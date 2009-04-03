@@ -5,7 +5,7 @@ $(document).ready(function() {
 		rules: {
 			media_file: {
 				required: true,
-				accept: "jpg|jpeg|png|gif|bmp|tif|tiff|ai|pdf"
+				accept: "jpg|jpeg|png|gif|bmp|tif|tiff|ai|pdf|mp3"
 			}
 		}
 	});

@@ -41,6 +41,10 @@ class MediaRocket::Gallery
     end.tr(' ', '-')
   end
   
+  def thumbnail
+    medias.first.icon
+  end
+  
   # =====
   #
   # Permissions
