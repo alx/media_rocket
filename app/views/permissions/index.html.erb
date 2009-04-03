@@ -6,7 +6,7 @@
 		<% 
 		# Verify that a permission exists for this user
 		# If so, the checkbox is checked and id=perm.id for remove method in js
-		if permission = !MediaRocket::GalleryPermission.first(:gallery_id => params[:gallery_id], :user_id => user.id).nil? %>
+		if perm = !MediaRocket::GalleryPermission.first(:gallery_id => params[:gallery_id], :user_id => user.id).nil? %>
 		<input type='checkbox' id='perm_<%= perm.id %>' name='perm_<%= params[:gallery_id] %>_<%= user.id %>' class='permission-item' CHECKED>
 		<% else %>
 		<input type='checkbox' name='perm_<%= params[:gallery_id] %>_<%= user.id %>' class='permission-item'>
