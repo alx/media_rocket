@@ -31,9 +31,8 @@ class MediaRocket::Permissions < MediaRocket::Application
       end
     
     end
-      
-    @users = User.all
-    @users.shift # Do not fetch admin User
+    
+    @permissions = MediaRocket::GalleryPermission.all(:gallery_id => params[:gallery_id])
     render :layout => false
       
   end
