@@ -2,7 +2,7 @@
 
 <div id="permission-list">
 	<% User.all.each do |user| -%>
-	<span id="user_<%= perm.user_id %>">
+	<span id="user_<%= user.id %>">
 		<% 
 		# Verify that a permission exists for this user
 		# If so, the checkbox is checked and id=perm.id for remove method in js
