@@ -44,7 +44,7 @@ class MediaRocket::Permissions < MediaRocket::Application
     user = nil
     if params[:login] && params[:password]
       user = User.new(:login => params[:login])
-      user.password = u.password_confirmation = params[:password]
+      user.password = user.password_confirmation = params[:password]
       user.save
     end
     
