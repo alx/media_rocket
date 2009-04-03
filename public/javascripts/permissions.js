@@ -52,6 +52,7 @@ $(document).ready(function() {
 
 			// query on permission url with "add_perm" action
 			$.post("/permissions", { permission_act: "add_perm", user_id: user, gallery_id: gallery } );
+			this.checked = false;
 		}
 		
 		// -----
@@ -65,6 +66,7 @@ $(document).ready(function() {
 
 			// query on permission url with "remove_perm" action
 			$.post("/permissions", { permission_act: "rem_perm", perm_id: perm } );
+			this.checked = true;
 		}
 		
 		return false;
