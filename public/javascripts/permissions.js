@@ -35,7 +35,7 @@ $(document).ready(function() {
 		return false;
 	});
 	
-	$("input.permission-item").livequery('click', function(event) {
+	$("input.permission-item").click(function() {
 		
 		// -----
 		// Add permission by checking a checkbox
@@ -68,8 +68,6 @@ $(document).ready(function() {
 			$.post("/permissions", { permission_act: "rem_perm", perm_id: perm } );
 			this.checked = true;
 		}
-		
-		return false;
 	});
 });
 
