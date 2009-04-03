@@ -56,7 +56,7 @@ class MediaRocket::Permissions < MediaRocket::Application
   def remove_user(params)
     Merb.logger.info "remove_user"
     if params[:user_id] && user = User.first(:id => params[:user_id])
-      MediaRocket::GalleryPermission.all(:user_id => params[:user_id]).destroy
+      MediaRocket::GalleryPermission.all(:user_id => params[:user_id]).each{|perm| perm.destroy}
       user.destroy
     end
   end
