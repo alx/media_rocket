@@ -70,7 +70,7 @@ class MediaRocket::Permissions < MediaRocket::Application
   
   def remove_gallery_permission_to_user(params)
     Merb.logger.info "remove_gallery_permission_to_user"
-    if params[:perm_id] && perm = MediaRocket::GalleryPermission.first(params[:perm_id])
+    if params[:perm_id] && perm = MediaRocket::GalleryPermission.first(:id => params[:perm_id])
       perm.destroy
     end
   end
