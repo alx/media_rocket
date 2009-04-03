@@ -42,7 +42,7 @@ $(document).ready(function() {
 		//  - fetch user_id and gallery_id from the checbox
 		//  - Send request to add a permission on this gallery to this user
 		// -----
-		if (this.is(':checked')) {
+		if (this.checked) {
 		  	// Fetching rel info
 			rel = this.name.split("_");
 			// Fetch user_id
