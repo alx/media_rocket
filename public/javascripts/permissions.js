@@ -24,7 +24,7 @@ $(document).ready(function() {
 	$("a.remove_user").livequery('click', function(event) {
 		
 		// Fetch user_id
-		user = this.id.split("_").pop();
+		user = this.rel.split("_").pop();
 		
 		// query on permission url with "remove_user" action
 		$.post("/permissions", { permission_act: "rem_user", user_id: user } );

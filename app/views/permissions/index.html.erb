@@ -2,10 +2,12 @@
 
 <div id="permission-list">
 <% @permissions.each do |perm| -%>
+<span id="user_<%= perm.user_id %>">
 <input type='checkbox' id='perm_<%= perm.id %>' name='perm_<%= perm.gallery_id %>_<%= perm.user_id %>' class='permission-item'>
 	<%= User.first(:id => perm.user_id).login %>
-	<a href='#' class='remove_user' rel='perm_<%= perm.id %>' id='user_<%= perm.user_id %>'><img src='<%= media_rocket_image_path("/icons/delete.png") %>' alt='delete user'/></a>
+	<a href='#' class='remove_user' rel='user_<%= perm.user_id %>'><img src='<%= media_rocket_image_path("/icons/delete.png") %>' alt='delete user'/></a>
 <br>
+</span>
 <%- end %>
 
 <form action='<%= slice_url(:permissions) %>' method='get' class='userform' accept-charset='utf-8'>
