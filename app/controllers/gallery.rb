@@ -58,7 +58,7 @@ class MediaRocket::Galleries < MediaRocket::Application
     provides :xml, :json, :html
     
     @gallery = ::MediaRocket::Gallery.first(:id => params[:id])
-    return nil if @gallery.nil?
+    return nil if @gallery.nil? || @gallery.is_private?
     
     @medias = @gallery.medias.select{|media| media.original?}
     @medias.sort! {|x,y| x.position <=> y.position }
