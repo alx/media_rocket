@@ -13,6 +13,10 @@ $(document).ready(function() {
 	// -----
 	$('form.userform').livequery(function(){
 		$('form.userform').ajaxForm();
+		
+		// add user
+		$('#permission-list').add("<span><input type='checkbox' id='perm_0' name='perm_0_0' class='permission-item' CHECKED>" + $('#username') + "</span>");
+		
 		return false;
 	});
 	
