@@ -37,7 +37,8 @@ namespace :slices do
     desc "Copy public assets to host application"
     task :copy_assets do
       puts "Copying assets for MediaRocket - resolves any collisions"
-      copied, preserved = MediaRocket.mirror_public!
+      components = MediaRocket.mirrored_public_components & [:flash]
+      copied, preserved = MediaRocket.mirror_files_for(components)
       puts "- no files to copy" if copied.empty? && preserved.empty?
       copied.each { |f| puts "- copied #{f}" }
       preserved.each { |f| puts "! preserved override as #{f}" }
