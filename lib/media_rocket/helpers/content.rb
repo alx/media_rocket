@@ -127,6 +127,8 @@ module MediaRocket
                       url(:media_rocket_gallery_permissions, :gallery_id => gallery.id) << "?height=350&width=350",
                       :title => "Edit #{gallery.name} Permissions",
                       :class => :thickbox
+        else
+          ""
         end
       end
       
