@@ -60,13 +60,12 @@ class MediaRocket::Galleries < MediaRocket::Application
     @gallery = ::MediaRocket::Gallery.first(:id => params[:id])
     return nil if @gallery.nil? || @gallery.is_private?
     
-    @medias = @gallery.medias.select{|media| media.original?}
-    @medias.sort! {|x,y| x.position <=> y.position }
+    @medias = @gallery.original_medias
 
     case params[:format]
-      when :json  then  display_json @medias
-      when :html  then  render
-      else render :layout => false
+      when "json"  then  build_json(@medias)
+      when "xml"   then  render :layout => false
+      else  render
     end
   end
   
@@ -83,7 +82,8 @@ class MediaRocket::Galleries < MediaRocket::Application
     #     }
     #   ]
     # }
-    def display_json(medias)
+    def build_json(medias)
+      Merb.logger.info "build json"
       JSON.pretty_generate(medias.inject(Hash.new) do |json, media|
           if media.original?
             json["medias"] = [] unless json.key?("medias")
