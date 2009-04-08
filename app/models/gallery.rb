@@ -45,6 +45,16 @@ class MediaRocket::Gallery
     medias.first.icon
   end
   
+  def title
+    return self.name
+  end
+  
+  def original_medias(sorted = true)
+    originals = self.medias.select{|media| media.original?}
+    originals.sort! {|x,y| x.position <=> y.position } if sorted
+    originals
+  end
+  
   # =====
   #
   # Permissions
