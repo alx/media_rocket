@@ -37,8 +37,8 @@ namespace :slices do
     desc "Copy public assets to host application"
     task :copy_assets do
       
-      MediaRocket.push_path(:flash, Webbastic.dir_for(:public) / "flash", nil)
-      MediaRocket.push_app_path(:flash, Webbastic.app_dir_for(:public) / "flash", nil)
+      MediaRocket.push_path(:flash, MediaRocket.dir_for(:public) / "flash", nil)
+      MediaRocket.push_app_path(:flash, MediaRocket.app_dir_for(:public) / "flash", nil)
         
       puts "Copying assets for MediaRocket - resolves any collisions"
       components = MediaRocket.mirrored_public_components + [:flash]
