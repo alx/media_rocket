@@ -113,7 +113,7 @@ class MediaRocket::MediaFile
   # Return true if current media is an image (jpg, png or gif)
   #
   def is_image?
-    (self.path.to_s =~ /(jpg|gif|png)$/) != nil
+    (self.mime =~ /(jpg|gif|png)/) != nil
   end
   
   #

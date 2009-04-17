@@ -41,6 +41,11 @@ describe MediaRocket::MediaFile do
     @media.save.should == true
   end
   
+  it "should find image with upcase extension" do
+    @media = MediaRocket::MediaFile.new :file => image_file
+    @media.is_image?.should == true
+  end
+  
   it "should create a unique Media if conflict on name" do
     @media = MediaRocket::MediaFile.new :file => image_file
     
