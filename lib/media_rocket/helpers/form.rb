@@ -2,11 +2,30 @@ module MediaRocket
   module Helpers
     module Form
       
+      def media_uploadify(options = {}, &block)
+        
+        script = "
+          $(document).ready(function() {
+            $('#fileInput').fileUpload ({
+              'uploader'  : '#{media_rocket_flash_path "uploader.swf"}',
+              'script'    : '#{slice_url(:upload)}',
+              'cancelImg' : '#{media_rocket_image_path "cancel.png"}',
+              'auto'      : true,
+              'multi'     : true
+            });
+          });
+        "
+        
+        self_closing_tag(:input, {:type => :file, :name => :fileInput, :id => :fileInput}) <<
+        tag(:script, script, :type => "text/javascript")
+      end
+      
       def media_upload_form(options = {}, &block)
         
         case options[:format]
           when "flat" then return media_upload_form_flat(options)
           when "full" then return media_upload_form_full(options)
+          when "uploadify" then return media_uploadify(options)
         end
         
         form :action => slice_url(:upload), :id => "uploadForm" do
