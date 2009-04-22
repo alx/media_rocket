@@ -4,20 +4,34 @@ module MediaRocket
       
       def media_uploadify(options = {}, &block)
         
+        finished_item = ( media_title_field << 
+                          media_description_field << 
+                          media_tag_field << 
+                          media_gallery_new_field << 
+                          media_gallery_select <<
+                          tag(:p, submit(options[:submit_label] || "Validate", :id => "media_button"))
+                        ).gsub(/"/, "\\\\'")
+        
         script = "
           $(document).ready(function() {
             $('#fileInput').fileUpload ({
-              'uploader'  : '#{media_rocket_flash_path "uploader.swf"}',
-              'script'    : '#{slice_url(:upload)}',
-              'cancelImg' : '#{media_rocket_image_path "cancel.png"}',
-              'auto'      : true,
-              'multi'     : true
+              'uploader'    : '#{media_rocket_flash_path "uploader.swf"}',
+              'script'      : '#{slice_url(:upload)}',
+              'cancelImg'   : '#{media_rocket_image_path "cancel.png"}',
+              'auto'        : true,
+              'multi'       : true,
+              'onComplete'  : function() {
+                $('#finishedQueue').append('<div class=\\'finishedItem\\'>#{finished_item}</div>')
+              }
             });
           });
         "
         
+        # #{
+        
         self_closing_tag(:input, {:type => :file, :name => :fileInput, :id => :fileInput}) <<
-        tag(:script, script, :type => "text/javascript")
+        tag(:script, script, :type => "text/javascript") <<
+        tag(:div, "", {:id => "finishedQueue"})
       end
       
       def media_upload_form(options = {}, &block)
