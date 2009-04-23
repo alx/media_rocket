@@ -7,30 +7,34 @@ module MediaRocket
         finished_item = ( media_title_field << 
                           media_description_field << 
                           media_tag_field << 
-                          media_gallery_new_field << 
-                          media_gallery_select <<
                           tag(:p, submit(options[:submit_label] || "Validate", :id => "media_button"))
                         ).gsub(/"/, "\\\\'")
         
         script = "
           $(document).ready(function() {
-            $('#fileInput').fileUpload ({
-              'uploader'    : '#{media_rocket_flash_path "uploader.swf"}',
-              'script'      : '#{slice_url(:upload)}',
-              'cancelImg'   : '#{media_rocket_image_path "cancel.png"}',
-              'auto'        : true,
-              'multi'       : true,
-              'onComplete'  : function() {
-                $('#finishedQueue').append('<div class=\\'finishedItem\\'>#{finished_item}</div>')
-              }
+            $('#fileInput').livequery(function(){
+              $('#fileInput').fileUpload ({
+                'uploader'    : '#{media_rocket_flash_path "uploader.swf"}',
+                'script'      : '#{slice_url(:upload)}',
+                'cancelImg'   : '#{media_rocket_image_path "cancel.png"}',
+                'scriptData'  : '&gallery_id='+$('#media_gallery_select').val()+'&gallery_name='+$('#media_gallery_input_name').val()),
+                'multi'       : true,
+                'onComplete'  : function() {
+                  $('#finishedQueue').append('<div class=\\'finishedItem\\'>#{finished_item}</div>')
+                }
+              });
             });
           });
         "
         
         # #{
         
+        media_gallery_new_field << 
+        media_gallery_select <<
         self_closing_tag(:input, {:type => :file, :name => :fileInput, :id => :fileInput}) <<
         tag(:script, script, :type => "text/javascript") <<
+        tag(:a, "Start Upload", :href => "javascript:$('#fileInput').fileUploadStart()") << " | " <<
+        tag(:a, "clear Queue", :href => "javascript:$('#fileInput').fileUploadClearQueue()") <<
         tag(:div, "", {:id => "finishedQueue"})
       end
       
@@ -229,7 +233,7 @@ module MediaRocket
           
           gallery_content << tag(:select, choices, {:name => "gallery_id",
                                                     :class => "media_gallery_select",
-                                                    :id => options[:media_gallery_select_id]})
+                                                    :id => "media_gallery_select"})
           
           tag(:p, gallery_content)
         end
@@ -252,7 +256,7 @@ module MediaRocket
         
         gallery_content = tag(:label, content, {:for => content})
         gallery_content << tag(:br)
-        gallery_content << text_field(:name => "gallery_name", :id => content)
+        gallery_content << text_field(:name => "gallery_name", :id => "media_gallery_input_name")
           
         tag(:p, gallery_content)
       end

@@ -8,8 +8,19 @@
 
 <div class="span-5 last" id="upload">  
 	
-	<h3>Charger une photo</h3>
+	<h3>Remplir l'album</h3>
 	
-	<%= media_upload_form :format => "uploadify" %>
+	<div id="tabs">
+	    <ul>
+	        <li><a href="#single"><span>Photo Seule</span></a></li>
+	        <li><a href="#multiple"><span>Multiples</span></a></li>
+	    </ul>
+	    <div id="single">
+	        <%= media_upload_form :format => "full" %>
+	    </div>
+	    <div id="multiple">
+	        <%= media_upload_form :format => "uploadify" %>
+	    </div>
+	</div>
 	
 </div>

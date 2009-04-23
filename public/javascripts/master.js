@@ -1,5 +1,8 @@
 $(document).ready(function() {
 
+	// Add tabs on file upload
+	$("#tabs").tabs();
+
 	// Validate upload form
 	$("#uploadForm").validate({
 		rules: {
@@ -143,7 +146,18 @@ $(document).ready(function() {
    		$(e.target).parent('tr').find('.drag').addClass('hidden');
 	});
 
-   
-
+   // Update uploadify settings when gallery value change
+	function startUpload(id)
+	{
+		$('#'+id).fileUploadStart();
+	}
+	
+	$('#media_gallery_input_name').bind('change', function(){
+		$('#fileInput').fileUploadSettings('scriptData','&gallery_id='+$('#media_gallery_select').val()+'&gallery_name='+$(this).val());
+	});
+	
+	$('#media_gallery_select').bind('change', function(){
+		$('#fileInput').fileUploadSettings('scriptData','&gallery_id='+$(this).val()+'&gallery_name='+$('media_gallery_input_name').val());
+	});
 });
 
