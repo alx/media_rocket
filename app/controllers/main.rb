@@ -40,7 +40,7 @@ class MediaRocket::Main < MediaRocket::Application
           @gallery.medias.reload
           
         end # @media.save
-      end # @site =
+      end # @site = ...
       # Return 1 for success in uploadify
       render "1", :layout => false
     else
