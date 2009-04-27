@@ -4,36 +4,37 @@ module MediaRocket
       
       def media_uploadify(options = {}, &block)
         
-        finished_item = ( media_title_field << 
-                          media_description_field << 
+        finished_item = ( media_description_field << 
                           media_tag_field << 
                           tag(:p, submit(options[:submit_label] || "Validate", :id => "media_button"))
                         ).gsub(/"/, "\\\\'")
         
         script = "
+          function startUpload(id) {
+            $('#'+id).fileUploadSettings('scriptData', '&gallery_id='   + $('select.uploadify').val() +
+                                                       '&gallery_name=' + $('input.uploadify').val());
+            $('#'+id).fileUploadStart();
+          }
           $(document).ready(function() {
             $('#fileInput').livequery(function(){
               $('#fileInput').fileUpload ({
                 'uploader'    : '#{media_rocket_flash_path "uploader.swf"}',
                 'script'      : '#{slice_url(:upload)}',
                 'cancelImg'   : '#{media_rocket_image_path "cancel.png"}',
-                'scriptData'  : '&gallery_id='+$('#media_gallery_select').val()+'&gallery_name='+$('#media_gallery_input_name').val()),
                 'multi'       : true,
-                'onComplete'  : function() {
-                  $('#finishedQueue').append('<div class=\\'finishedItem\\'>#{finished_item}</div>')
-                }
+                onComplete: function (evt, queueID, fileObj, response, data) {
+            			$('#finishedQueue').append('<div class=\\'finishedItem\\'><p><label for=\\'Title\\'>Title</label><br/><input type=\\'text\\' id=\\'Title\\' name=\\'title\\' class=\\'text\\' value=\\'' + fileObj.name + '\\'/></p>#{finished_item}</div>');
+            		}
               });
             });
           });
         "
         
-        # #{
-        
-        media_gallery_new_field << 
-        media_gallery_select <<
+        media_gallery_new_field(:gallery_new_class => "uploadify") << 
+        media_gallery_select(:gallery_select_class => "uploadify") <<
         self_closing_tag(:input, {:type => :file, :name => :fileInput, :id => :fileInput}) <<
         tag(:script, script, :type => "text/javascript") <<
-        tag(:a, "Start Upload", :href => "javascript:$('#fileInput').fileUploadStart()") << " | " <<
+        tag(:a, "Start Upload", :href => "javascript:startUpload('fileInput')") << " | " <<
         tag(:a, "clear Queue", :href => "javascript:$('#fileInput').fileUploadClearQueue()") <<
         tag(:div, "", {:id => "finishedQueue"})
       end
@@ -123,7 +124,7 @@ module MediaRocket
       def media_title_field(options = {}, &block)
         content = options[:title_label] || "Title"
         
-        title_content = tag(:label, content, {:for => content})
+        title_content = tag(:label, content, {:for => "title"})
         title_content << tag(:br)
         title_content << text_field(:name => "title", :id => content)
         
@@ -232,7 +233,7 @@ module MediaRocket
           end
           
           gallery_content << tag(:select, choices, {:name => "gallery_id",
-                                                    :class => "media_gallery_select",
+                                                    :class => options[:gallery_select_class],
                                                     :id => "media_gallery_select"})
           
           tag(:p, gallery_content)
@@ -256,7 +257,9 @@ module MediaRocket
         
         gallery_content = tag(:label, content, {:for => content})
         gallery_content << tag(:br)
-        gallery_content << text_field(:name => "gallery_name", :id => "media_gallery_input_name")
+        gallery_content << text_field(:name => "gallery_name", 
+                                      :id => "media_gallery_input_name", 
+                                      :class => options[:gallery_new_class])
           
         tag(:p, gallery_content)
       end

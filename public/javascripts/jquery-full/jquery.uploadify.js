@@ -229,7 +229,7 @@ if(jQuery)(
 		},
 		fileUploadSettings:function(settingName, settingValue) {
 			$(this).each(function() {
-				document.getElementById($(this).attr('id') + 'Uploader').updateSettings(settingName,settingValue);
+                document.getElementById($(this).attr('id') + 'Uploader').updateSettings(settingName,settingValue);
 			});
 		},
 		fileUploadStart:function(queueID) {
