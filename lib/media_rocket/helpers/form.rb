@@ -19,7 +19,7 @@ module MediaRocket
             $('#fileInput').livequery(function(){
               $('#fileInput').fileUpload ({
                 'uploader'    : '#{media_rocket_flash_path "uploader.swf"}',
-                'script'      : '#{Merb::Router.url(:upload)}',
+                'script'      : '#{Merb::Slices::Support.slice_url(:upload)}',
                 'cancelImg'   : '#{media_rocket_image_path "cancel.png"}',
                 'multi'       : true,
                 onComplete: function (evt, queueID, fileObj, response, data) {
