@@ -13,7 +13,7 @@ class MediaRocket::Main < MediaRocket::Application
     if params[:Filedata]
       Merb.logger.info "filedata read"
       
-      if @site = ::MediaRocket::Site.first :id => params[:site_id]
+      if @site = ::MediaRocket::Site.first(:id => params[:site_id])
       
         media_params = {:title => params[:Filename],
                         :site_id => params[:site_id],
@@ -28,7 +28,7 @@ class MediaRocket::Main < MediaRocket::Application
         
           if !params[:gallery_name].empty?
             # gallery name specified, use it as media gallery
-            unless @gallery = ::MediaRocket::Gallery.first :name => params[:gallery_name]
+            unless @gallery = ::MediaRocket::Gallery.first(:name => params[:gallery_name])
               @gallery = @site.galleries.create :name => params[:gallery_name]
             end
           else
