@@ -25,7 +25,8 @@ module MediaRocket
         "
         function startUpload(id) {
           $('#'+id).fileUploadSettings('scriptData', '&gallery_id='   + $('select.uploadify').val() +
-                                                     '&gallery_name=' + $('input.uploadify').val());
+                                                     '&gallery_name=' + $('input.uploadify').val() +
+                                                     '&site_id=1');
           $('#'+id).fileUploadStart();
         }
         $(document).ready(function() {
