@@ -25,9 +25,15 @@ module MediaRocket
         
         "
         function startUpload(id) {
-          $('#'+id).fileUploadSettings('scriptData', '&gallery_id='   + $('select.uploadify').val() +
-                                                     '&gallery_name=' + $('input.uploadify').val() +
-                                                     '&site_id=1');
+          var data = '&site_id=1'
+          
+          if($('select.uploadify').val().length)
+            data += '&gallery_id='   + $('select.uploadify').val();
+            
+          if($('select.uploadify').val().length)
+            data += '&gallery_name='   + escape($('input.uploadify').val());  
+          
+          $('#'+id).fileUploadSettings('scriptData', data);
           $('#'+id).fileUploadStart();
         }
         $(document).ready(function() {
