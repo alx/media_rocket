@@ -18,7 +18,7 @@ module MediaRocket
         uploader_path   = media_rocket_flash_path "uploader.swf"
         cancel_img_path = media_rocket_image_path "cancel.png"
         upload_route    = Merb::Router.url(:media_rocket_upload)
-        init_edit_route = Merb::Router.url(:edit_media_rocket_media, :id => 0)
+        init_edit_route = Merb::Router.url(:edit_media_rocket_media, :id => 0) << "?height=200&width=500"
         
         # '&gallery_name=' + $('input.uploadify').val() +
         # '&#{session_key} = #{cookies[session_key]}');
@@ -42,9 +42,10 @@ module MediaRocket
                 edit_route = '#{init_edit_route}'.replace(/\\/0/, '/' + json.media_id);
                   
                 $('#finishedQueue').append('#{uploadify_finished_media}');
-                $('#finishedQueue.finishedItem:last .title').text = 'Title: ' + json.title;
-                $('#finishedQueue.finishedItem:last img').src     = json.icon;
-                $('#finishedQueue.finishedItem:last a').href      = edit_route;
+                item = $('.finishedItem:last');
+                item.children('.title').attr('innerHTML', 'Title: ' + json.title);
+                item.children('img').attr('src', json.icon);
+                item.children('a').attr('href', edit_route);
           		}
             });
           });
@@ -52,7 +53,7 @@ module MediaRocket
       end
       
       def uploadify_finished_media
-        "<div class=\\'finishedItem\\'><img src=\\'\\'/><span class=\\'title\\'>Title: </span><br><a class=\\'thickbox\\' href=\\'\\' title=\\'Edit\\'>Edit</a></div>"
+        "<div class=\\'finishedItem\\'><img src=\\'\\'/><br><span class=\\'title\\'>Title: </span><br><a class=\\'thickbox\\' href=\\'\\' title=\\'Edit\\'>Edit</a></div>"
       end
       
       def media_upload_form(options = {}, &block)

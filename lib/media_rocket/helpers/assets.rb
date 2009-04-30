@@ -29,18 +29,18 @@ module MediaRocket
       
       def media_rocket_js
         script = ""
-        %w{'jquery/jquery.js',
-           'jquery/jquery.ui.js',
-           'jquery/jquery.confirm.js',
-           'jquery/jquery.form.js',
-           'jquery/jquery.treetable.js',
-           'jquery/jquery.validate.js',
-           'jquery/jquery.livequery.js',
-           'jquery/thickbox.js',
-           'jquery/jquery.uploadify.js',
-           'json2.js',
-           'permissions.js',
-           'master.js'}.each do |file|
+        ['jquery/jquery.js',
+         'jquery/jquery.ui.js',
+         'jquery/jquery.confirm.js',
+         'jquery/jquery.form.js',
+         'jquery/jquery.treetable.js',
+         'jquery/jquery.validate.js',
+         'jquery/jquery.livequery.js',
+         'jquery/thickbox.js',
+         'jquery/jquery.uploadify.js',
+         'json2.js',
+         'permissions.js',
+         'master.js'].each do |file|
           script << media_rocket_js_line(file)
         end
         script
@@ -53,11 +53,11 @@ module MediaRocket
       def media_rocket_css
         css = "<!--[if IE]>#{media_rocket_css_line 'ie.css'}<![endif]-->"
       	
-        %w{'screen.css',
-           'print.css',
-           'jquery.treetable.css',
-           'thickbox.css',
-           'master.css'}.each do |file|
+        ['master.css',
+         'screen.css',
+         'print.css',
+         'jquery.treetable.css',
+         'thickbox.css'].each do |file|
           css << media_rocket_css_line(file)
         end
         css
