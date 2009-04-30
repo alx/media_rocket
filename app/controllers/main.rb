@@ -16,7 +16,7 @@ class MediaRocket::Main < MediaRocket::Application
       
         media_params = {:title => params[:Filename],
                         :site_id => @site.id,
-                        :gallery_name => params[:gallery_name],
+                        :gallery_name => param_unescape(params[:gallery_name]),
                         :gallery_id => params[:gallery_id],
                         :file => {:filename => params[:Filename],
                                   :tempfile => params[:Filedata][:tempfile]}}
@@ -42,6 +42,14 @@ class MediaRocket::Main < MediaRocket::Application
     else
       ::MediaRocket::MediaFile.new(params).save
       redirect (params[:redirect_to] || "/")
+    end
+  end
+  
+  private 
+  
+  def param_unescape(string)
+    string.tr('+', ' ').gsub(/((?:%[0-9a-fA-F]{2})+)/n) do
+      [$1.delete('%')].pack('H*')
     end
   end
   
