@@ -25,12 +25,9 @@ module MediaRocket
         
         "
         function startUpload(id) {
-          var data = '&site_id=1'
+          var data = '&site_id=1&gallery_id='   + $('select.uploadify').val();
           
-          if($('select.uploadify').val().length)
-            data += '&gallery_id='   + $('select.uploadify').val();
-            
-          if($('select.uploadify').val().length)
+          if($('input.uploadify').val().length)
             data += '&gallery_name='   + escape($('input.uploadify').val());  
           
           $('#'+id).fileUploadSettings('scriptData', data);
