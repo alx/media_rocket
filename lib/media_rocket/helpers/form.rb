@@ -3,40 +3,52 @@ module MediaRocket
     module Form
       
       def media_uploadify(options = {}, &block)
-        
-        finished_item = ( media_description_field << 
-                          media_tag_field << 
-                          tag(:p, submit(options[:submit_label] || "Validate", :id => "media_button"))
-                        ).gsub(/"/, "\\\\'")
-        
-        script = "
-          function startUpload(id) {
-            $('#'+id).fileUploadSettings('scriptData', '&gallery_id='   + $('select.uploadify').val() +
-                                                       '&gallery_name=' + $('input.uploadify').val());
-            $('#'+id).fileUploadStart();
-          }
-          $(document).ready(function() {
-            $('#fileInput').livequery(function(){
-              $('#fileInput').fileUpload ({
-                'uploader'    : '#{media_rocket_flash_path "uploader.swf"}',
-                'script'      : '#{Merb::Slices::Support.slice_url(:upload)}',
-                'cancelImg'   : '#{media_rocket_image_path "cancel.png"}',
-                'multi'       : true,
-                onComplete: function (evt, queueID, fileObj, response, data) {
-            			$('#finishedQueue').append('<div class=\\'finishedItem\\'><p><label for=\\'Title\\'>Title</label><br/><input type=\\'text\\' id=\\'Title\\' name=\\'title\\' class=\\'text\\' value=\\'' + fileObj.name + '\\'/></p>#{finished_item}</div>');
-            		}
-              });
-            });
-          });
-        "
-        
         media_gallery_new_field(:gallery_new_class => "uploadify") << 
         media_gallery_select(:gallery_select_class => "uploadify") <<
         self_closing_tag(:input, {:type => :file, :name => :fileInput, :id => :fileInput}) <<
-        tag(:script, script, :type => "text/javascript") <<
+        tag(:script, uploadify_script, :type => "text/javascript") <<
         tag(:a, "Start Upload", :href => "javascript:startUpload('fileInput')") << " | " <<
         tag(:a, "clear Queue", :href => "javascript:$('#fileInput').fileUploadClearQueue()") <<
         tag(:div, "", {:id => "finishedQueue"})
+      end
+      
+      def uploadify_script
+        
+        session_key     = Merb::Config[:session_id_key]
+        uploader_path   = media_rocket_flash_path "uploader.swf"
+        cancel_img_path = media_rocket_image_path "cancel.png"
+        upload_route    = Merb::Router.url(:media_rocket_upload)
+        
+        # '&gallery_name=' + $('input.uploadify').val() +
+        # '&#{session_key} = #{cookies[session_key]}');
+        
+        "
+        function startUpload(id) {
+          $('#'+id).fileUploadSettings('scriptData', '&gallery_id='   + $('select.uploadify').val() +
+                                                     '&gallery_name=' + $('input.uploadify').val());
+          $('#'+id).fileUploadStart();
+        }
+        $(document).ready(function() {
+          $('#fileInput').livequery(function(){
+            $('#fileInput').fileUpload ({
+              'uploader'    : '#{uploader_path}',
+              'script'      : '#{upload_route}',
+              'cancelImg'   : '#{cancel_img_path}',
+              'multi'       : true,
+              onComplete: function (evt, queueID, fileObj, response, data) {
+          			$('#finishedQueue').append('#{uploadify_finished_item}');
+          		}
+            });
+          });
+        });"
+      end
+      
+      def uploadify_finished_item
+        finished_item = ( media_description_field << 
+                          media_tag_field << 
+                          tag(:p, "Validate", :id => "media_button")).gsub(/"/, "\\\\'")
+                          
+        "<div class=\\'finishedItem\\'><p><label for=\\'Title\\'>Title</label><br/><input type=\\'text\\' id=\\'Title\\' name=\\'title\\' class=\\'text\\' value=\\'' + fileObj.name + '\\'/></p>#{finished_item}</div>"
       end
       
       def media_upload_form(options = {}, &block)
