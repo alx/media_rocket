@@ -22,12 +22,23 @@ class MediaRocket::Main < MediaRocket::Application
                                   :tempfile => params[:Filedata][:tempfile]}}
                                   
         @media = ::MediaRocket::MediaFile.new(media_params)
-        @media.save
+        
+        if @media.save
+          # Return information after success in uploadify
+          render JSON.pretty_generate({:icon => @media.icon, 
+                                       :media_id => @media.id, 
+                                       :title => @media.title}), :layout => false
+        end # @media.save
         
       end # @site = ...
       
-      # Return 1 for success in uploadify
-      render "1", :layout => false
+      # Upload unsuccessful
+      # render "-1", :layout => false
+      
+      render JSON.pretty_generate({:icon => @media.icon, 
+                                   :media_id => @media.id, 
+                                   :title => @media.title}), :layout => false
+      
     else
       ::MediaRocket::MediaFile.new(params).save
       redirect (params[:redirect_to] || "/")

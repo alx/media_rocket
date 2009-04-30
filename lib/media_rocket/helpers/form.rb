@@ -18,6 +18,7 @@ module MediaRocket
         uploader_path   = media_rocket_flash_path "uploader.swf"
         cancel_img_path = media_rocket_image_path "cancel.png"
         upload_route    = Merb::Router.url(:media_rocket_upload)
+        init_edit_route = Merb::Router.url(:edit_media_rocket_media, :id => 0)
         
         # '&gallery_name=' + $('input.uploadify').val() +
         # '&#{session_key} = #{cookies[session_key]}');
@@ -37,19 +38,21 @@ module MediaRocket
               'cancelImg'   : '#{cancel_img_path}',
               'multi'       : true,
               onComplete: function (evt, queueID, fileObj, response, data) {
-          			$('#finishedQueue').append('#{uploadify_finished_item}');
+                json = JSON.parse(response);
+                edit_route = '#{init_edit_route}'.replace(/\\/0/, '/' + json.media_id);
+                  
+                $('#finishedQueue').append('#{uploadify_finished_media}');
+                $('#finishedQueue.finishedItem:last .title').text = 'Title: ' + json.title;
+                $('#finishedQueue.finishedItem:last img').src     = json.icon;
+                $('#finishedQueue.finishedItem:last a').href      = edit_route;
           		}
             });
           });
         });"
       end
       
-      def uploadify_finished_item
-        finished_item = ( media_description_field << 
-                          media_tag_field << 
-                          tag(:p, "Validate", :id => "media_button")).gsub(/"/, "\\\\'")
-                          
-        "<div class=\\'finishedItem\\'><p><label for=\\'Title\\'>Title</label><br/><input type=\\'text\\' id=\\'Title\\' name=\\'title\\' class=\\'text\\' value=\\'' + fileObj.name + '\\'/></p>#{finished_item}</div>"
+      def uploadify_finished_media
+        "<div class=\\'finishedItem\\'><img src=\\'\\'/><span class=\\'title\\'>Title: </span><br><a class=\\'thickbox\\' href=\\'\\' title=\\'Edit\\'>Edit</a></div>"
       end
       
       def media_upload_form(options = {}, &block)
