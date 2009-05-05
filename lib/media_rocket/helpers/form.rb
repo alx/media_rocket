@@ -30,11 +30,11 @@ module MediaRocket
           if($('input.uploadify').val().length)
             data += '&gallery_name='   + escape($('input.uploadify').val());  
           
-          $('#'+id).fileUploadSettings('scriptData', data);
-          $('#'+id).fileUploadStart();
-          
           // Fix IE Bug: http://www.uploadify.com/forum/viewtopic.php?f=4&t=278
           fileInputUploader = document.getElementById('fileInputUploader');
+            
+          $('#'+id).fileUploadSettings('scriptData', data);
+          $('#'+id).fileUploadStart();
         }
         $(document).ready(function() {
           $('#fileInput').fileUpload ({
