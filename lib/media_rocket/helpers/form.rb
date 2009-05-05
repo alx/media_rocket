@@ -28,7 +28,7 @@ module MediaRocket
           var data = '&site_id=1&gallery_id='   + $('select.uploadify').val();
           
           if($('input.uploadify').val().length)
-            data += '&gallery_name='   + escape($('input.uploadify').val());  
+            data += '&gallery_name='   + $.base64Encode($('input.uploadify').val());
           
           // Fix IE Bug: http://www.uploadify.com/forum/viewtopic.php?f=4&t=278
           fileInputUploader = document.getElementById('fileInputUploader');

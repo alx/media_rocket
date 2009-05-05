@@ -16,7 +16,7 @@ class MediaRocket::Main < MediaRocket::Application
       
         media_params = {:title => params[:Filename],
                         :site_id => @site.id,
-                        :gallery_name => param_unescape(params[:gallery_name]),
+                        :gallery_name => Base64.decode64(params[:gallery_name]),
                         :gallery_id => params[:gallery_id],
                         :file => {:filename => params[:Filename],
                                   :tempfile => params[:Filedata][:tempfile]}}

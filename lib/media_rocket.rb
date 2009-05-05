@@ -103,4 +103,5 @@ if defined?(Merb::Plugins)
   require "media_rocket/router"
   
   require "RMagick"
+  require "base64"
 end
