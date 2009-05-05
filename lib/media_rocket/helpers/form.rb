@@ -37,22 +37,22 @@ module MediaRocket
           fileInputUploader = document.getElementById('fileInputUploader');
         }
         $(document).ready(function() {
-            $('#fileInput').fileUpload ({
-              'uploader'    : '#{uploader_path}',
-              'script'      : '#{upload_route}',
-              'cancelImg'   : '#{cancel_img_path}',
-              'multi'       : true,
-              onComplete: function (evt, queueID, fileObj, response, data) {
-                json = JSON.parse(response);
-                edit_route = '#{init_edit_route}'.replace(/\\/0/, '/' + json.media_id);
-                  
-                $('#finishedQueue').append('#{uploadify_finished_media}');
-                item = $('.finishedItem:last');
-                item.children('.title').attr('innerHTML', 'Title: ' + json.title);
-                item.children('img').attr('src', json.icon);
-                item.children('a').attr('href', edit_route);
-          		}
-            });
+          $('#fileInput').fileUpload ({
+            'uploader'    : '#{uploader_path}',
+            'script'      : '#{upload_route}',
+            'cancelImg'   : '#{cancel_img_path}',
+            'multi'       : true,
+            onComplete: function (evt, queueID, fileObj, response, data) {
+              json = JSON.parse(response);
+              edit_route = '#{init_edit_route}'.replace(/\\/0/, '/' + json.media_id);
+                
+              $('#finishedQueue').append('#{uploadify_finished_media}');
+              item = $('.finishedItem:last');
+              item.children('.title').attr('innerHTML', 'Title: ' + json.title);
+              item.children('img').attr('src', json.icon);
+              item.children('a').attr('href', edit_route);
+        		}
+          });
         });"
       end
       
