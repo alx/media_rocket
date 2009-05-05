@@ -37,7 +37,6 @@ module MediaRocket
           fileInputUploader = document.getElementById('fileInputUploader');
         }
         $(document).ready(function() {
-          $('#fileInput').livequery(function(){
             $('#fileInput').fileUpload ({
               'uploader'    : '#{uploader_path}',
               'script'      : '#{upload_route}',
@@ -54,7 +53,6 @@ module MediaRocket
                 item.children('a').attr('href', edit_route);
           		}
             });
-          });
         });"
       end
       
