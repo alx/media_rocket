@@ -3,10 +3,10 @@ module MediaRocket
     module Form
       
       def media_uploadify(options = {}, &block)
+        tag(:script, uploadify_script, :type => "text/javascript") <<
         media_gallery_new_field(:gallery_new_class => "uploadify") << 
         media_gallery_select(:gallery_select_class => "uploadify") <<
         self_closing_tag(:input, {:type => :file, :name => :fileInput, :id => :fileInput}) <<
-        tag(:script, uploadify_script, :type => "text/javascript") <<
         tag(:a, "Start Upload", :href => "javascript:startUpload('fileInput')") << " | " <<
         tag(:a, "clear Queue", :href => "javascript:$('#fileInput').fileUploadClearQueue()") <<
         tag(:div, "", {:id => "finishedQueue"})
