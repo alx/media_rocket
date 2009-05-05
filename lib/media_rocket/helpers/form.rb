@@ -32,6 +32,9 @@ module MediaRocket
           
           $('#'+id).fileUploadSettings('scriptData', data);
           $('#'+id).fileUploadStart();
+          
+          // Fix IE Bug: http://www.uploadify.com/forum/viewtopic.php?f=4&t=278
+          fileInputUploader = document.getElementById('fileInputUploader');
         }
         $(document).ready(function() {
           $('#fileInput').livequery(function(){

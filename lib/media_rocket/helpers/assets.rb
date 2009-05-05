@@ -37,7 +37,7 @@ module MediaRocket
          'jquery/jquery.validate.js',
          'jquery/jquery.livequery.js',
          'jquery/thickbox.js',
-         'jquery/jquery.uploadify.js',
+         'jquery-full/jquery.uploadify.js',
          'json2.js',
          'permissions.js',
          'master.js'].each do |file|
