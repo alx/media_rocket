@@ -64,7 +64,7 @@ module MediaRocket
         
         child_of = "media-row child-of-#{gallery_id}"
         
-        media_icon = gallery.icon_header || 0
+        media_icon = gallery.header_icon || 0
         
         gallery.medias.select{|media| media.original?}.sort{|x,y| x.position <=> y.position }.each do |media|
           
@@ -148,7 +148,7 @@ module MediaRocket
         show_header = "hidden"
         show_selector = ""
         
-        if gallery.icon_header && media.id != gallery.icon_header
+        if gallery.header_icon && media.id != gallery.header_icon
           show_header = ""
           show_selector = "hidden"
         end
@@ -159,11 +159,11 @@ module MediaRocket
                 "#",
                 :rel => "#media-#{media.id}-gallery-#{gallery.id}",
                 :id => "icon-media-selector-#{media.id}",
-                :class => "remote icon_header #{show_selector}") <<
+                :class => "remote header_icon #{show_selector}") <<
         self_closing_tag(:img, :src => media_rocket_image_path("/icons/accept.png"), 
                          :title => "#{media.title} is Gallery Icon",
                          :id => "icon-media-header-#{media.id}",
-                         :class => "icon icon_header #{show_header} gallery_#{gallery_id}")
+                         :class => "icon header_icon #{show_header} gallery_#{gallery_id}")
       end
       
       def media_action_delete(media)

@@ -58,8 +58,8 @@ class MediaRocket::Gallery
   #
   # =====
   
-  def set_icon_header(media_id)
-    update_attributes :icon_header => media_id
+  def set_header_icon(media_id)
+    update_attributes :header_icon => media_id
   end
   
   def icon

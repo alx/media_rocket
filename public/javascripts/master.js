@@ -147,19 +147,19 @@ $(document).ready(function() {
 	});
 	
 	// Media icon for gallery header
-	$("a.icon_header").livequery('click', function(event) {
+	$("a.header_icon").livequery('click', function(event) {
 		
 		info = this.rel.split("-");
 		gallery_id = info.pop();
 		media_id = info.pop().pop();
 		
-		$.post("/galleries", {id: gallery_id, gallery: {icon_header: media_id}, method: "PUT"} );
+		$.post("/galleries", {id: gallery_id, gallery: {header_icon: media_id}, method: "PUT"} );
 		
 		$('#icon-media-selector-' + media_id).toggle();
 		$('#icon-media-header-' + media_id).toggle();
 		
 		// Hide previous header
-		$('icon_header #{show_header} gallery_#{gallery_id}
+		$('header_icon #{show_header} gallery_#{gallery_id}
 	});
 });
 
