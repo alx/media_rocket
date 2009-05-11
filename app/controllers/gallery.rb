@@ -69,6 +69,16 @@ class MediaRocket::Galleries < MediaRocket::Application
     end
   end
   
+  # PUT /galleries/:id
+  def update
+    @gallery = MediaRocket::Gallery.first(:id => params[:id])
+    raise NotFound unless @gallery
+    
+    @gallery.update_attributes(params[:gallery]) if params[:gallery]
+    
+    display @layout, :edit
+  end
+  
   protected
   
     # Send the list of original media using json

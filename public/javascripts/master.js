@@ -145,5 +145,18 @@ $(document).ready(function() {
 	}, function(e) {
    		$(e.target).parent('tr').find('.drag').addClass('hidden');
 	});
+	
+	// Media icon for gallery header
+	$("a.icon_header").livequery('click', function(event) {
+		
+		info = this.rel.split("-");
+		gallery_id = info.pop();
+		media_id = info.pop().pop();
+		
+		$.post("/galleries", {id: gallery_id, gallery: {icon_header: media_id}, method: "PUT"} );
+		
+		$('#icon-media-selector-' + media_id).toggle();
+		$('#icon-media-header-' + media_id).toggle();
+	});
 });
 

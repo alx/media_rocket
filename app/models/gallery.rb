@@ -7,6 +7,7 @@ class MediaRocket::Gallery
   property :description, Text
   property :ref_title, Text
   property :ref_meta, Text
+  property :header_icon, Integer
   
   has_tags
   
@@ -41,10 +42,6 @@ class MediaRocket::Gallery
     end.tr(' ', '-')
   end
   
-  def icon
-    medias.first.icon
-  end
-  
   def title
     return self.name
   end
@@ -53,6 +50,25 @@ class MediaRocket::Gallery
     originals = self.medias.select{|media| media.original?}
     originals.sort! {|x,y| x.position <=> y.position } if sorted
     originals
+  end
+  
+  # =====
+  #
+  # Icon
+  #
+  # =====
+  
+  def set_icon_header(media_id)
+    update_attributes :icon_header => media_id
+  end
+  
+  def icon
+    if self.icon_header
+      media = medias.first(:id => self.icon_header)
+    else
+      media = medias.first
+    end
+    media.icon
   end
   
   # =====

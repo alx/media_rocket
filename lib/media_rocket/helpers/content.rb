@@ -64,6 +64,8 @@ module MediaRocket
         
         child_of = "media-row child-of-#{gallery_id}"
         
+        media_icon = gallery.icon_header || 0
+        
         gallery.medias.select{|media| media.original?}.sort{|x,y| x.position <=> y.position }.each do |media|
           
             media_id = "media-#{media.id}"
@@ -75,6 +77,7 @@ module MediaRocket
             media_name = tag(:td, tag(:span, media_title + media_urls, :class => "media"))
             
             media_action = tag :td, :class => "action" do 
+              media_action_icon(media, gallery) <<
               media_action_edit(media) <<
               media_action_delete(media) << 
               media_action_drag(media)
@@ -136,7 +139,31 @@ module MediaRocket
       def media_action_drag(media)
         self_closing_tag(:img, :src => media_rocket_image_path("/icons/arrow_refresh.png"), 
                          :title => "move #{media.title}",
-                         :class => "drag-media-#{media.id}", :class => "icon hidden drag")
+                         :id => "drag-media-#{media.id}", :class => "icon hidden drag")
+      end
+      
+      def media_action_icon(media, gallery)
+        
+        # Set flags to display one of the 2 icon
+        show_header = "hidden"
+        show_selector = ""
+        
+        if gallery.icon_header && media.id != gallery.icon_header
+          show_header = ""
+          show_selector = "hidden"
+        end
+        
+        link_to(self_closing_tag(:img, :src => media_rocket_image_path("/icons/stop.png"), 
+                                 :title => "Set #{media.title} as Gallery Icon",
+                                 :class => "icon"),
+                "#",
+                :rel => "#media-#{media.id}-gallery-#{gallery.id}",
+                :id => "icon-media-selector-#{media.id}",
+                :class => "remote icon_header #{show_selector}") <<
+        self_closing_tag(:img, :src => media_rocket_image_path("/icons/accept.png"), 
+                         :title => "#{media.title} is Gallery Icon",
+                         :id => "icon-media-header-#{media.id}",
+                         :class => "icon icon_header #{show_header} gallery_#{gallery_id}")
       end
       
       def media_action_delete(media)
