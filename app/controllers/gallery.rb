@@ -133,7 +133,7 @@ class MediaRocket::Galleries < MediaRocket::Application
         json
       end
       
-      JSON.pretty_generate(galleries_json + media_json)
+      JSON.pretty_generate(galleries_json.merge media_json)
     end
   
 end
