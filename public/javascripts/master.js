@@ -153,13 +153,14 @@ $(document).ready(function() {
 		gallery_id = info.pop();
 		media_id = info.pop().pop();
 		
+		// Hide previous header
+		$('img.gallery_' + gallery_id).hide();
+		
 		$.post("/galleries", {id: gallery_id, gallery: {header_icon: media_id}, method: "PUT"} );
 		
 		$('#icon-media-selector-' + media_id).toggle();
 		$('#icon-media-header-' + media_id).toggle();
 		
-		// Hide previous header
-		$('header_icon #{show_header} gallery_#{gallery_id}
 	});
 });
 

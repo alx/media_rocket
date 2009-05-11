@@ -153,8 +153,6 @@ module MediaRocket
           show_selector = "hidden"
         end
         
-        img_class = "icon header_icon #{show_header} gallery_#{gallery.id}"
-        
         link_to(self_closing_tag(:img, :src => media_rocket_image_path("/icons/stop.png"), 
                                  :title => "Set #{media.title} as Gallery Icon",
                                  :class => "icon"),
@@ -165,7 +163,7 @@ module MediaRocket
         self_closing_tag(:img, :src => media_rocket_image_path("/icons/accept.png"), 
                          :title => "#{media.title} is Gallery Icon",
                          :id => "icon-media-header-#{media.id}",
-                         :class => img_class)
+                         :class => "icon header_icon #{show_header} gallery_#{gallery.id}")
       end
       
       def media_action_delete(media)
