@@ -63,7 +63,7 @@ class MediaRocket::Galleries < MediaRocket::Application
     @medias = @gallery.original_medias
 
     case params[:format]
-      when "json"  then  build_json(@gallery)
+      when "json"  then  build_json(@gallery) || "123"
       when "xml"   then  render :layout => false
       else  render
     end
@@ -133,7 +133,7 @@ class MediaRocket::Galleries < MediaRocket::Application
         json
       end
       
-      JSON.pretty_generate(galleries_json + media_json) || ""
+      JSON.pretty_generate(galleries_json + media_json)
     end
   
 end
