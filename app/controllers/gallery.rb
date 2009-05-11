@@ -109,7 +109,7 @@ class MediaRocket::Galleries < MediaRocket::Application
       Merb.logger.info "build json"
       
       medias = gallery.original_medias
-      children_galleries = gallery.original_medias
+      children_galleries = gallery.children
       
       # Use Array.inject, retrieve last state of json array and add elements to it
       #   - create empty json["galleries"] if "galleries" key doesn't exists
