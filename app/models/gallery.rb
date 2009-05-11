@@ -63,8 +63,8 @@ class MediaRocket::Gallery
   end
   
   def icon
-    if self.icon_header
-      media = medias.first(:id => self.icon_header)
+    if self.header_icon
+      media = medias.first(:id => self.header_icon)
     else
       media = medias.first
     end

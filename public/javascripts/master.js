@@ -157,6 +157,9 @@ $(document).ready(function() {
 		
 		$('#icon-media-selector-' + media_id).toggle();
 		$('#icon-media-header-' + media_id).toggle();
+		
+		// Hide previous header
+		$('icon_header #{show_header} gallery_#{gallery_id}
 	});
 });
 

@@ -63,7 +63,7 @@ class MediaRocket::Galleries < MediaRocket::Application
     @medias = @gallery.original_medias
 
     case params[:format]
-      when "json"  then  build_json(@medias)
+      when "json"  then  build_json(@gallery)
       when "xml"   then  render :layout => false
       else  render
     end
@@ -85,26 +85,55 @@ class MediaRocket::Galleries < MediaRocket::Application
     # {
     #   "Medias":
     #   [
+    #     galleries:
     #     {
-    #      "title": media.title, 
-    #      "url": media.url,
-    #      "icon": media.thumbnail || media.icon
+    #       { 
+    #         "id": gallery.id, 
+    #         "title": gallery.title,
+    #         "icon": gallery.icon
+    #       },
+    #       ...
+    #     }
+    #     medias:
+    #     {
+    #       { 
+    #         "title": media.title, 
+    #         "url": media.url,
+    #         "icon": media.thumbnail || media.icon
+    #       },
+    #       ...
     #     }
     #   ]
     # }
-    def build_json(medias)
+    def build_json(gallery)
       Merb.logger.info "build json"
-      JSON.pretty_generate(medias.inject(Hash.new) do |json, media|
-          if media.original?
-            json["medias"] = [] unless json.key?("medias")
-            json["medias"] << {:title => media.title, 
-                               :url => media.url, 
-                               :icon => media.icon, 
-                               :mime => media.mime}
-          end
-          json
+      
+      medias = gallery.original_medias
+      children_galleries = gallery.original_medias
+      
+      # Use Array.inject, retrieve last state of json array and add elements to it
+      #   - create empty json["galleries"] if "galleries" key doesn't exists
+      #   - add new hash in array otherwise
+      galleries_json = children_galleries.inject(Hash.new) do |json, gallery|
+        json["galleries"] = [] unless json.key?("galleries")
+        json["galleries"] << {:id => gallery.id, 
+                              :name => gallery.name, 
+                              :icon => gallery.icon}
+        json
+      end
+      
+      media_json = medias.inject(Hash.new) do |json, media|
+        if media.original?
+          json["medias"] = [] unless json.key?("medias")
+          json["medias"] << {:title => media.title, 
+                             :url => media.url, 
+                             :icon => media.icon, 
+                             :mime => media.mime}
         end
-      )
+        json
+      end
+      
+      JSON.pretty_generate(galleries_json + media_json) || ""
     end
   
 end
