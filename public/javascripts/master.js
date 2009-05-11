@@ -151,7 +151,8 @@ $(document).ready(function() {
 		
 		info = this.rel.split("-");
 		gallery_id = info.pop();
-		media_id = info.pop().pop();
+		info.pop();
+		media_id = info.pop();
 		
 		// Hide previous header
 		$('img.gallery_' + gallery_id).hide();
