@@ -163,7 +163,7 @@ module MediaRocket
         self_closing_tag(:img, :src => media_rocket_image_path("/icons/accept.png"), 
                          :title => "#{media.title} is Gallery Icon",
                          :id => "icon-media-header-#{media.id}",
-                         :class => "icon header_icon #{show_header} gallery_#{gallery_id}")
+                         :class => "icon header_icon #{show_header} gallery_#{gallery.id}")
       end
       
       def media_action_delete(media)
