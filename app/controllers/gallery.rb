@@ -57,7 +57,11 @@ class MediaRocket::Galleries < MediaRocket::Application
   def gallery
     provides :xml, :json, :html
     
-    @gallery = ::MediaRocket::Gallery.first(:id => params[:id])
+    if params[:id] == "first"
+      @gallery = ::MediaRocket::Gallery.first
+    else
+      @gallery = ::MediaRocket::Gallery.first(:id => params[:id])
+    end
     return nil if @gallery.nil? || @gallery.is_private?
     
     @medias = @gallery.original_medias
