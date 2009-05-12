@@ -24,7 +24,7 @@ module MediaRocket
       # Route to gallery xml
       scope.match('/galleries(.:format)').to(:controller => 'galleries', :action => 'list').name(:galleries)
       scope.match('/gallery/:id(.:format)').to(:controller => 'galleries', :action => 'gallery').name(:gallery)
-      scope.match('/gallery_icon').to(:controller => 'gallery', :action => 'update').name(:gallery_icon)
+      scope.match('/gallery_icon').to(:controller => 'galleries', :action => 'update').name(:gallery_icon)
 
       # Route to permission page
       scope.match('/permissions').to(:controller => 'permissions', :action => 'index').name(:permissions)
