@@ -157,7 +157,7 @@ $(document).ready(function() {
 		// Hide previous header
 		$('img.gallery_' + gallery_id).hide();
 		
-		var data = '_method=PUT&id=' + gallery_id + '&header_icon=' + media_id;
+		var data = '_method=PUT&id=' + gallery_id + '&gallery[header_icon]=' + media_id;
 		$.post("/library/gallery_icon", data );
 		
 		$('#icon-media-selector-' + media_id).toggle();
