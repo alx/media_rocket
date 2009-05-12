@@ -76,11 +76,11 @@ module MediaRocket
             media_urls << self_closing_tag(:a, :rel => url(:media_rocket_media, :id => media.id), :class => "show")
             media_name = tag(:td, tag(:span, media_title + media_urls, :class => "media"))
             
-            media_action = tag :td, :class => "action" do 
+            media_action = tag :td, :class => "action" do  
+              media_action_drag(media) <<
               media_action_icon(media, gallery) <<
               media_action_edit(media) <<
-              media_action_delete(media) << 
-              media_action_drag(media)
+              media_action_delete(media)
             end
               
           
