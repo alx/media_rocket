@@ -159,11 +159,11 @@ module MediaRocket
                 "#",
                 :rel => "#media-#{media.id}-gallery-#{gallery.id}",
                 :id => "icon-media-selector-#{media.id}",
-                :class => "remote header_icon #{show_selector}") <<
+                :class => "remote icon-media-selector #{show_selector}") <<
         self_closing_tag(:img, :src => media_rocket_image_path("/icons/accept.png"), 
                          :title => "#{media.title} is Gallery Icon",
                          :id => "icon-media-header-#{media.id}",
-                         :class => "icon header_icon #{show_header} gallery_#{gallery.id}")
+                         :class => "icon icon-media-header #{show_header} gallery_#{gallery.id}")
       end
       
       def media_action_delete(media)

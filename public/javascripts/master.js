@@ -154,14 +154,16 @@ $(document).ready(function() {
 		info.pop();
 		media_id = info.pop();
 		
-		// Hide previous header
-		$('img.gallery_' + gallery_id).hide();
+		// Hide all header-icon
+		$('img.icon-media-header').hide();
+		// Show all selector-icon
+		$('img.icon-media-selector').show();
 		
 		var data = '_method=PUT&id=' + gallery_id + '&gallery[header_icon]=' + media_id;
 		$.post("/library/gallery_icon", data );
 		
-		$('#icon-media-selector-' + media_id).toggle();
-		$('#icon-media-header-' + media_id).toggle();
+		$('#icon-media-selector-' + media_id).hide();
+		$('#icon-media-header-' + media_id).show();
 		
 	});
 });
