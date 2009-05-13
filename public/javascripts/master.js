@@ -147,7 +147,7 @@ $(document).ready(function() {
 	});
 	
 	// Media icon for gallery header
-	$("a.header_icon").livequery('click', function(event) {
+	$("a.icon-media-selector").click( function() {
 		
 		info = this.rel.split("-");
 		gallery_id = info.pop();
@@ -155,15 +155,15 @@ $(document).ready(function() {
 		media_id = info.pop();
 		
 		// Hide all header-icon
-		$('img.icon-media-header').hide();
+		$('img.icon-media-header').addClass("hidden");
 		// Show all selector-icon
-		$('img.icon-media-selector').show();
+		$('a.icon-media-selector').removeClass("hidden");
 		
 		var data = '_method=PUT&id=' + gallery_id + '&gallery[header_icon]=' + media_id;
 		$.post("/library/gallery_icon", data );
 		
-		$('#icon-media-selector-' + media_id).hide();
-		$('#icon-media-header-' + media_id).show();
+		$('a#icon-media-selector-' + media_id).addClass("hidden");
+		$('img#icon-media-header-' + media_id).removeClass("hidden");
 		
 	});
 });
