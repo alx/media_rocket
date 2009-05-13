@@ -148,7 +148,7 @@ module MediaRocket
         show_header = "hidden"
         show_selector = ""
         
-        if gallery.header_icon && media.id != gallery.header_icon
+        if gallery.header_icon && media.id == gallery.header_icon
           show_header = ""
           show_selector = "hidden"
         end
