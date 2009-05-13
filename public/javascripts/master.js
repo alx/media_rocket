@@ -1,4 +1,24 @@
 $(document).ready(function() {
+	
+	// =======
+	//
+	// Slick interface
+	//
+	// =======
+	
+	// Add header tabs
+	$("#header").tabs();
+	
+	// Use accordion on main actions
+	$("#actions").accordion();
+	
+	
+	
+	// =======
+	//
+	// Old interface
+	//
+	// =======
 
 	// Add tabs on file upload
 	$("#tabs").tabs();

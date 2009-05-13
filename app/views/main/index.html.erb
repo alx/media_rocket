@@ -1,26 +1,38 @@
-<div class="span-17">
-	
-	<h3>Organiser les Albums</h3>
-	
-	<%= media_gallery_organize %>
-	
+<span id='title'>Media Rocket</span>
+<div id="header">
+	<ul>
+		<li>Galleries</li>
+	</ul>
 </div>
 
-<div class="span-5 last" id="upload">  
-	
-	<h3>Remplir l'album</h3>
-	
-	<div id="tabs">
-	    <ul>
-	        <li><a href="#single"><span>Photo Seule</span></a></li>
-	        <li><a href="#multiple"><span>Multiples</span></a></li>
-	    </ul>
-	    <div id="single">
-	        <%= media_upload_form :format => "full" %>
-	    </div>
-	    <div id="multiple">
-	        <%= media_upload_form :format => "uploadify" %>
-	    </div>
+<div id="organize">
+	<div id='main-action'>
+		<h3><a href="#">Add Gallery</a></h3>
+		<div>
+		</div>
+		
+		<h3><a href="#">Upload One</a></h3>
+		<div>
+			<%= media_upload_form :format => "flat" %>
+		</div>
+		
+		<h3><a href="#">Upload Multi</a></h3>
+		<div>
+			<%= media_upload_form :format => "uploadify" %>
+		</div>
 	</div>
 	
+	<div id='main-area'>
+		<span id="main-loading">Loading...</span>
+	</div>
+</div>
+
+<!-- Display media list -->
+<div id="media-list">
+	<span id='scroll-left'></span>
+	
+	<div id='media-items'>
+	</div>
+	
+	<span id='scroll-right'></span>
 </div>

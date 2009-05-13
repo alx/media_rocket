@@ -3,50 +3,14 @@
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <title>Media Rocket</title>
-	<link rel="stylesheet" href="<%= media_rocket_stylesheet_path 'screen.css' %>" type="text/css" media="screen, projection">
-	<link rel="stylesheet" href="<%= media_rocket_stylesheet_path 'print.css' %>" type="text/css" media="print">
-	<!--[if IE]>
-	  <link rel="stylesheet" href="<%= media_rocket_stylesheet_path 'ie.css' %>" type="text/css" media="screen, projection">
-	<![endif]-->
-	
-	<link rel="stylesheet" href="<%= media_rocket_stylesheet_path 'plugins/fancy-type/screen.css' %>" type="text/css" media="screen, projection" />
-	<link rel="stylesheet" href="<%= media_rocket_stylesheet_path 'forms.css' %>" type="text/css" media="screen, projection" />
-	<link rel="stylesheet" href="<%= media_rocket_stylesheet_path 'jquery.treetable.css' %>" type="text/css" media="screen, projection" />
-	<link rel="stylesheet" href="<%= media_rocket_stylesheet_path 'thickbox.css' %>" type="text/css" media="screen, projection">
-	<link rel="stylesheet" href="<%= media_rocket_stylesheet_path 'master.css' %>" type="text/css" media="screen, projection">
-	
-	<script src="<%= media_rocket_javascript_path 'jquery/jquery.js' %>" type="text/javascript" charset="utf-8"></script>
-    <script src="<%= media_rocket_javascript_path 'jquery/jquery.ui.js' %>" type="text/javascript" charset="utf-8"></script>
-    <script src="<%= media_rocket_javascript_path 'jquery/jquery.confirm.js' %>" type="text/javascript" charset="utf-8"></script>
-    <script src="<%= media_rocket_javascript_path 'jquery/jquery.form.js' %>" type="text/javascript" charset="utf-8"></script>
-    <script src="<%= media_rocket_javascript_path 'jquery/jquery.treetable.js' %>" type="text/javascript" charset="utf-8"></script>
-    <script src="<%= media_rocket_javascript_path 'jquery/jquery.validate.js' %>" type="text/javascript" charset="utf-8"></script>
-    <script src="<%= media_rocket_javascript_path 'jquery/jquery.livequery.js' %>" type="text/javascript" charset="utf-8"></script>
-    <script src="<%= media_rocket_javascript_path 'jquery-full/jquery.uploadify.js' %>" type="text/javascript" charset="utf-8"></script>
-    <script src="<%= media_rocket_javascript_path 'jquery/thickbox.js' %>" type="text/javascript" charset="utf-8"></script>
-
-    <script src="<%= media_rocket_javascript_path 'json2.js' %>" type="text/javascript" charset="utf-8"></script>
-    <script src="<%= media_rocket_javascript_path 'permissions.js' %>" type="text/javascript" charset="utf-8"></script>
-    <script src="<%= media_rocket_javascript_path 'master.js' %>" type="text/javascript" charset="utf-8"></script>
+	<%= media_rocket_css %>
+	<%= media_rocket_js %>
   </head>
 
   <body class="media_rocket-slice">
 
-  <div class="container prepend-top">
-	<div id="header" class="span-24 last">
-		<h1 id="media_rocket"><img src="<%= media_rocket_image_path 'header.png' %>" alt="Media Rocket image" id="header-image" /></h1>
-    </div>
-
-	<hr />
-	<div id="subheader" class="span-24 last">
-		<h3 class="alt">Express Merb Slice to upload files on your server.</h3>
-	</div>
-	
-	<hr />
-	
+  <div class="container">
 	<%= catch_content :for_layout %>
-	
-	<div id="footer"></div>
   </div>
   </body>
 </html>

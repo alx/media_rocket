@@ -48,24 +48,25 @@ module MediaRocket
       end
       
       def media_rocket_js_line(file)
-        "<script src='#{media_rocket_javascript_path file}' type='text/javascript' charset='utf-8'></script>"
+        "<script src='#{media_rocket_javascript_path file}' type='text/javascript' charset='utf-8'></script>\n"
       end
       
       def media_rocket_css
-        css = "<!--[if IE]>#{media_rocket_css_line 'ie.css'}<![endif]-->"
+        css = "<!--[if IE]>#{media_rocket_css_line 'ie.css'}<![endif]-->\n"
       	
-        ['master.css',
-         'screen.css',
-         'print.css',
+        ['screen.css',
+         'plugins/fancy-type/screen.css',
+         'form.css',
          'jquery.treetable.css',
-         'thickbox.css'].each do |file|
+         'thickbox.css',
+         'master.css'].each do |file|
           css << media_rocket_css_line(file)
         end
         css
       end
       
       def media_rocket_css_line(file)
-        "<link rel='stylesheet' href='#{media_rocket_stylesheet_path file}' type='text/css' media='screen, projection'>"
+        "<link rel='stylesheet' href='#{media_rocket_stylesheet_path file}' type='text/css' media='screen, projection'>\n"
       end
     end
   end
