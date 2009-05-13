@@ -155,9 +155,9 @@ $(document).ready(function() {
 		media_id = info.pop();
 		
 		// Hide all header-icon
-		$('img.icon-media-header').addClass("hidden");
+		$('img.icon-media-header.gallery_'+gallery_id).addClass("hidden");
 		// Show all selector-icon
-		$('a.icon-media-selector').removeClass("hidden");
+		$('a.icon-media-selector.gallery_'+gallery_id).removeClass("hidden");
 		
 		var data = '_method=PUT&id=' + gallery_id + '&gallery[header_icon]=' + media_id;
 		$.post("/library/gallery_icon", data );
