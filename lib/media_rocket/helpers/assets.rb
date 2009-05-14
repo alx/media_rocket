@@ -28,7 +28,6 @@ module MediaRocket
       end
       
       def media_rocket_js
-        script = ""
         ['jquery/jquery.js',
          'jquery/jquery.ui.js',
          'jquery/jquery.confirm.js',
@@ -41,10 +40,9 @@ module MediaRocket
          'jquery/jquery.base64.js',
          'json2.js',
          'permissions.js',
-         'master.js'].each do |file|
+         'master.js'].inject("") do |script, file|
           script << media_rocket_js_line(file)
         end
-        script
       end
       
       def media_rocket_js_line(file)
@@ -58,10 +56,9 @@ module MediaRocket
          'screen.css',
          'print.css',
          'jquery.treetable.css',
-         'thickbox.css'].each do |file|
+         'thickbox.css'].inject(css) do |css, file|
           css << media_rocket_css_line(file)
         end
-        css
       end
       
       def media_rocket_css_line(file)
