@@ -7,12 +7,46 @@ $(document).ready(function() {
 	// =======
 	
 	// Add header tabs
-	$("#header").tabs();
+	$("#header > ul").tabs();
 	
 	// Use accordion on main actions
-	$("#actions").accordion();
+	$("#main-action").accordion();
 	
+	function load_gallery_item(item) {
+		var gallery_item = "<div id='gallery-item-" + item.id + "'>";
+		gallery_item += "<div id='gallery-item-" + item.id + "'>";
+		gallery_item += "</div>";
+		$('main-loading').append(gallery_item);
+	}
 	
+	function load_media_item(item) {		
+		var media_item = "<div id='media-item-" + item.id + "'>";
+		media_item += "<div id='media-item-" + item.id + "'>";
+		media_item += "</div>";
+		$('main-loading').append(gallery_item);
+	}
+	
+	// Load main-loading interface
+	function load_gallery(gallery_id) {
+		
+		// No gallery_id specified, load all galleries with 0 id
+		if(gallery_id == null) gallery_id = 0;
+			
+		gallery_json = $.ajax('/gallery/' + gallery_id + '.json');
+		
+		// Clean current loading area
+		$('main-loading').emtpy();
+		
+		gallery_json['gallery'].each(function(gallery) {
+			load_gallery_item(gallery);
+		});
+		
+		gallery_json['media'].each(function(media) {
+			load_media_item(media);
+		});
+	}
+	
+	load_gallery();
 	
 	// =======
 	//

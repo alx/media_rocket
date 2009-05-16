@@ -9,6 +9,10 @@
 	<div id='main-action'>
 		<h3><a href="#">Add Gallery</a></h3>
 		<div>
+			<form action="<%= url(:media_rocket_galleries) %>" method="post" accept-charset="utf-8">
+				<label for="name">Name</label><input type="text" name="gallery[name]" value="" id="gallery-name">
+				<p><input type="submit" value="Continue &rarr;"></p>
+			</form>
 		</div>
 		
 		<h3><a href="#">Upload One</a></h3>
@@ -23,7 +27,9 @@
 	</div>
 	
 	<div id='main-area'>
-		<span id="main-loading">Loading...</span>
+		<span id="main-loading">
+			Loading...
+		</span>
 	</div>
 </div>
 

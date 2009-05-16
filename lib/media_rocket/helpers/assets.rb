@@ -58,6 +58,7 @@ module MediaRocket
          'plugins/fancy-type/screen.css',
          'form.css',
          'jquery.treetable.css',
+         'jquery-ui-1.7.1.custom.css',
          'thickbox.css',
          'master.css'].each do |file|
           css << media_rocket_css_line(file)
