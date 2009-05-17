@@ -125,7 +125,8 @@ class MediaRocket::MediaFile
   
   def icon
     if is_image? && original?
-      self.files.select{|media| media.dimension_max == "130x130"}.first.url
+      file = self.files.select{|media| media.dimension_max == "130x130"}.first
+      file.nil? ? ::MediaRocket.public_path_for(:image, "gallery_icon.png") : file.url
     else
       ::MediaRocket.public_path_for :image, "icons/mimetypes/#{self.mime}.png"
     end

@@ -29,11 +29,10 @@ module MediaRocket
       
       def media_rocket_js
         script = ""
-        ['jquery/jquery.js',
+        ['jquery-full/jquery.js',
          'jquery/jquery.ui.js',
          'jquery/jquery.confirm.js',
          'jquery/jquery.form.js',
-         'jquery/jquery.treetable.js',
          'jquery/jquery.validate.js',
          'jquery/jquery.livequery.js',
          'jquery/thickbox.js',
@@ -54,12 +53,8 @@ module MediaRocket
       def media_rocket_css
         css = "<!--[if IE]>#{media_rocket_css_line 'ie.css'}<![endif]-->\n"
       	
-        ['screen.css',
-         'plugins/fancy-type/screen.css',
-         'form.css',
-         'jquery.treetable.css',
-         'jquery-ui-1.7.1.custom.css',
-         'thickbox.css',
+        ['jquery-ui-1.7.1.custom.css',
+         'screen.css',
          'master.css'].each do |file|
           css << media_rocket_css_line(file)
         end

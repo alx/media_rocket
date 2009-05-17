@@ -1,16 +1,20 @@
 <span id='title'>Media Rocket</span>
-<div id="header">
+
+<div id="header" class='span-24'></div>
+
+<div id="tabs">
 	<ul>
-		<li>Galleries</li>
+		<li><a class="galleries-tab"><span>Galleries</span></a></li>
 	</ul>
 </div>
 
-<div id="organize">
-	<div id='main-action'>
+<div id="organize" class='span-24'>
+	<div id='main-action' class='span-8'>
 		<h3><a href="#">Add Gallery</a></h3>
 		<div>
 			<form action="<%= url(:media_rocket_galleries) %>" method="post" accept-charset="utf-8">
-				<label for="name">Name</label><input type="text" name="gallery[name]" value="" id="gallery-name">
+				<p><label for="name">Gallery Name</label><br/>
+				<input type="text" name="gallery[name]" value="" id="gallery-name"></p>
 				<p><input type="submit" value="Continue &rarr;"></p>
 			</form>
 		</div>
@@ -26,15 +30,15 @@
 		</div>
 	</div>
 	
-	<div id='main-area'>
-		<span id="main-loading">
+	<div id='main-area' class='span-16 last'>
+		<span id="main-area-loading">
 			Loading...
 		</span>
 	</div>
 </div>
 
 <!-- Display media list -->
-<div id="media-list">
+<div id="media-list" class='span-24'>
 	<span id='scroll-left'></span>
 	
 	<div id='media-items'>

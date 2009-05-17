@@ -26,9 +26,14 @@ class MediaRocket::Galleries < MediaRocket::Application
   
   # GET /galleries
   def index
-    provides :xml
-    @galleries = ::MediaRocket::Gallery.all.select{|gallery| gallery.protected? == false}
-    render :layout => false
+    provides :xml, :json
+    @galleries = ::MediaRocket::Site.first.galleries
+    
+    case params[:format]
+      when "json"  then  build_galleries_json(@galleries)
+      when "xml"   then  render :layout => false
+      else  render
+    end
   end
   
   # GET /gallery/:id/edit
@@ -109,6 +114,20 @@ class MediaRocket::Galleries < MediaRocket::Application
     #     }
     #   ]
     # }
+    
+    def build_galleries_json(galleries)
+      galleries_json = Hash.new
+      galleries_json["galleries"] = []
+    
+      galleries.each do |gallery|
+        galleries_json["galleries"] << {:id => gallery.id, 
+                                        :name => gallery.name, 
+                                        :icon => gallery.icon}
+      end
+    
+      JSON.pretty_generate(galleries_json)
+    end
+    
     def build_json(gallery)
       Merb.logger.info "build json"
       

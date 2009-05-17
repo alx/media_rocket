@@ -68,7 +68,9 @@ class MediaRocket::Gallery
     else
       media = medias.first
     end
-    media.icon
+    
+    # Display generic image if no media has been found
+    media.nil? ? ::MediaRocket.public_path_for(:image, "gallery_icon.png") : media.icon 
   end
   
   # =====
