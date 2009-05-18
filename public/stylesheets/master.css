@@ -49,3 +49,11 @@ span.close-tab {
 	margin-left: 5px;
 	cursor: pointer;
 }
+
+#gallery-parent-name{
+	font-weight: bold;
+}
+
+.erasable {
+	color: #999;
+}

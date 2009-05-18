@@ -6,6 +6,20 @@ $(document).ready(function() {
 	//
 	// =======
 	
+	function display_add_gallery_name(gallery){
+		if (gallery){
+			// Display specific gallery, 
+			// set parent_id and gallery name for "add gallery" form
+			$('input#gallery-parent').attr('value', gallery.id);
+			$('span#gallery-parent-name').parent('p').removeClass('hidden');
+			$('span#gallery-parent-name').text(gallery.name);
+		} else {
+			// Display main gallery
+			$('input#gallery-parent').attr('value', '');
+			$('span#gallery-parent-name').parent('p').addClass('hidden');
+		}
+	}
+	
 	function load_gallery_item(item) {
 		var gallery_item = "<div id='gallery-item-" + item.id + "' class='item gallery-item ui-corner-all'>";
 		gallery_item += "<img src='" + item.icon + "' /><br/>";
@@ -23,18 +37,15 @@ $(document).ready(function() {
 	}
 	
 	// Load main-loading interface
-	function load_gallery(gallery_id) {
+	function load_gallery(gallery) {
 		
 		var json_url = "/galleries.json";
 		var div_area = "main-area-galleries";
 		
-		// gallery_id specified, load json corresponding to this gallery
-		if(gallery_id != null) {
-			json_url = "/gallery/" + gallery_id + ".json";
-			div_area = "main-area-gallery-" + gallery_id;
-			$('input#gallery-parent').attr('value', gallery_id);
-		} else {
-			$('input#gallery-parent').attr('value', '');
+		// gallery specified, load json corresponding to this gallery
+		if(gallery) {
+			json_url = "/gallery/" + gallery.id + ".json";
+			div_area = "main-area-gallery-" + gallery.id;
 		}
 		
 		// Append new div area if not already exists
@@ -67,35 +78,40 @@ $(document).ready(function() {
 		});
 	}
 	
-	function add_or_display_tab(gallery_id, gallery_name) {
+	function add_or_display_tab(gallery) {
 		
 		// Load new tabs if not already present
-		if(!$('#gallery-tab-' + gallery_id).length) {
+		if(!$('#gallery-tab-' + gallery.id).length) {
 			
-			$('#tabs').tabs('add', gallery_id, gallery_name);
+			$('#tabs').tabs('add', gallery.id, gallery.name);
 			
 			// Load medias in tab
-			load_gallery(gallery_id);
+			load_gallery(gallery);
 			
 		} else {
 			$('#main-area > div').addClass('hidden');
-			$('#main-area-gallery-' + gallery_id).removeClass('hidden');
+			$('#main-area-gallery-' + gallery.id).removeClass('hidden');
 		}
 		
+		// Display galleryname and set parent_id
+		display_add_gallery_name(gallery);
+		
 		$('#tabs li').removeClass('ui-tabs-selected');
-		$('#gallery-tab-' + gallery_id).parent('li').addClass('ui-tabs-selected');
-		$("#tabs").tabs('select', 'gallery-tab-' + gallery_id);
+		$('#gallery-tab-' + gallery.id).parent('li').addClass('ui-tabs-selected');
+		$("#tabs").tabs('select', 'gallery-tab-' + gallery.id);
 	}
 	
 	$("div.gallery-item").livequery('click', function() {
 		var gallery_id = this.id.split('-').pop();
-		var gallery_name = $('#gallery-item-' + gallery_id + ' > a')[0].innerHTML;
-		add_or_display_tab(gallery_id, gallery_name);
+		var gallery_name = $('#gallery-item-' + gallery_id + ' > a').get(0).innerHTML;
+		add_or_display_tab({id: gallery_id, name: gallery_name});
 	});
 	
 	$("a.gallery-tab").livequery('click', function() {
 		var gallery_id = this.id.split('-').pop();
-		add_or_display_tab(gallery_id, '');
+		// gallery name is in second span (first span is closing icon)
+		var gallery_name = $(this).children('span').get(1).innerHTML;
+		add_or_display_tab({id: gallery_id, name: gallery_name});
 	});
 	
 	$("a#galleries-tab").livequery('click', function() {
@@ -105,6 +121,9 @@ $(document).ready(function() {
 		$('#tabs li').removeClass('ui-tabs-selected');
 		$(this).parent('li').addClass('ui-tabs-selected');
 		$("#tabs").tabs('select', 'galleries-tab');
+		
+		// hide galleryname and set parent_id
+		display_add_gallery_name();
 	});
 	
 	$(".media-item").livequery('click', function(event) {
@@ -143,6 +162,19 @@ $(document).ready(function() {
 			$('#main-area div:visible').append(load_media_item(data));
 		}
     });
+	
+	// erasable class is an input containing default text
+	$('.erasable').focus( function() {
+		$(this).attr('value', '');
+		$(this).removeClass('erasable');
+	});
+	
+	$('.erasable').blur( function() {
+		if (!$(this).attr('value')){
+			$(this).attr('value', this.title);
+			$(this).addClass('erasable');
+		}
+	});
 	
 	// === Init script ===
 	

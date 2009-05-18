@@ -122,7 +122,7 @@ module MediaRocket
       
       def media_upload_form_flat(options = {}, &block)
         form :action => slice_url(:upload), :id => "uploadForm" do
-          media_file_field(options) + tag(:p, submit(options[:submit_label] || "Upload", :id => "media_button"))
+          media_title_field(options) + media_file_field(options) + tag(:p, submit(options[:submit_label] || "Upload", :id => "media_button"))
         end
       end
       
@@ -143,11 +143,15 @@ module MediaRocket
       end
       
       def media_title_field(options = {}, &block)
-        content = options[:title_label] || "Title"
+        content = options[:title_label] || "Name"
         
         title_content = tag(:label, content, {:for => "title"})
         title_content << tag(:br)
-        title_content << text_field(:name => "title", :id => content)
+        title_content << text_field(:name   => "title",
+                                    :value  => 'Filename by default',
+                                    :title  => 'Filename by default',
+                                    :id     => content,
+                                    :class  => "erasable")
         
         tag(:p, title_content)
       end
