@@ -78,6 +78,8 @@ $(document).ready(function() {
 			$('#main-area-gallery-' + gallery_id).removeClass('hidden');
 		}
 		
+		$('#tabs li').removeClass('ui-tabs-selected');
+		$('#gallery-tab-' + gallery_id).parent('li').addClass('ui-tabs-selected');
 		$("#tabs").tabs('select', 'gallery-tab-' + gallery_id);
 	}
 	
@@ -92,9 +94,12 @@ $(document).ready(function() {
 		add_or_display_tab(gallery_id, '');
 	});
 	
-	$("a.galleries-tab").livequery('click', function() {
+	$("a#galleries-tab").livequery('click', function() {
 		$('#main-area > div').addClass('hidden');
 		$('#main-area-galleries').removeClass('hidden');
+		
+		$('#tabs li').removeClass('ui-tabs-selected');
+		$(this).parent('li').addClass('ui-tabs-selected');
 		$("#tabs").tabs('select', 'galleries-tab');
 	});
 	
@@ -102,10 +107,22 @@ $(document).ready(function() {
 		// Display thickbox corresponding to selected item
 	});
 	
-	$(".gallery-tab-close").livequery('click', function(event) {
+	$(".close-tab").livequery('click', function(event) {
+		var gallery_id = this.id.split('-').pop();
+		
 		// empty div used by selected tab
-		// close selected tabs
+		$('#main-area-gallery-' + gallery_id).remove();
+		
+		// remove corresponding tabs
+		$('#gallery-tab-' + gallery_id).remove();
+		
 		// return to main gallery
+		$('#main-area > div').addClass('hidden');
+		$('#main-area-galleries').removeClass('hidden');
+
+		$('#tabs li').removeClass('ui-tabs-selected');
+		$("a#galleries-tab").parent('li').addClass('ui-tabs-selected');
+		$("#tabs").tabs('select', 'galleries-tab');
 	});
 	
 	// === Init script ===
@@ -113,7 +130,7 @@ $(document).ready(function() {
 	// Add header tabs
 	$("#tabs").tabs({
 		panelTemplate: '<div class="hidden"></div>',
-		tabTemplate: '<li><a id="gallery-tab-#{href}" class="gallery-tab"><span>#{label}</span></a></li>'
+		tabTemplate: '<li><a id="gallery-tab-#{href}" class="gallery-tab"><span id="close-tab-#{href}" class="ui-icon ui-icon-close close-tab" /><span>#{label}</span></a></li>'
 	});
 	
 	// Use accordion on main actions

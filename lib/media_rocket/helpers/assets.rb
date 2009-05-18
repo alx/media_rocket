@@ -29,8 +29,8 @@ module MediaRocket
       
       def media_rocket_js
         script = ""
-        ['jquery-full/jquery.js',
-         'jquery-full/jquery.ui.js',
+        ['jquery/jquery.js',
+         'jquery/jquery.ui.js',
          'jquery/jquery.confirm.js',
          'jquery/jquery.form.js',
          'jquery/jquery.validate.js',

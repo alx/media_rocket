@@ -38,3 +38,14 @@ div.item > img{
 	height: 90px;
 	width: 90px;
 }
+
+.gallery-tab {
+	padding-left: 13px;
+	padding-right: 3px;
+}
+
+span.close-tab {
+	float: right;
+	margin-left: 5px;
+	cursor: pointer;
+}
