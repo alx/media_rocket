@@ -34,7 +34,7 @@ $(document).ready(function() {
 		}
 		
 		// Append new div area if not already exists
-		if($('#' + div_area).length == 0) {
+		if(!$('#' + div_area).length) {
 			$('#main-area').append("<div id='" + div_area + "' class='hidden'/>");
 		}
 			
@@ -61,14 +61,12 @@ $(document).ready(function() {
 			$('#' + div_area).removeClass('hidden');
 			
 		});
-		
-		$("#tabs").tabs('select', 'gallery-tab-' + gallery_id);
 	}
 	
 	function add_or_display_tab(gallery_id, gallery_name) {
 		
 		// Load new tabs if not already present
-		if($('gallery-tab-' + gallery_id).length == 0) {
+		if(!$('#gallery-tab-' + gallery_id).length) {
 			
 			$('#tabs').tabs('add', gallery_id, gallery_name);
 			
@@ -79,25 +77,28 @@ $(document).ready(function() {
 			$('#main-area > div').addClass('hidden');
 			$('#main-area-gallery-' + gallery_id).removeClass('hidden');
 		}
+		
+		$("#tabs").tabs('select', 'gallery-tab-' + gallery_id);
 	}
 	
-	$(".gallery-item").click( function() {
+	$("div.gallery-item").livequery('click', function() {
 		var gallery_id = this.id.split('-').pop();
 		var gallery_name = $('#gallery-item-' + gallery_id + ' > a')[0].innerHTML;
 		add_or_display_tab(gallery_id, gallery_name);
 	});
 	
-	$(".gallery-tab").click( function() {
+	$("a.gallery-tab").livequery('click', function() {
 		var gallery_id = this.id.split('-').pop();
 		add_or_display_tab(gallery_id, '');
 	});
 	
-	$(".galleries-tab").click( function() {
+	$("a.galleries-tab").livequery('click', function() {
 		$('#main-area > div').addClass('hidden');
 		$('#main-area-galleries').removeClass('hidden');
+		$("#tabs").tabs('select', 'galleries-tab');
 	});
 	
-	$(".media-item").click( function(event) {
+	$(".media-item").livequery('click', function(event) {
 		// Display thickbox corresponding to selected item
 	});
 	
@@ -111,7 +112,7 @@ $(document).ready(function() {
 	
 	// Add header tabs
 	$("#tabs").tabs({
-		panelTemplate: '',
+		panelTemplate: '<div class="hidden"></div>',
 		tabTemplate: '<li><a id="gallery-tab-#{href}" class="gallery-tab"><span>#{label}</span></a></li>'
 	});
 	
@@ -120,6 +121,7 @@ $(document).ready(function() {
 	
 	// Load main gallery
 	load_gallery();
+	$("#tabs").tabs('select', 'galleries-tab');
 	
 	// // =======
 	// //
