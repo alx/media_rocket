@@ -12,9 +12,10 @@
 	<div id='main-action' class='span-8'>
 		<h3><a href="#">Add Gallery</a></h3>
 		<div>
-			<form action="<%= url(:media_rocket_galleries) %>" method="post" accept-charset="utf-8">
+			<form action="<%= url(:media_rocket_galleries) %>" method="post" accept-charset="utf-8" id="gallery-add">
 				<p><label for="name">Gallery Name</label><br/>
 				<input type="text" name="gallery[name]" value="" id="gallery-name"></p>
+				<input type="hidden" name="gallery[parent_id]" value="" id="gallery-parent">
 				<p><input type="submit" value="Continue &rarr;"></p>
 			</form>
 		</div>

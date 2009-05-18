@@ -32,6 +32,9 @@ $(document).ready(function() {
 		if(gallery_id != null) {
 			json_url = "/gallery/" + gallery_id + ".json";
 			div_area = "main-area-gallery-" + gallery_id;
+			$('input#gallery-parent').attr('value', gallery_id);
+		} else {
+			$('input#gallery-parent').attr('value', '');
 		}
 		
 		// Append new div area if not already exists
@@ -125,6 +128,21 @@ $(document).ready(function() {
 		$("a#galleries-tab").parent('li').addClass('ui-tabs-selected');
 		$("#tabs").tabs('select', 'galleries-tab');
 	});
+	
+	
+    $('#gallery-add').ajaxForm({
+		dataType:  'json',
+		success: function(data){
+			$('#main-area div:visible').append(load_gallery_item(data));
+		}
+    });
+
+    $('#media-solo-add').ajaxForm({
+		dataType:  'json',
+		success: function(data){
+			$('#main-area div:visible').append(load_media_item(data));
+		}
+    });
 	
 	// === Init script ===
 	
