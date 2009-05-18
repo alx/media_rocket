@@ -13,9 +13,20 @@ $(document).ready(function() {
 			$('input#gallery-parent').attr('value', gallery.id);
 			$('span#gallery-parent-name').parent('p').removeClass('hidden');
 			$('span#gallery-parent-name').text(gallery.name);
+			
+			// Display upload forms
+			$('#action-upload-solo').show('slide');
+			$('#action-upload-multi').show('slide');
+			$('input.gallery[id]').attr('value', gallery.id);
 		} else {
+			// Hide upload forms
+			$('#action-upload-solo').hide('slide');
+			$('#action-upload-multi').hide('slide');
+			$('input.gallery[id]').attr('value', gallery.id);
+			
 			// Display main gallery
 			$('input#gallery-parent').attr('value', '');
+			$('input.gallery[id]').attr('value', '');
 			$('span#gallery-parent-name').parent('p').addClass('hidden');
 		}
 	}

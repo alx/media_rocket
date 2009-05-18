@@ -239,6 +239,10 @@ module MediaRocket
         end
       end
       
+      def media_gallery_hidden(options = {}, &block)
+        tag(:input, "", {:type => "hidden", :name => "gallery-id"})
+      end
+      
       def media_gallery_select(options = {}, &block)
         
         galleries = ::MediaRocket::Gallery.all :site_id => (options[:site_id] || MediaRocket::Site.first.id)

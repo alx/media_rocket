@@ -10,7 +10,7 @@
 
 <div id="organize" class='span-24'>
 	<div id='main-action' class='span-8'>
-		<h3><a href="#">Add Gallery</a></h3>
+		<h3 id="action-add-gallery"><a href="#">Add Gallery</a></h3>
 		<div>
 			<form action="<%= url(:media_rocket_galleries) %>" method="post" accept-charset="utf-8" id="gallery-add">
 				<p><label for="name">Gallery Name</label><br/>
@@ -22,12 +22,12 @@
 			<p class='hidden'>Inside gallery: <span id="gallery-parent-name"></span></p>
 		</div>
 		
-		<h3><a href="#">Upload One</a></h3>
+		<h3 id="action-upload-solo" class="display:none"><a href="#">Upload One</a></h3>
 		<div>
 			<%= media_upload_form :format => "flat" %>
 		</div>
 		
-		<h3><a href="#">Upload Multi</a></h3>
+		<h3 id="action-upload-multi" class="display:none"><a href="#">Upload Multi</a></h3>
 		<div>
 			<%= media_upload_form :format => "uploadify" %>
 		</div>
