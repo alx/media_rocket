@@ -122,7 +122,10 @@ module MediaRocket
       
       def media_upload_form_flat(options = {}, &block)
         form :action => slice_url(:upload), :id => "uploadForm" do
-          media_title_field(options) + media_file_field(options) + tag(:p, submit(options[:submit_label] || "Upload", :id => "media_button"))
+          media_title_field(options) << 
+          media_file_field(options) <<
+          media_gallery_hidden(options) <<
+          tag(:p, submit(options[:submit_label] || "Upload", :id => "media_button"))
         end
       end
       
@@ -240,7 +243,7 @@ module MediaRocket
       end
       
       def media_gallery_hidden(options = {}, &block)
-        tag(:input, "", {:type => "hidden", :name => "gallery-id"})
+        tag(:input, "", {:type => "hidden", :name => "gallery[id]", :class => "gallery-id"})
       end
       
       def media_gallery_select(options = {}, &block)
