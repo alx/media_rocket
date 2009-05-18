@@ -61,3 +61,14 @@ span.close-tab {
 input.text {
 	width: 200px;
 }
+
+.gallery-delete{
+	z-index:10;
+	position:absolute;
+	width:90px;
+	text-align:right;
+}
+
+.gallery-delete a{
+width:15px;
+} 
