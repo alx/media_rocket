@@ -57,3 +57,7 @@ span.close-tab {
 .erasable {
 	color: #999;
 }
+
+input.text {
+	width: 200px;
+}

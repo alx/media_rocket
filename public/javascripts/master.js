@@ -83,7 +83,7 @@ $(document).ready(function() {
 		// Load new tabs if not already present
 		if(!$('#gallery-tab-' + gallery.id).length) {
 			
-			$('#tabs').tabs('add', gallery.id, gallery.name);
+			$('#tabs').tabs('add', gallery.id.toString(), gallery.name);
 			
 			// Load medias in tab
 			load_gallery(gallery);
@@ -152,14 +152,17 @@ $(document).ready(function() {
     $('#gallery-add').ajaxForm({
 		dataType:  'json',
 		success: function(data){
-			$('#main-area div:visible').append(load_gallery_item(data));
+			var gallery = data.galleries[0];
+			$('#main-area > div').append(load_gallery_item(gallery));
+			add_or_display_tab(gallery);
+			$("input#gallery-name").attr("value", "");
 		}
     });
 
     $('#media-solo-add').ajaxForm({
 		dataType:  'json',
 		success: function(data){
-			$('#main-area div:visible').append(load_media_item(data));
+			$('#main-area').append(load_media_item(data.medias[0]));
 		}
     });
 	

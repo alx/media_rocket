@@ -39,6 +39,7 @@ class MediaRocket::Galleries < MediaRocket::Application
   def create
     provides :json
     @gallery = ::MediaRocket::Gallery.create(params[:gallery])
+    build_galleries_json([@gallery])
   end
   
   # GET /gallery/:id/edit
