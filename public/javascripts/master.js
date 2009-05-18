@@ -16,7 +16,8 @@ $(document).ready(function() {
 	
 	function load_media_item(item) {		
 		var media_item = "<div id='media-item-" + item.id + "' class='item media-item ui-corner-all'>";
-		media_item += "<img src='" + item.icon + "' />";
+		media_item += "<img src='" + item.icon + "' /><br/>";
+		media_item += "<a class='item-title'>" + item.title + "</a>";
 		media_item += "</div>";
 		return media_item;
 	}
