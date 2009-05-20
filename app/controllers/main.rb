@@ -35,7 +35,7 @@ class MediaRocket::Main < MediaRocket::Application
         # Return information after success in uploadify
         render JSON.pretty_generate(["medias" => {:icon => @media.icon, 
                                                   :media_id => @media.id, 
-                                                  :title => @media.title}]), :layout => false
+                                                  :name => @media.title}]), :layout => false
       end # @media.save
         
     end # @site = ...

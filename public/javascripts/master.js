@@ -8,7 +8,11 @@ $(document).ready(function() {
 	
 	function load_item(type, item){
 		var loaded_item = "<div id='" + type + "-item-" + item.id + "' class='item " + type + "-item ui-corner-all'>";
-		loaded_item += "<p class='" + type + "-delete' id='" + type + "-item-delete-" + item.id + "'><a class='ui-icon ui-icon-circle-close'></a></p>"
+		
+		if(type == 'gallery') {
+			loaded_item += "<p class='" + type + "-delete' id='" + type + "-item-delete-" + item.id + "'><a class='ui-icon ui-icon-circle-close'></a></p>"
+		}
+		
 		loaded_item += "<img src='" + item.icon + "' /><br/><a class='item-title'>" + item.name + "</a></div>";
 		return loaded_item;
 	}
