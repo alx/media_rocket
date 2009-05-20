@@ -36,6 +36,7 @@ $(document).ready(function() {
 	
 	function load_gallery_item(item) {
 		var gallery_item = "<div id='gallery-item-" + item.id + "' class='item gallery-item ui-corner-all'>";
+		gallery_item += "<p class='gallery-delete' id='gallery-item-delete-" + item.id + "'><a class='ui-icon ui-icon-circle-close'></a></p>"
 		gallery_item += "<img src='" + item.icon + "' /><br/>";
 		gallery_item += "<a class='item-title'>" + item.name + "</a>";
 		gallery_item += "</div>";
@@ -114,6 +115,12 @@ $(document).ready(function() {
 		$('#gallery-tab-' + gallery.id).parent('li').addClass('ui-tabs-selected');
 		$("#tabs").tabs('select', 'gallery-tab-' + gallery.id);
 	}
+	
+	$(".gallery-delete a").livequery('click', function() {
+	var gallery_id = $(this).parent('p').get(0).id.split('-').pop();
+	$.post('/galleries/delete/'+ gallery_id);
+	$(this).parent('p').parent('div').remove();
+	});
 	
 	$("div.gallery-item").livequery('click', function() {
 		var gallery_id = this.id.split('-').pop();
