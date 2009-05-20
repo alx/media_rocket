@@ -175,7 +175,7 @@ $(document).ready(function() {
 		}
     });
 
-    $('#media-solo-add').ajaxForm({
+    $('#media-solo-form').ajaxForm({
 		dataType:  'json',
 		success: function(data){
 			$('#main-area').append(load_media_item(data.medias[0]));

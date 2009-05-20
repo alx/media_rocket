@@ -113,7 +113,7 @@ module MediaRocket
           #
           # Build submit button
           #
-          form_content << tag(:p, submit(options[:submit_label] || "Upload", :id => "media_button"))
+          form_content << tag(:p, submit(options[:submit_label] || "Upload", :id => "media_button", :name => ""))
           
           # Display form content
           form_content
@@ -121,11 +121,11 @@ module MediaRocket
       end
       
       def media_upload_form_flat(options = {}, &block)
-        form :action => slice_url(:upload), :id => "uploadForm" do
+        form :action => slice_url(:upload), :id => "media-solo-form" do
           media_title_field(options) << 
           media_file_field(options) <<
           media_gallery_hidden(options) <<
-          tag(:p, submit(options[:submit_label] || "Upload", :id => "media_button"))
+          tag(:p, submit(options[:submit_label] || "Upload", :id => "media_button", :name => ""))
         end
       end
       
@@ -140,7 +140,7 @@ module MediaRocket
           form_content << media_gallery_new_field(options)
           form_content << media_gallery_select(options)
           form_content << media_file_field(options)
-          form_content << tag(:p, submit(options[:submit_label] || "Upload", :id => "media_button"))
+          form_content << tag(:p, submit(options[:submit_label] || "Upload", :id => "media_button", :name => ""))
           form_content
         end
       end
@@ -243,7 +243,7 @@ module MediaRocket
       end
       
       def media_gallery_hidden(options = {}, &block)
-        tag(:input, "", {:type => "hidden", :name => "gallery[id]", :class => "gallery-id"})
+        tag(:input, "", {:type => "hidden", :name => "gallery_id", :class => "gallery-id"})
       end
       
       def media_gallery_select(options = {}, &block)
@@ -303,7 +303,7 @@ module MediaRocket
         form :action => url(:new_media_rocket_gallery), :method => "GET", :class => "add-gallery"  do
           gallery_content = text_field(:name => "name", :value => field_label)
           gallery_content << hidden_field(:name => "parent_id", :value => gallery.id)
-          gallery_content << submit(submit_label)
+          gallery_content << submit(submit_label, :name => "")
         end
       end
       
@@ -331,7 +331,7 @@ module MediaRocket
           info << text_field(:name => "position", :value => media.position)
           info << self_closing_tag(:br)
           
-          info << submit("Modifier")
+          info << submit("Modifier", :name => "")
         end
       end
     end

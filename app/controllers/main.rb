@@ -10,40 +10,39 @@ class MediaRocket::Main < MediaRocket::Application
   end
   
   def upload
-    if params[:Filedata]
-      
-      if @site = ::MediaRocket::Site.first(:id => params[:site_id])
-      
-        gallery_name = params[:gallery_name].nil? ? "" : Base64.decode64(params[:gallery_name])
+    
+    if @site = ::MediaRocket::Site.first(:id => params[:site_id])
+        
+      if params[:Filedata]
+        # Upload with uploadify
         media_params = {:title => params[:Filename],
                         :site_id => @site.id,
-                        :gallery_name => gallery_name,
                         :gallery_id => params[:gallery_id],
                         :file => {:filename => params[:Filename],
                                   :tempfile => params[:Filedata][:tempfile]}}
-                                  
-        @media = ::MediaRocket::MediaFile.new(media_params)
+      else
+        # Upload one by one
+        media_params = {:title => params[:title] || params[:filename],
+                        :site_id => @site.id,
+                        :gallery_id => params[:gallery_id],
+                        :file => {:filename => params[:filename],
+                                  :tempfile => params[:tempfile]}}
+      end
+      
+      @media = ::MediaRocket::MediaFile.new(media_params)
         
-        if @media.save
-          # Return information after success in uploadify
-          render JSON.pretty_generate({:icon => @media.icon, 
-                                       :media_id => @media.id, 
-                                       :title => @media.title}), :layout => false
-        end # @media.save
+      if @media.save
+        # Return information after success in uploadify
+        render JSON.pretty_generate(["medias" => {:icon => @media.icon, 
+                                                  :media_id => @media.id, 
+                                                  :title => @media.title}]), :layout => false
+      end # @media.save
         
-      end # @site = ...
+    end # @site = ...
       
-      # Upload unsuccessful
-      # render "-1", :layout => false
-      
-      render JSON.pretty_generate({:icon => @media.icon, 
-                                   :media_id => @media.id, 
-                                   :title => @media.title}), :layout => false
-      
-    else
-      ::MediaRocket::MediaFile.new(params).save
-      redirect (params[:redirect_to] || "/")
-    end
+    # Upload unsuccessful
+    # render "-1", :layout => false
+    render JSON.pretty_generate(["medias" => {}]), :layout => false
   end
   
   private 
