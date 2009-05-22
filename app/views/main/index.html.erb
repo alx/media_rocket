@@ -19,21 +19,21 @@
 				<input type="hidden" name="gallery[site_id]" value="<%= MediaRocket::Site.first.id %>" id="gallery-site">
 				<p><input type="submit" value="Continue &rarr;"></p>
 			</form>
-			<p class='hidden'>Inside gallery: <span id="gallery-parent-name"></span></p>
+			<p style="display: none">Inside gallery: <span id="gallery-parent-name"></span></p>
 		</div>
 		
-		<h3 id="action-upload-solo" style="display:none;"><a href="#">Upload One</a></h3>
+		<h3 id="action-upload-solo" style="display: none"><a href="#">Upload One</a></h3>
 		<div>
 			<%= media_upload_form :format => "flat" %>
 		</div>
 		
-		<h3 id="action-upload-multi" style="display:none;"><a href="#">Upload Multi</a></h3>
+		<h3 id="action-upload-multi" style="display: none"><a href="#">Upload Multi</a></h3>
 		<div>
 			<%= media_upload_form :format => "uploadify" %>
 		</div>
 	</div>
 	
-	<div id='main-area' class='span-16 last'>
+	<div id='main-area' class='span-16 last ui-widget ui-helper-clearfix'>
 		<span id="main-area-loading">
 			Loading...
 		</span>

@@ -7,13 +7,13 @@ $(document).ready(function() {
 	// Create item from json source
 	
 	function load_item(type, item){
-		var loaded_item = "<div id='" + type + "-item-" + item.id + "' class='item " + type + "-item ui-corner-all'>";
+		var loaded_item = "<li id='" + type + "-item-" + item.id + "' class='item " + type + "-item ui-widget-content ui-corner-tr'>";
 		
 		if(type == 'gallery') {
-			loaded_item += "<p class='" + type + "-delete' id='" + type + "-item-delete-" + item.id + "'><a class='ui-icon ui-icon-circle-close'></a></p>"
+			loaded_item += "<p style='display: none' class='" + type + "-delete' id='" + type + "-item-delete-" + item.id + "'><a class='ui-icon ui-icon-circle-close'></a></p>"
 		}
 		
-		loaded_item += "<img src='" + item.icon + "' /><br/><a class='item-title'>" + item.name + "</a></div>";
+		loaded_item += "<img src='" + item.icon + "' /><br/><a class='item-title'>" + (item.name || "&nbsp;") + "</a></li>";
 		return loaded_item;
 	}
 	
@@ -30,8 +30,8 @@ $(document).ready(function() {
 	// Create temporary item before upload
 	
 	function temp_item(type){
-		var temp_item = "<div id='" + type + "-item-temp' class='item " + type + "-item ui-corner-all'>";
-		temp_item += "<img src='' /><br/><a class='item-title'>...</a></div>";
+		var temp_item = "<li id='" + type + "-item-temp' class='item " + type + "-item item-temp ui-widget-content ui-corner-tr'>";
+		temp_item += "<img src='images/media_icon'/><br/><a class='item-title'>...</a></li>";
 		return temp_item;
 	}
 	
@@ -49,8 +49,8 @@ $(document).ready(function() {
 	function replace_temp_item(type, new_item) {
 		var temp_item = $('#' + type + '-item-temp');
 		temp_item.attr('id', type + '-item-' + new_item.id);
-		temp_item.child('img').attr('src', new_item.icon);
-		temp_item.child('span.title').html(new_item.title);
+		temp_item.find('img').attr('src', new_item.icon);
+		temp_item.find('span.title').html(new_item.title);
 	}
 	
 	function replace_temp_gallery(item) {
@@ -61,11 +61,22 @@ $(document).ready(function() {
 		replace_temp_item('media', item);
 	}
 	
+	// ----------------------------------------
+	// Remove temporary items
+	
+	function clean_temp_item() {
+		$('.item-temp').remove();
+	}
+	
 // ========================================
 // Loading features for main area and tabs
 	
 	// Load main-loading interface
 	function load_gallery(gallery) {
+		
+		// Show loading state
+		$('#main-area > ul:visible').hide();
+		$('#main-area-loading').show();
 		
 		var json_url = "/galleries.json";
 		var div_area = "main-area-galleries";
@@ -78,14 +89,11 @@ $(document).ready(function() {
 		
 		// Append new div area if not already exists
 		if(!$('#' + div_area).length) {
-			$('#main-area').append("<div id='" + div_area + "' class='hidden'/>");
+			$('#main-area').append("<ul id='" + div_area + "' class='gallery-area ui-helper-reset ui-helper-clearfix' style='display: none'/>");
+			$("#" + div_area).disableSelection();
 		}
 			
 		$.getJSON(json_url, function(json) {
-			
-			// Show loading state
-			$('#main-area > div').addClass('hidden');
-			$('#main-area-loading').removeClass('hidden');
 
 			if(json.galleries){
 				$.each(json.galleries,function(i,item) {
@@ -99,11 +107,20 @@ $(document).ready(function() {
 				});
 			}
 			
-			// Show current gallery
-			$('#main-area-loading').addClass('hidden');
-			$('#' + div_area).removeClass('hidden');
-			
+			$("#" + div_area).sortable({ 
+				items: 'li.media-item',
+				update: function(event, ui) {
+					// retrieve new order list
+					ui.sortable('serialize');
+					// send the new order to server
+					$.get(gallery_url, {media_list: ordered_list});
+				}
+			});
+			$('#' + div_area).show();
 		});
+		
+		// Show current gallery
+		$('#main-area-loading').hide();
 	}
 	
 	function display_add_gallery_name(gallery){
@@ -113,7 +130,7 @@ $(document).ready(function() {
 			$('input#gallery-parent').attr('value', gallery.id);
 			$('input.gallery-id').attr('value', gallery.id);
 			
-			$('span#gallery-parent-name').parent('p').removeClass('hidden');
+			$('span#gallery-parent-name').parent('p').hide();
 			$('span#gallery-parent-name').text(gallery.name);
 			
 			// Display upload forms
@@ -136,7 +153,7 @@ $(document).ready(function() {
 			$('input.gallery-id').attr('value', '');
 			
 			// Hide gallery name
-			$('span#gallery-parent-name').parent('p').addClass('hidden');
+			$('span#gallery-parent-name').parent('p').hide();
 		}
 	}
 	
@@ -151,8 +168,8 @@ $(document).ready(function() {
 			load_gallery(gallery);
 			
 		} else {
-			$('#main-area > div').addClass('hidden');
-			$('#main-area-gallery-' + gallery.id).removeClass('hidden');
+			$('#main-area > ul').hide();
+			$('#main-area-gallery-' + gallery.id).show();
 		}
 		
 		// Display galleryname and set parent_id
@@ -168,11 +185,21 @@ $(document).ready(function() {
 	
     $('#gallery-add').ajaxForm({
 		dataType:  'json',
+		beforeSubmit: function(){
+			// Display temporary gallery in main area displayed div
+			$('#main-area > ul').append(temp_gallery_item());
+		},
 		success: function(data){
 			var gallery = data.galleries[0];
-			$('#main-area > div').append(load_gallery_item(gallery));
-			add_or_display_tab(gallery);
-			$("input#gallery-name").attr("value", "");
+			
+			if(gallery) {
+				$('#main-area > ul').append(replace_temp_gallery(gallery));
+				add_or_display_tab(gallery);
+				$("input#gallery-name").attr("value", "");
+			} else {
+				// TODO: display error message
+				clean_temp_item();
+			}
 		}
     });
 
@@ -180,11 +207,27 @@ $(document).ready(function() {
 		dataType:  'json',
 		beforeSubmit: function(){
 			// Display temporary gallery in main area displayed div
-			$('#main-area > div').append(load_media_item(data.medias[0]));
+			$('#main-area > ul').append(temp_media_item());
+			
+			// Remove media name if not specified
+			if($('#title-field').attr('value') == $('#title-field').attr('title')){
+				$('#title-field').attr('value', '');
+			}
 		},
 		success: function(data){
-			// Display result gallery in main area displayed div
-			$('#main-area > div').append(load_media_item(data.medias[0]));
+			var media = data.media;
+			
+			if(media){
+				// Display result gallery in main area displayed div
+				$('#main-area > ul').append(replace_temp_media(media));
+				
+				// Re-init form
+				$('input#title-field').attr('value', $('#title-field').attr('title'));
+				$('input#media_file').attr('value', '')
+			} else {
+				// TODO: display error message
+				clean_temp_item();
+			}
 		}
     });
 	
@@ -211,10 +254,10 @@ $(document).ready(function() {
 	$(".gallery-delete a").livequery('click', function() {
 	var gallery_id = $(this).parent('p').get(0).id.split('-').pop();
 	$.post('/galleries/delete/'+ gallery_id);
-	$(this).parent('p').parent('div').remove();
+	$(this).parent('p').parent('ul').remove();
 	});
 	
-	$("div.gallery-item").livequery('click', function() {
+	$(".gallery-item").livequery('click', function() {
 		var gallery_id = this.id.split('-').pop();
 		var gallery_name = $('#gallery-item-' + gallery_id + ' > a').get(0).innerHTML;
 		add_or_display_tab({id: gallery_id, name: gallery_name});
@@ -228,8 +271,8 @@ $(document).ready(function() {
 	});
 	
 	$("a#galleries-tab").livequery('click', function() {
-		$('#main-area > div').addClass('hidden');
-		$('#main-area-galleries').removeClass('hidden');
+		$('#main-area > ul').hide();
+		$('#main-area-galleries').show();
 		
 		$('#tabs li').removeClass('ui-tabs-selected');
 		$(this).parent('li').addClass('ui-tabs-selected');
@@ -243,23 +286,33 @@ $(document).ready(function() {
 		// Display thickbox corresponding to selected item
 	});
 	
+	$('.item').livequery('mouseover', function(event) {
+		$(this).find('.gallery-delete').show();
+	});
+	
+	$('.item').livequery('mouseout', function(event) {
+		$(this).find('.gallery-delete').hide();
+	});
+	
 	$(".gallery-item .close-tab").livequery('click', function(event) {
 		var gallery_id = this.id.split('-').pop();
 		
 		// empty div used by selected tab
 		$('#main-area-gallery-' + gallery_id).remove();
+		$('#main-area-gallery-' + gallery_id).sortable('remove');
 		
 		// remove corresponding tabs
 		$('#gallery-tab-' + gallery_id).remove();
 		
 		// return to main gallery
-		$('#main-area > div').addClass('hidden');
-		$('#main-area-galleries').removeClass('hidden');
+		$('#main-area > ul').hide();
+		$('#main-area-galleries').show();
 
 		$('#tabs li').removeClass('ui-tabs-selected');
 		$("a#galleries-tab").parent('li').addClass('ui-tabs-selected');
 		$("#tabs").tabs('select', 'galleries-tab');
 	});
+	
 	
 // ========================================
 // Init Script
@@ -273,7 +326,7 @@ $(document).ready(function() {
 	// tabTemplate: Customize tabTemplate to include gallery.id and add an icon to close the gallery
 	//
 	$("#tabs").tabs({
-		panelTemplate: '<div class="hidden"></div>',
+		panelTemplate: '<div style="display: none"></div>',
 		tabTemplate: '<li><a id="gallery-tab-#{href}" class="gallery-tab"><span id="close-tab-#{href}" class="ui-icon ui-icon-close close-tab" /><span>#{label}</span></a></li>'
 	});
 	

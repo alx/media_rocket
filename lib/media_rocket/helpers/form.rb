@@ -153,7 +153,7 @@ module MediaRocket
         title_content << text_field(:name   => "title",
                                     :value  => 'Filename by default',
                                     :title  => 'Filename by default',
-                                    :id     => content,
+                                    :id     => 'title-field',
                                     :class  => "erasable")
         
         tag(:p, title_content)

@@ -17,23 +17,39 @@
 /*
 /*****************************************************************************/
 
+input {
+	border-radius:10px;
+	-moz-border-radius:10px;
+	-webkit-border-radius:10px;
+}
+
+input[type=submit],label,select,.pointer { 
+	cursor:pointer;
+}
+
 .hidden{
 	display:none;
 }
 
-div.item {
+ul.gallery-area {
+	list-style-type:none;
+	margin:0;
+	padding:0;
+}
+
+li.item {
 	float:left;
-	padding:5px;
+	margin: 2px;
+	padding: 5px;
 	text-align: center;
 }
 
-div.item > .title {
+li.item > .title {
 	font-family: Verdana,Arial,sans-serif;
 	font-size: 1.1em;
 }
 
-div.item > img{
-	border: 1px solid #999;
+li.item > img{
 	cursor: pointer;
 	height: 90px;
 	width: 90px;

@@ -11,38 +11,38 @@ class MediaRocket::Main < MediaRocket::Application
   
   def upload
     
-    if @site = ::MediaRocket::Site.first(:id => params[:site_id])
-        
+    json = "-1"
+    
+    if @site = ::MediaRocket::Site.first
+      
+      title = params[:title].empty? ? params[:file][:filename] : params[:title]
+      
+      # Prepare params for media_file
+      media_params = {:title => title,
+                      :site_id => @site.id,
+                      :gallery_id => params[:gallery_id],
+                      :file => {:filename => params[:file][:filename],
+                                :tempfile => params[:file][:tempfile]}}
+                                
       if params[:Filedata]
-        # Upload with uploadify
-        media_params = {:title => params[:Filename],
-                        :site_id => @site.id,
-                        :gallery_id => params[:gallery_id],
-                        :file => {:filename => params[:Filename],
-                                  :tempfile => params[:Filedata][:tempfile]}}
-      else
-        # Upload one by one
-        media_params = {:title => params[:title] || params[:filename],
-                        :site_id => @site.id,
-                        :gallery_id => params[:gallery_id],
-                        :file => {:filename => params[:filename],
-                                  :tempfile => params[:tempfile]}}
+        # Upload made with uploadify, modify some params
+        # FIXME: tell uploadify to send standard param
+        Merb.logger.debug "upload with uploadify"
+        media_params[:file][:filename] = params[:Filename]
+        media_params[:file][:tempfile] = params[:Filename][:tempfile]
       end
       
       @media = ::MediaRocket::MediaFile.new(media_params)
-        
-      if @media.save
-        # Return information after success in uploadify
-        render JSON.pretty_generate(["medias" => {:icon => @media.icon, 
-                                                  :media_id => @media.id, 
-                                                  :name => @media.title}]), :layout => false
-      end # @media.save
-        
-    end # @site = ...
       
-    # Upload unsuccessful
-    # render "-1", :layout => false
-    render JSON.pretty_generate(["medias" => {}]), :layout => false
+      if @media.save
+        # Return information after success
+        json = JSON.pretty_generate("media" => {:icon => @media.icon, 
+                                                :media_id => @media.id, 
+                                                :name => @media.title})
+      end
+    end # @site = ...
+    
+    render json, :layout => false
   end
   
   private 

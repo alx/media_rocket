@@ -154,7 +154,8 @@ class MediaRocket::Galleries < MediaRocket::Application
       media_json = medias.inject(Hash.new) do |json, media|
         if media.original?
           json["medias"] = [] unless json.key?("medias")
-          json["medias"] << {:name => media.title, 
+          json["medias"] << {:id => media.id,
+                             :name => media.title, 
                              :url => media.url, 
                              :icon => media.icon, 
                              :mime => media.mime}
