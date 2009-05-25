@@ -81,6 +81,32 @@ $(document).ready(function() {
 		gallery_details_div.find('#details-gallery-ref_meta').val(gallery.ref_meta);
 		
 		gallery_details_div.find('#details-gallery-icon img').attr('src', gallery.icon);
+		gallery_details_div.find('#details-gallery-icon img').attr('alt', gallery.id);
+		
+		gallery_details_div.find('#details-gallery-icon img').droppable({
+			drop: function(event, ui){
+				
+				// Create icon from draggable informations
+				media = ui.draggable[0];
+				icon = {id: media.id.split('-').pop(),
+						src: $(media).find('img').attr('src')};
+			
+				// Create gallery
+				gallery_info = { header_icon: icon.id,
+						   		 id: media.parentNode.id.split('-').pop()}
+						
+				// Send new header icon
+				$.post("/gallery-update/" + gallery_info.id,
+					   {'gallery[header_icon]': [gallery_info.header_icon], method: "_put"});
+				
+				// Update icon display
+				$(this).attr('src', icon.src);
+				
+				// Stop propagation (do not display media details)
+				event.stopPropagation();
+				$('#main-area-gallery-' + gallery_info.id).sortable( 'refreshPositions' );
+			}
+		})
 		
 		// Change form url
 		// url pattern: /prefix/galleries/1/edit
@@ -149,15 +175,18 @@ $(document).ready(function() {
 				items: 'li.media-item',
 				update: function(event, ui) {
 					
+					// Create gallery url
+					gallery_url = "/gallery-update/" + this.id.split('-').pop();
+					
 					// retrieve new order list
 					var ordered_list = $(this).sortable('serialize');
 					
 					// Replace value for request format
-					ordered_list.replace('media-item[]=','');
-					ordered_list.replace('&',',');
+					ordered_list = ordered_list.replace(/media-item\[\]=/g,'');
+					ordered_list = ordered_list.replace(/&/g,',');
 					
 					// send the new order to server
-					$.post(gallery_url, {media_list: ordered_list});
+					$.post(gallery_url, {media_list: ordered_list, method: "_put"});
 				}
 			});
 			$('#' + div_area).show();
@@ -182,6 +211,9 @@ $(document).ready(function() {
 				$('#action-upload-solo').show('slide');
 				$('#action-upload-multi').show('slide');
 			}
+			
+			if($('#action-gallery-details').attr('style') == "display: none;")
+				load_gallery_details(gallery)
 			
 		} else {
 			// Display main gallery
@@ -278,31 +310,12 @@ $(document).ready(function() {
 		}
     });
 
-   $('#gallery-details').ajaxForm({
-		dataType:  'json',
-		beforeSubmit: function(){
-			// Display temporary gallery in main area displayed div
-			$('#main-area > ul').append(temp_gallery_item());
-		},
-		success: function(data){
-			var gallery = data.galleries[0];
-
-			if(gallery) {
-				$('#main-area > ul').append(replace_temp_gallery(gallery));
-				add_or_display_tab(gallery);
-				$("input#gallery-name").attr("value", "");
-			} else {
-				// TODO: display error message
-				clean_temp_item();
-			}
-		}
-    });
-
 	$('#gallery-details').ajaxForm({
 		dataType:  'json',
 		beforeSubmit: function(){
 		},
 		success: function(data){
+			// Replace tab name
 		}
 	});
 	
@@ -345,7 +358,7 @@ $(document).ready(function() {
 							name: $(this).find('.item-title').html()});
 	});
 	
-	$(".media-item").livequery('click', function() {
+	$(".media-item").livequery('dblclick', function() {
 		load_media_details({id: this.id.split('-').pop(), 
 							name: $(this).find('.item-title').html(), 
 							url: $(this).find('img').attr('src')});
@@ -400,8 +413,6 @@ $(document).ready(function() {
 		$("a#galleries-tab").parent('li').addClass('ui-tabs-selected');
 		$("#tabs").tabs('select', 'galleries-tab');
 	});
-	
-	
 	
 // ========================================
 // Init Script

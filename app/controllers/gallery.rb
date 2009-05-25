@@ -54,15 +54,6 @@ class MediaRocket::Galleries < MediaRocket::Application
   # GET /gallery/:id/edit
   def edit
     
-    # reoroder list
-    if params[:media_list] && media_order = params[:media_list].split(",")
-      i = 0
-      media_order.each do |media_id|
-        MediaRocket::MediaFile.first(:id => media_id).update_attributes(:position => i)
-        i += 1
-      end
-    end
-    
     if @gallery = ::MediaRocket::Gallery.first(:id => params[:id])
       
       params.each do |key, value|
@@ -87,7 +78,7 @@ class MediaRocket::Galleries < MediaRocket::Application
     @medias = @gallery.original_medias
 
     case params[:format]
-      when "json"  then  build_json(@gallery) || "123"
+      when "json"  then  build_json(@gallery)
       when "xml"   then  render :layout => false
       else  render
     end
@@ -98,9 +89,18 @@ class MediaRocket::Galleries < MediaRocket::Application
     @gallery = MediaRocket::Gallery.first(:id => params[:id])
     raise NotFound unless @gallery
     
+    # reoroder list
+    if params[:media_list] && media_order = params[:media_list].split(",")
+      i = 0
+      media_order.each do |media_id|
+        MediaRocket::MediaFile.first(:id => media_id).update_attributes(:position => i)
+        i += 1
+      end
+    end
+    
     @gallery.update_attributes(params[:gallery]) if params[:gallery]
     
-    display @layout, :edit
+    render "", :layout => false
   end
   
   protected

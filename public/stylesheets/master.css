@@ -88,3 +88,19 @@ input.text {
 .gallery-delete a{
 width:15px;
 } 
+
+#details-gallery-icon {
+	border: 1px solid #999;
+	float:left;
+	margin:5px;
+	padding:2px;
+}
+
+#details-gallery-icon img {
+	height:90px;
+	width:90px;
+}
+
+#gallery-details {
+	padding-left: 4px;
+}
