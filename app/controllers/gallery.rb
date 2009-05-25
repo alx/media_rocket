@@ -27,7 +27,7 @@ class MediaRocket::Galleries < MediaRocket::Application
   # GET /galleries
   def index
     provides :xml, :json
-    @galleries = ::MediaRocket::Site.first.galleries
+    @galleries = ::MediaRocket::Site.first.galleries.select{|gallery| gallery.parent.nil?}
     
     case params[:format]
       when "json"  then  build_galleries_json(@galleries)
@@ -38,8 +38,17 @@ class MediaRocket::Galleries < MediaRocket::Application
   
   def create
     provides :json
-    @gallery = ::MediaRocket::Gallery.create(params[:gallery])
-    build_galleries_json([@gallery])
+    
+    if params[:gallery][:parent_id]
+      # If parent gallery is specified, fetch it and add a child with name params
+      parent = ::MediaRocket::Gallery.first(:id => params[:gallery][:parent_id])
+      gallery = parent.add_child(params[:gallery][:name])
+    else
+      # Otherwise, simply create a new gallery with current parameters (name and site_id)
+      gallery = ::MediaRocket::Gallery.create(params[:gallery])
+    end
+    
+    build_galleries_json([gallery])
   end
   
   # GET /gallery/:id/edit
@@ -138,7 +147,6 @@ class MediaRocket::Galleries < MediaRocket::Application
     end
     
     def build_json(gallery)
-      Merb.logger.info "build json"
       
       medias = gallery.original_medias
       children_galleries = gallery.children
@@ -146,37 +154,34 @@ class MediaRocket::Galleries < MediaRocket::Application
       # Use Array.inject, retrieve last state of json array and add elements to it
       #   - create empty json["galleries"] if "galleries" key doesn't exists
       #   - add new hash in array otherwise
-      json["galleries"] = []
-      galleries_json = children_galleries.inject(Hash.new) do |json, child_gallery|
-        json["galleries"] << {:id => child_gallery.id, 
+      json = Hash[:gallery => nil, :galleries => [], :medias => []]
+      children_galleries.each do |child_gallery|
+        json[:galleries] << {:id => child_gallery.id, 
                               :name => child_gallery.name,
                               :description => child_gallery.description,
                               :ref_title => child_gallery.ref_title,
                               :ref_meta => child_gallery.ref_meta,
                               :icon => child_gallery.icon}
-        json
       end
       
-      galleries_json["gallery"] = {:id => gallery.id, 
-                                  :name => gallery.name,
-                                  :description => gallery.description,
-                                  :ref_title => gallery.ref_title,
-                                  :ref_meta => gallery.ref_meta,
-                                  :icon => gallery.icon}
+      json[:gallery] = {:id => gallery.id, 
+                        :name => gallery.name,
+                        :description => gallery.description,
+                        :ref_title => gallery.ref_title,
+                        :ref_meta => gallery.ref_meta,
+                        :icon => gallery.icon}
       
-      json["medias"] = []
-      media_json = medias.inject(Hash.new) do |json, media|
+      medias.each do |media|
         if media.original?
-          json["medias"] << {:id => media.id,
-                             :name => media.title, 
-                             :url => media.url, 
-                             :icon => media.icon, 
-                             :mime => media.mime}
+          json[:medias] << {:id => media.id,
+                            :name => media.title, 
+                            :url => media.url, 
+                            :icon => media.icon, 
+                            :mime => media.mime}
         end
-        json
       end
       
-      JSON.pretty_generate(galleries_json.merge media_json)
+      JSON.pretty_generate(json)
     end
   
 end

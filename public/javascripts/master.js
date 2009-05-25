@@ -174,8 +174,8 @@ $(document).ready(function() {
 			$('input#gallery-parent').attr('value', gallery.id);
 			$('input.gallery-id').attr('value', gallery.id);
 			
-			$('span#gallery-parent-name').parent('p').hide();
 			$('span#gallery-parent-name').text(gallery.name);
+			$('span#gallery-parent-name').parent('p').show();
 			
 			// Display upload forms
 			if($('#action-upload-solo').attr('style') == "display: none;") {
