@@ -27,4 +27,17 @@ class MediaRocket::Medias < MediaRocket::Application
     ::MediaRocket::MediaFile.first(:id => params[:id]).destroy
     []
   end
+  
+  # PUT /galleries/:id
+  def update
+    @media = MediaRocket::MediaFile.first(:id => params[:id])
+    raise NotFound unless @media
+    
+    if params[:media]
+      params[:media][:name] = Base64.decode64(params[:media][:name]) unless params[:media][:name].empty?
+      @media.update_attributes(params[:media]) 
+    end
+    
+    JSON.pretty_generate(Hash.new(:media => @media.to_json))
+  end
 end

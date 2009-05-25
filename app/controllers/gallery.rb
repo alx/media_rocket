@@ -39,7 +39,7 @@ class MediaRocket::Galleries < MediaRocket::Application
   def create
     provides :json
     
-    if params[:gallery][:parent_id]
+    unless params[:gallery][:parent_id].empty?
       # If parent gallery is specified, fetch it and add a child with name params
       parent = ::MediaRocket::Gallery.first(:id => params[:gallery][:parent_id])
       gallery = parent.add_child(params[:gallery][:name])
@@ -98,9 +98,16 @@ class MediaRocket::Galleries < MediaRocket::Application
       end
     end
     
+    # Reformat parameters that could contain special chars
+    [:title, :ref_title, :description, :ref_meta].each do |field|
+      unless params[:gallery][field].empty?
+        params[:gallery][field] = Base64.decode64(params[:gallery][field])
+      end
+    end
+    
     @gallery.update_attributes(params[:gallery]) if params[:gallery]
     
-    render "", :layout => false
+    build_json(@gallery)
   end
   
   protected
@@ -135,12 +142,7 @@ class MediaRocket::Galleries < MediaRocket::Application
       galleries_json["galleries"] = []
     
       galleries.each do |gallery|
-        galleries_json["galleries"] << {:id => gallery.id, 
-                                        :name => gallery.name,
-                                        :description => gallery.description,
-                                        :ref_title => gallery.ref_title,
-                                        :ref_meta => gallery.ref_meta, 
-                                        :icon => gallery.icon}
+        galleries_json["galleries"] << gallery.to_json
       end
     
       JSON.pretty_generate(galleries_json)
@@ -156,28 +158,14 @@ class MediaRocket::Galleries < MediaRocket::Application
       #   - add new hash in array otherwise
       json = Hash[:gallery => nil, :galleries => [], :medias => []]
       children_galleries.each do |child_gallery|
-        json[:galleries] << {:id => child_gallery.id, 
-                              :name => child_gallery.name,
-                              :description => child_gallery.description,
-                              :ref_title => child_gallery.ref_title,
-                              :ref_meta => child_gallery.ref_meta,
-                              :icon => child_gallery.icon}
+        json[:galleries] << child_gallery.to_json
       end
       
-      json[:gallery] = {:id => gallery.id, 
-                        :name => gallery.name,
-                        :description => gallery.description,
-                        :ref_title => gallery.ref_title,
-                        :ref_meta => gallery.ref_meta,
-                        :icon => gallery.icon}
+      json[:gallery] = gallery.to_json
       
       medias.each do |media|
         if media.original?
-          json[:medias] << {:id => media.id,
-                            :name => media.title, 
-                            :url => media.url, 
-                            :icon => media.icon, 
-                            :mime => media.mime}
+          json[:medias] << media.to_json
         end
       end
       

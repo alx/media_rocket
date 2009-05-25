@@ -104,4 +104,5 @@ if defined?(Merb::Plugins)
   
   require "RMagick"
   require "base64"
+  
 end

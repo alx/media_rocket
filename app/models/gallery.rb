@@ -52,6 +52,15 @@ class MediaRocket::Gallery
     originals
   end
   
+  def to_json
+    {:id => self.id, 
+     :name => self.name,
+     :description => self.description,
+     :ref_title => self.ref_title,
+     :ref_meta => self.ref_meta, 
+     :icon => self.icon}
+  end
+  
   # =====
   #
   # Icon

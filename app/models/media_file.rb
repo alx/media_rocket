@@ -141,6 +141,14 @@ class MediaRocket::MediaFile
     self.associated_to.size == 0
   end
   
+  def to_json
+     {:id => self.id,
+      :name => self.title, 
+      :url => self.url, 
+      :icon => self.icon, 
+      :mime => self.mime}
+  end
+  
   private
   
   #

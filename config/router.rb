@@ -23,6 +23,7 @@ Merb::Router.prepare do |scope|
   scope.match('/galleries(.:format)').to(:controller => 'galleries', :action => 'list').name(:galleries)
   scope.match('/gallery/:id(.:format)').to(:controller => 'galleries', :action => 'gallery').name(:gallery)
   scope.match('/gallery-update/:id').to(:controller => 'galleries', :action => 'update').name(:gallery_update)
+  scope.match('/media-update/:id').to(:controller => 'medias', :action => 'update').name(:media_update)
   scope.match('/gallery_icon').to(:controller => 'galleries', :action => 'update').name(:gallery_icon)
 
   # Route to permission page

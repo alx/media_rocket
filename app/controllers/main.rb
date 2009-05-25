@@ -37,8 +37,8 @@ class MediaRocket::Main < MediaRocket::Application
       if @media.save
         # Return information after success
         json = JSON.pretty_generate("media" => {:icon => @media.icon, 
-                                                :media_id => @media.id, 
-                                                :name => @media.title})
+                                                :id => @media.id, 
+                                                :title => @media.title})
       end
     end # @site = ...
     

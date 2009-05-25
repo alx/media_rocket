@@ -104,3 +104,7 @@ width:15px;
 #gallery-details {
 	padding-left: 4px;
 }
+
+#details-media-close {
+	float:right;
+}

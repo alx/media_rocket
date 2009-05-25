@@ -17,7 +17,10 @@
 			
 			<span id="details-gallery-icon"><img src='' alt=''/></span>
 			
-			<form action="#" method="post" accept-charset="utf-8" id="gallery-details">
+			<form id="gallery-details">
+				
+				<input type="hidden" value="" id="details-gallery-id"/>
+				
 				<p>
 					<label for="gallery[name]">Gallery Name</label><br/>
 					<input type="text" name="gallery[name]" value="" id="details-gallery-name"/>
@@ -25,13 +28,13 @@
 			
 				<h4>SEO</h4>
 				<p>	
-					<label for="gallery[title]">Title</label><br/>
+					<label for="gallery[ref_title]">Title</label><br/>
 					<input type="text" name="gallery[ref_title]" value="" id="details-gallery-ref-title"/><br/>
 				
-					<label for="gallery[title]">Description</label><br/>
+					<label for="gallery[description]">Description</label><br/>
 					<input type="text" name="gallery[description]" value="" id="details-gallery-descrption"/><br/>
 				
-					<label for="gallery[title]">Meta Keywords</label><br/>
+					<label for="gallery[ref_meta]">Meta Keywords</label><br/>
 					<input type="text" name="gallery[ref_meta]" value="" id="details-gallery-ref-meta"/>
 				</p>
 				
@@ -42,10 +45,14 @@
 		<div id="action-media-details" style='display: none' class="ui-helper-reset ui-widget-content ui-corner-all">
 			<h3>Media Details</h3>
 			
-			<form action="#" method="post" accept-charset="utf-8" id="media-details">
+			<span id="details-media-close" class="ui-icon ui-icon-circle-close"></span>
+			
+			<input type="hidden" value="" id="details-media-id"/>
+			
+			<form id="media-details">
 				<p>
-					<label for="media[name]">Media Name</label><br/>
-					<input type="text" name="media[name]" value="" id="details-media-name">
+					<label for="media[title]">Media Name</label><br/>
+					<input type="text" name="media[title]" value="" id="details-media-name">
 				</p>
 				
 				<p>
