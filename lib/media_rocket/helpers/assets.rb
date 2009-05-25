@@ -30,9 +30,9 @@ module MediaRocket
       def media_rocket_js
         ['jquery/jquery.js',
          'jquery/jquery.ui.js',
+         'jquery/jquery.alerts.js',
          'jquery/jquery.confirm.js',
          'jquery/jquery.form.js',
-         'jquery/jquery.treetable.js',
          'jquery/jquery.validate.js',
          'jquery/jquery.livequery.js',
          'jquery/thickbox.js',
@@ -46,23 +46,22 @@ module MediaRocket
       end
       
       def media_rocket_js_line(file)
-        "<script src='#{media_rocket_javascript_path file}' type='text/javascript' charset='utf-8'></script>"
+        "<script src='#{media_rocket_javascript_path file}' type='text/javascript' charset='utf-8'></script>\n"
       end
       
       def media_rocket_css
-        css = "<!--[if IE]>#{media_rocket_css_line 'ie.css'}<![endif]-->"
+        css = "<!--[if IE]>#{media_rocket_css_line 'ie.css'}<![endif]-->\n"
       	
-        ['master.css',
+        ['jquery-ui-1.7.1.custom.css',
+         'jquery.alerts.css',
          'screen.css',
-         'print.css',
-         'jquery.treetable.css',
-         'thickbox.css'].inject(css) do |css, file|
+         'master.css'].each do |file|
           css << media_rocket_css_line(file)
         end
       end
       
       def media_rocket_css_line(file)
-        "<link rel='stylesheet' href='#{media_rocket_stylesheet_path file}' type='text/css' media='screen, projection'>"
+        "<link rel='stylesheet' href='#{media_rocket_stylesheet_path file}' type='text/css' media='screen, projection'>\n"
       end
     end
   end

@@ -4,6 +4,7 @@
 /*
 /*****************************************************************************/
 
+
 /*****************************************************************************/
 /*
 /* Header
@@ -16,125 +17,102 @@
 /*
 /*****************************************************************************/
 
-.tag_size1 {font-size: 1.0em;}
-.tag_size2 {font-size: 1.2em;}
-.tag_size3 {font-size: 1.4em;}
-.tag_size4 {font-size: 1.6em;}
-.tag_size5 {font-size: 1.8em;}
-.tag_size6 {font-size: 2.0em;}
-
-.hidden{visibility: hidden;}
-
-.drag:hover {
-	cursor: move;
+input {
+	border-radius:10px;
+	-moz-border-radius:10px;
+	-webkit-border-radius:10px;
 }
 
-/*****************************************************************************/
-/*
-/* treeTable
-/*
-/*****************************************************************************/
-
-/* TABLE
- * ========================================================================= */
-table.treeTable {
-  border: 1px solid #888;
-  border-collapse: collapse;
-  line-height: 1;
-  margin: 1em auto;
-  width: 90%;
+input[type=submit],label,select,.pointer { 
+	cursor:pointer;
 }
 
-/* Caption
- * ------------------------------------------------------------------------- */
-table.treeTable caption {
-  font-size: .9em;
-  font-weight: bold;
+.hidden{
+	display:none;
 }
 
-/* Header
- * ------------------------------------------------------------------------- */
-table.treeTable thead {
-  background: #aaa url(../images/icons/bg-table-thead.png) repeat-x top left;
-  font-size: .9em;
-}
-
-table.treeTable thead tr th {
-  border: 1px solid #888;
-  font-weight: normal;
-  padding: .3em 1.67em .1em 1.67em;
-  text-align: left;
-}
-
-table.treeTable th.action, td.action {
-	width: 200px;
-	text-align: right;
-}
-
-/* Body
- * ------------------------------------------------------------------------- */
-table.treeTable tbody tr td {
-  cursor: default;
-  padding: .3em 1.5em;
-}
-
-table.treeTable tbody tr.even {
-  background: #f3f3f3;
-}
-
-table.treeTable tbody tr.odd {
-  background: #fff;
-}
-
-table.treeTable span {
-  background-position: center left;
-  background-repeat: no-repeat;
-  padding: .2em 0 .2em 1.5em;
-}
-
-table.treeTable span.media {
-  background-image: url(../images/icons/page_white_text.png);
-}
-
-table.treeTable span.gallery {
-  background-image: url(../images/icons/folder.png);
-}
-
-input.gallery_add{
-	font-size:10px;
-	height:15px;
+ul.gallery-area {
+	list-style-type:none;
+	margin:0;
 	padding:0;
+}
+
+li.item {
+	float:left;
+	margin: 2px;
+	padding: 5px;
+	text-align: center;
+}
+
+li.item a {
+	text-decoration: none;
+}
+
+li.item > .title {
+	font-family: Verdana,Arial,sans-serif;
+	font-size: 1.1em;
+}
+
+li.item > img{
+	cursor: pointer;
+	height: 90px;
+	width: 90px;
+}
+
+.gallery-tab {
+	padding-left: 13px;
+	padding-right: 3px;
+}
+
+span.close-tab {
+	float: right;
+	margin-left: 5px;
+	cursor: pointer;
+}
+
+#gallery-parent-name{
+	font-weight: bold;
+}
+
+.erasable {
+	color: #999;
+}
+
+input.text {
+	width: 200px;
+}
+
+.gallery-delete{
+	z-index:10;
+	position:absolute;
+	width:90px;
 	text-align:right;
-	width:130px;
 }
 
-input.icon {
-	vertical-align: middle;
+.gallery-delete a{
+width:15px;
+} 
+
+#details-gallery-icon {
+	border: 1px solid #999;
+	float:left;
+	margin:5px;
+	padding:2px;
 }
 
-img.viewer {
+#details-gallery-icon img {
+	height:90px;
+	width:90px;
+}
+
+#gallery-details {
+	padding-left: 4px;
+}
+
+#details-media-close {
 	float:right;
 }
 
-label span{
-	display:block;
+.gallery-item .item-title {
+	background: #DDD;
 }
-
-.viewer input{
-	width:200px;
-}
-
-.media_over{
-	border-top: 2px solid #999;
-}
-
-/*---------------------------------- Tabs ----------------------------------*/
-.ui-tabs { padding: .2em; zoom: 1; }
-.ui-tabs .ui-tabs-nav { list-style: none; position: relative; padding: .2em .2em 0; }
-.ui-tabs .ui-tabs-nav li { position: relative; float: left; border-bottom-width: 0 !important; margin: 0 .2em -1px 0; padding: 0; }
-.ui-tabs .ui-tabs-nav li a { float: left; text-decoration: none; padding: .5em 1em; }
-.ui-tabs .ui-tabs-nav li.ui-tabs-selected { padding-bottom: 1px; border-bottom-width: 0; }
-.ui-tabs .ui-tabs-nav li.ui-tabs-selected a, .ui-tabs .ui-tabs-nav li.ui-state-disabled a, .ui-tabs .ui-tabs-nav li.ui-state-processing a { cursor: text; }
-.ui-tabs .ui-tabs-nav li a, .ui-tabs.ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-selected a { cursor: pointer; } /* first selector in group seems obsolete, but required to overcome bug in Opera applying cursor: text overall if defined elsewhere... */
-.ui-tabs .ui-tabs-panel { padding: 1em 1.4em; display: block; border-width: 0; background: none; }
-.ui-tabs .ui-tabs-hide { display: none !important; }

@@ -52,6 +52,15 @@ class MediaRocket::Gallery
     originals
   end
   
+  def to_json
+    {:id => self.id, 
+     :name => self.name,
+     :description => self.description,
+     :ref_title => self.ref_title,
+     :ref_meta => self.ref_meta, 
+     :icon => self.icon}
+  end
+  
   # =====
   #
   # Icon
@@ -68,7 +77,9 @@ class MediaRocket::Gallery
     else
       media = medias.first
     end
-    media.icon
+    
+    # Display generic image if no media has been found
+    media.nil? ? ::MediaRocket.public_path_for(:image, "gallery_icon.png") : media.icon 
   end
   
   # =====

@@ -71,6 +71,7 @@ class MediaRocket::MediaFile
       
       # Add unique suffix if file already exists
       # FIX: rework using unique sha1 hash for basename
+      Merb.logger.info "options filename: #{options[:file][:filename]}"
       self.path = unique_file(root_path, options[:file][:filename])
 
       # Create directory if doesn't exist (when new site or gallery)
@@ -125,7 +126,8 @@ class MediaRocket::MediaFile
   
   def icon
     if is_image? && original?
-      self.files.select{|media| media.dimension_max == "130x130"}.first.url
+      file = self.files.select{|media| media.dimension_max == "130x130"}.first
+      file.nil? ? ::MediaRocket.public_path_for(:image, "media_icon.png") : file.url
     else
       ::MediaRocket.public_path_for :image, "icons/mimetypes/#{self.mime}.png"
     end
@@ -137,6 +139,14 @@ class MediaRocket::MediaFile
   
   def original?
     self.associated_to.size == 0
+  end
+  
+  def to_json
+     {:id => self.id,
+      :name => self.title, 
+      :url => self.url, 
+      :icon => self.icon, 
+      :mime => self.mime}
   end
   
   private
@@ -180,6 +190,8 @@ class MediaRocket::MediaFile
   # to be place in the path parameter
   #
   def unique_file(path, filename)
+    Merb.logger.debug "path: #{path}"
+    Merb.logger.debug "filename: #{filename}"
     path = File.join(path, Digest::MD5.hexdigest(filename))
     return (path << File.extname(filename))
   end
