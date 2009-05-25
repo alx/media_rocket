@@ -2,6 +2,14 @@ $(document).ready(function() {
 	
 // ========================================
 // Items manipulation
+
+	function media_rocket_prefix() {
+		if($('#media_rocket_prefix').length){
+			return $('#media_rocket_prefix').text();
+		} else {
+			return '';
+		}
+	}
 	
 	// ----------------------------------------
 	// Create item from json source
@@ -97,7 +105,7 @@ $(document).ready(function() {
 						   		 id: media.parentNode.id.split('-').pop()}
 						
 				// Send new header icon
-				$.post("/gallery-update/" + gallery_info.id,
+				$.post(media_rocket_prefix() + "/gallery-update/" + gallery_info.id,
 					   {'gallery[header_icon]': [gallery_info.header_icon], method: "_put"});
 				
 				// Update icon display
@@ -178,7 +186,7 @@ $(document).ready(function() {
 				update: function(event, ui) {
 					
 					// Create gallery url
-					gallery_url = "/gallery-update/" + this.id.split('-').pop();
+					gallery_url = media_rocket_prefix() + "/gallery-update/" + this.id.split('-').pop();
 					
 					// retrieve new order list
 					var ordered_list = $(this).sortable('serialize');
@@ -323,7 +331,7 @@ $(document).ready(function() {
 			});
 			
 			// Update url
-			this.url = '/gallery-update/' + $('#details-gallery-id').val();
+			this.url = media_rocket_prefix() + '/gallery-update/' + $('#details-gallery-id').val();
 		},
 		success: function(data){
 			// Replace tab name
@@ -336,10 +344,10 @@ $(document).ready(function() {
 	$('#media-details').ajaxForm({
 		dataType:  'json',
 		url: '/media-update/',
-		type: 'POST',
+		type: 'media_rocket_prefix()',
 		beforeSubmit: function(data, form, options){
 			// Update url
-			this.url = '/media-update/' + $('#details-media-id').val();
+			this.url = media_rocket_prefix() + '/media-update/' + $('#details-media-id').val();
 			
 			// Base64 encode title
 			$.each(data, function(){
@@ -378,7 +386,7 @@ $(document).ready(function() {
 		var item = $(this).parents('li');
 		jConfirm('Confirm delete?', 'Destroy Gallery', function(r) {
 			if(r){
-				$.post('/galleries/delete/'+ gallery_id);
+				$.post(media_rocket_prefix() + '/galleries/delete/'+ gallery_id);
 				item.remove();
 			}
 		});
@@ -389,7 +397,7 @@ $(document).ready(function() {
 		var item = $(this).parents('li');
 		jConfirm('Confirm delete?', 'Destroy Media', function(r) {
 			if(r){
-				$.post('/medias/delete/'+ media_id);
+				$.post(media_rocket_prefix() + '/medias/delete/'+ media_id);
 				item.remove();
 			}
 		});
