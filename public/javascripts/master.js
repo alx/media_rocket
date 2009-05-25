@@ -374,19 +374,23 @@ $(document).ready(function() {
 // Actions on DOM
 	
 	$(".gallery-delete a").livequery('click', function() {
+		var gallery_id = $(this).parent('p').get(0).id.split('-').pop();
+		var item = $(this).parents('li');
 		jConfirm('Confirm delete?', 'Destroy Gallery', function(r) {
 			if(r){
-				$.post('/galleries/delete/'+ $(this).parent('p').get(0).id.split('-').pop());
-				$(this).parent('ul').remove();
+				$.post('/galleries/delete/'+ gallery_id);
+				item.remove();
 			}
 		});
 	});
 	
 	$(".media-delete a").livequery('click', function() {
+		var media_id = $(this).parent('p').get(0).id.split('-').pop();
+		var item = $(this).parents('li');
 		jConfirm('Confirm delete?', 'Destroy Media', function(r) {
 			if(r){
-				$.post('/medias/delete/'+ $(this).parent('p').get(0).id.split('-').pop());
-				$(this).parent('ul').remove();
+				$.post('/medias/delete/'+ media_id);
+				item.remove();
 			}
 		});
 	});
