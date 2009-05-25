@@ -137,14 +137,13 @@ class MediaRocket::Galleries < MediaRocket::Application
     # }
     
     def build_galleries_json(galleries)
-      galleries_json = Hash.new
-      galleries_json["galleries"] = []
+      galleries_json = Hash[:galleries => []]
     
       galleries.each do |gallery|
-        galleries_json["galleries"] << gallery.to_json
+        galleries_json[:galleries] << gallery.to_json
       end
     
-      JSON.pretty_generate(galleries_json)
+      galleries_json[:galleries].empty? ? "": JSON.pretty_generate(galleries_json)
     end
     
     def build_json(gallery)
