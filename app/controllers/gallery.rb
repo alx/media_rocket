@@ -127,7 +127,10 @@ class MediaRocket::Galleries < MediaRocket::Application
     
       galleries.each do |gallery|
         galleries_json["galleries"] << {:id => gallery.id, 
-                                        :name => gallery.name, 
+                                        :name => gallery.name,
+                                        :description => gallery.description,
+                                        :ref_title => gallery.ref_title,
+                                        :ref_meta => gallery.ref_meta, 
                                         :icon => gallery.icon}
       end
     
@@ -143,17 +146,27 @@ class MediaRocket::Galleries < MediaRocket::Application
       # Use Array.inject, retrieve last state of json array and add elements to it
       #   - create empty json["galleries"] if "galleries" key doesn't exists
       #   - add new hash in array otherwise
-      galleries_json = children_galleries.inject(Hash.new) do |json, gallery|
-        json["galleries"] = [] unless json.key?("galleries")
-        json["galleries"] << {:id => gallery.id, 
-                              :name => gallery.name, 
-                              :icon => gallery.icon}
+      json["galleries"] = []
+      galleries_json = children_galleries.inject(Hash.new) do |json, child_gallery|
+        json["galleries"] << {:id => child_gallery.id, 
+                              :name => child_gallery.name,
+                              :description => child_gallery.description,
+                              :ref_title => child_gallery.ref_title,
+                              :ref_meta => child_gallery.ref_meta,
+                              :icon => child_gallery.icon}
         json
       end
       
+      galleries_json["gallery"] = {:id => gallery.id, 
+                                  :name => gallery.name,
+                                  :description => gallery.description,
+                                  :ref_title => gallery.ref_title,
+                                  :ref_meta => gallery.ref_meta,
+                                  :icon => gallery.icon}
+      
+      json["medias"] = []
       media_json = medias.inject(Hash.new) do |json, media|
         if media.original?
-          json["medias"] = [] unless json.key?("medias")
           json["medias"] << {:id => media.id,
                              :name => media.title, 
                              :url => media.url, 

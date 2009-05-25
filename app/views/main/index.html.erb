@@ -10,26 +10,75 @@
 
 <div id="organize" class='span-24'>
 	<div id='main-action' class='span-8'>
-		<h3 id="action-add-gallery"><a href="#">Add Gallery</a></h3>
-		<div>
-			<form action="<%= url(:media_rocket_galleries) %>" method="post" accept-charset="utf-8" id="gallery-add">
-				<p><label for="name">Gallery Name</label><br/>
-				<input type="text" name="gallery[name]" value="" id="gallery-name"></p>
-				<input type="hidden" name="gallery[parent_id]" value="" id="gallery-parent">
-				<input type="hidden" name="gallery[site_id]" value="<%= MediaRocket::Site.first.id %>" id="gallery-site">
-				<p><input type="submit" value="Continue &rarr;"></p>
+		
+		<div id="action-gallery-details" style='display: none' class="ui-helper-reset ui-corner-all">
+			
+			<h3>Gallery Details</h3>
+			
+			<span id="details-gallery-icon"><img src=''/></span>
+			
+			<form action="#" method="post" accept-charset="utf-8" id="gallery-details">
+				<p>
+					<label for="gallery[name]">Gallery Name</label><br/>
+					<input type="text" name="gallery[name]" value="" id="details-gallery-name"/>
+				</p>
+			
+				<h4>SEO</h4>
+				<p>	
+					<label for="gallery[title]">Title</label><br/>
+					<input type="text" name="gallery[ref_title]" value="" id="details-gallery-ref-title"/><br/>
+				
+					<label for="gallery[title]">Description</label><br/>
+					<input type="text" name="gallery[description]" value="" id="details-gallery-descrption"/><br/>
+				
+					<label for="gallery[title]">Meta Keywords</label><br/>
+					<input type="text" name="gallery[ref_meta]" value="" id="details-gallery-ref-meta"/>
+				</p>
+				
+				<p><input type="submit" value="Modify &rarr;"></p>
 			</form>
-			<p style="display: none">Inside gallery: <span id="gallery-parent-name"></span></p>
 		</div>
 		
-		<h3 id="action-upload-solo" style="display: none"><a href="#">Upload One</a></h3>
-		<div>
-			<%= media_upload_form :format => "flat" %>
+		<div id="action-media-details" style='display: none' class="ui-helper-reset ui-corner">
+			<h3>Media Details</h3>
+			
+			<form action="#" method="post" accept-charset="utf-8" id="media-details">
+				<p>
+					<label for="media[name]">Media Name</label><br/>
+					<input type="text" name="media[name]" value="" id="details-media-name">
+				</p>
+				
+				<p>
+					<label>Media Url</label><br/>
+					<a href='#' id='details-media-url'>&nbsp;</a>
+				</p>
+				
+				<p><input type="submit" value="Modify &rarr;"></p>
+			</form>
 		</div>
 		
-		<h3 id="action-upload-multi" style="display: none"><a href="#">Upload Multi</a></h3>
-		<div>
-			<%= media_upload_form :format => "uploadify" %>
+		<div id="accordion">
+			<h3 id="action-add-gallery"><a href="#">Add Gallery</a></h3>
+			<div>
+				<form action="<%= url(:media_rocket_galleries) %>" method="post" accept-charset="utf-8" id="gallery-add">
+					<p><label for="name">Gallery Name</label><br/>
+					<input type="text" name="gallery[name]" value="" id="gallery-name"></p>
+					<input type="hidden" name="gallery[parent_id]" value="" id="gallery-parent">
+					<input type="hidden" name="gallery[site_id]" value="<%= MediaRocket::Site.first.id %>" id="gallery-site">
+					<p><input type="submit" value="Continue &rarr;"></p>
+				</form>
+				<p style="display: none">Inside gallery: <span id="gallery-parent-name"></span></p>
+			</div>
+
+			<h3 id="action-upload-solo" style="display: none"><a href="#">Upload One</a></h3>
+			<div>
+				<%= media_upload_form :format => "flat" %>
+			</div>
+
+			<h3 id="action-upload-multi" style="display: none"><a href="#">Upload Multi</a></h3>
+			<div>
+				<%= media_upload_form :format => "uploadify" %>
+			</div>
 		</div>
 	</div>
 	
@@ -38,14 +87,4 @@
 			Loading...
 		</span>
 	</div>
-</div>
-
-<!-- Display media list -->
-<div id="media-list" class='span-24'>
-	<span id='scroll-left'></span>
-	
-	<div id='media-items'>
-	</div>
-	
-	<span id='scroll-right'></span>
 </div>
