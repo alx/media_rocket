@@ -11,6 +11,14 @@ $(document).ready(function() {
 		}
 	}
 	
+	function media_rocket_assets() {
+		if($('#media_rocket_assets').length){
+			return $('#media_rocket_assets').text();
+		} else {
+			return '';
+		}
+	}
+	
 	// ----------------------------------------
 	// Create item from json source
 	
@@ -39,7 +47,7 @@ $(document).ready(function() {
 	
 	function temp_item(type){
 		var temp_item = "<li id='" + type + "-item-temp' class='item " + type + "-item item-temp ui-widget-content ui-corner-tr'>";
-		temp_item += "<img src='images/media_icon.png'/><br/><a class='item-title'>...</a></li>";
+		temp_item += "<img src='" + media_rocket_assets() + "images/media_icon.png'/><br/><a class='item-title'>...</a></li>";
 		return temp_item;
 	}
 	
@@ -149,12 +157,12 @@ $(document).ready(function() {
 		$('#main-area > ul:visible').hide();
 		$('#main-area-loading').show();
 		
-		var json_url = "/galleries.json";
+		var json_url = media_rocket_prefix() + "/galleries.json";
 		var div_area = "main-area-galleries";
 		
 		// gallery specified, load json corresponding to this gallery
 		if(gallery) {
-			json_url = "/gallery/" + gallery.id + ".json";
+			json_url = media_rocket_prefix() + "/gallery/" + gallery.id + ".json";
 			div_area = "main-area-gallery-" + gallery.id;
 		}
 		
