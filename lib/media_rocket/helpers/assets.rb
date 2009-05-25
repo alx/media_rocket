@@ -50,12 +50,13 @@ module MediaRocket
       end
       
       def media_rocket_css
-        css = "<!--[if IE]>#{media_rocket_css_line 'ie.css'}<![endif]-->\n"
-      	
+        
+        ie_css = "<!--[if IE]>#{media_rocket_css_line 'ie.css'}<![endif]-->\n"
+        
         ['jquery-ui-1.7.1.custom.css',
          'jquery.alerts.css',
          'screen.css',
-         'master.css'].each do |file|
+         'master.css'].inject(ie_css) do |css, file|
           css << media_rocket_css_line(file)
         end
       end

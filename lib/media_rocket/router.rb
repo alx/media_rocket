@@ -19,7 +19,7 @@ module MediaRocket
       end
 
       # Upload route
-      scope.match('/upload').to(:controller => 'main', :action => 'upload').name(:upload).fixatable
+      scope.match('/upload').to(:controller => 'main', :action => 'upload').name(:upload)
 
       # Route to gallery xml
       scope.match('/galleries/:action/:id').to(:controller => 'galleries', :action => 'destroy').name(:delete_galleries)

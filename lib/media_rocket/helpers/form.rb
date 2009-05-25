@@ -68,7 +68,7 @@ module MediaRocket
           when "uploadify" then return media_uploadify(options)
         end
         
-        form :action => slice_url(:upload), :id => "uploadForm" do
+        form :action => url(:media_rocket_upload), :id => "uploadForm" do
           form_content = ""
           
           #
@@ -121,7 +121,7 @@ module MediaRocket
       end
       
       def media_upload_form_flat(options = {}, &block)
-        form :action => slice_url(:upload), :id => "media-solo-form" do
+        form :action => url(:media_rocket_upload), :id => "media-solo-form" do
           media_title_field(options) << 
           media_file_field(options) <<
           media_gallery_hidden(options) <<
@@ -130,7 +130,7 @@ module MediaRocket
       end
       
       def media_upload_form_full(options = {}, &block)
-        form :action => slice_url(:upload), :id => "uploadForm" do
+        form :action => url(:media_rocket_upload), :id => "uploadForm" do
           form_content = media_title_field(options)
           form_content << media_description_field(options)
           form_content << media_tag_field(options)
