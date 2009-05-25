@@ -34,7 +34,7 @@ class MediaRocket::Medias < MediaRocket::Application
     raise NotFound unless @media
     
     if params[:media]
-      params[:media][:name] = Base64.decode64(params[:media][:name]) unless params[:media][:name].empty?
+      params[:media][:name] = Base64.decode64(params[:media][:name]) if params[:media][:name]
       @media.update_attributes(params[:media]) 
     end
     

@@ -31,6 +31,7 @@ module MediaRocket
         script = ""
         ['jquery/jquery.js',
          'jquery/jquery.ui.js',
+         'jquery/jquery.alert.js',
          'jquery/jquery.confirm.js',
          'jquery/jquery.form.js',
          'jquery/jquery.validate.js',
@@ -54,6 +55,7 @@ module MediaRocket
         css = "<!--[if IE]>#{media_rocket_css_line 'ie.css'}<![endif]-->\n"
       	
         ['jquery-ui-1.7.1.custom.css',
+         'jquery.alert.css',
          'screen.css',
          'master.css'].each do |file|
           css << media_rocket_css_line(file)

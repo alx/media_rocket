@@ -274,7 +274,7 @@ $(document).ready(function() {
 			var gallery = data.galleries[0];
 			
 			if(gallery) {
-				$('#main-area > ul').append(replace_temp_gallery(gallery));
+				replace_temp_gallery(gallery);
 				add_or_display_tab(gallery);
 				$("input#gallery-name").attr("value", "");
 			} else {
@@ -314,42 +314,42 @@ $(document).ready(function() {
 
 	$('#gallery-details').ajaxForm({
 		dataType:  'json',
-		url: '',
-		beforeSubmit: function(){
+		url: '/gallery-update/',
+		type: 'POST',
+		beforeSubmit: function(data, form, options){
+			// Base64 encode
+			$.each(data, function(){
+				this.value = $.base64Encode(this.value);
+			});
+			
 			// Update url
 			this.url = '/gallery-update/' + $('#details-gallery-id').val();
-			
-			// Base64 encode
-			$("#details-gallery-name").val($.base64Encode($("#details-gallery-name").val()));
-			$("#details-gallery-description").val($.base64Encode($("#details-gallery-description").val()));
-			$("#details-gallery-ref-title").val($.base64Encode($("#details-gallery-ref-title").val()));
-			$("#details-gallery-ref-meta").val($.base64Encode($("#details-gallery-ref-meta").val()));
 		},
 		success: function(data){
 			// Replace tab name
 			$("#tabs .ui-tabs-selected").find("span").html(data.gallery.name);
-			
-			// Base64 decode
-			$("#details-gallery-name").val($.base64Decode($("#details-gallery-name").val()));
-			$("#details-gallery-description").val($.base64Decode($("#details-gallery-description").val()));
-			$("#details-gallery-ref-title").val($.base64Decode($("#details-gallery-ref-title").val()));
-			$("#details-gallery-ref-meta").val($.base64Decode($("#details-gallery-ref-meta").val()));
+			// Replace parent name
+			$('span#gallery-parent-name').text(data.gallery.name);
 		}
 	});
 	
 	$('#media-details').ajaxForm({
 		dataType:  'json',
-		beforeSubmit: function(){
+		url: '/media-update/',
+		type: 'POST',
+		beforeSubmit: function(data, form, options){
 			// Update url
 			this.url = '/media-update/' + $('#details-media-id').val();
+			
 			// Base64 encode title
-			$("#details-media-name").val($.base64Encode($("#details-media-name").val()));
+			$.each(data, function(){
+				if (this.name == 'title')
+					this.value = $.base64Encode(this.value);
+			});
 		},
 		success: function(data){
 			// Replace tab name
 			$("#media-item-" + data.media.id).find(".item-title").html(data.media.name);
-			// Base64 decode title
-			$("#details-media-name").val($.base64Decode($("#details-media-name").val()))
 		}
 	});
 	
@@ -374,12 +374,24 @@ $(document).ready(function() {
 // Actions on DOM
 	
 	$(".gallery-delete a").livequery('click', function() {
-		var gallery_id = $(this).parent('p').get(0).id.split('-').pop();
-		$.post('/galleries/delete/'+ gallery_id);
-		$(this).parent('ul').remove();
+		jConfirm('Confirm delete?', 'Destroy Gallery', function(r) {
+			if(r){
+				$.post('/galleries/delete/'+ $(this).parent('p').get(0).id.split('-').pop());
+				$(this).parent('ul').remove();
+			}
+		});
 	});
 	
-	$(".gallery-item").livequery('click', function() {
+	$(".media-delete a").livequery('click', function() {
+		jConfirm('Confirm delete?', 'Destroy Media', function(r) {
+			if(r){
+				$.post('/medias/delete/'+ $(this).parent('p').get(0).id.split('-').pop());
+				$(this).parent('ul').remove();
+			}
+		});
+	});
+	
+	$(".gallery-item").livequery('dblclick', function() {
 		add_or_display_tab({id: this.id.split('-').pop(), 
 							name: $(this).find('.item-title').html()});
 	});
@@ -421,7 +433,7 @@ $(document).ready(function() {
 		$(this).find('.gallery-delete').hide();
 	});
 	
-	$(".gallery-item .close-tab").livequery('click', function(event) {
+	$(".close-tab").livequery('click', function(event) {
 		var gallery_id = this.id.split('-').pop();
 		
 		// empty div used by selected tab
@@ -434,6 +446,9 @@ $(document).ready(function() {
 		// return to main gallery
 		$('#main-area > ul').hide();
 		$('#main-area-galleries').show();
+		
+		$('#action-media-details').hide();
+		$('#action-gallery-details').hide();
 
 		$('#tabs li').removeClass('ui-tabs-selected');
 		$("a#galleries-tab").parent('li').addClass('ui-tabs-selected');

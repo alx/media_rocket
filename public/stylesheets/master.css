@@ -44,6 +44,10 @@ li.item {
 	text-align: center;
 }
 
+li.item a {
+	text-decoration: none;
+}
+
 li.item > .title {
 	font-family: Verdana,Arial,sans-serif;
 	font-size: 1.1em;
@@ -107,4 +111,8 @@ width:15px;
 
 #details-media-close {
 	float:right;
+}
+
+.gallery-item .item-title {
+	background: #DDD;
 }
