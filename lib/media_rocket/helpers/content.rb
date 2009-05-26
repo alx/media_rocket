@@ -20,7 +20,7 @@ module MediaRocket
     			<form id='gallery-details'>
 
     				<input type='hidden' value='' id='details-gallery-id'/>
-
+    				
     				<p>
     					<label for='gallery[name]'>Gallery Name</label><br/>
     					<input type='text' name='gallery[name]' value='' id='details-gallery-name'/>

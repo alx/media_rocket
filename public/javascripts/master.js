@@ -25,11 +25,23 @@ $(document).ready(function() {
 	function load_item(type, item){
 		var loaded_item = "<li id='" + type + "-item-" + item.id + "' class='item " + type + "-item ui-widget-content ui-corner-tr'>";
 		
+		loaded_item += "<p style='display: none' class='" + type + "-delete'";
+		loaded_item += "id='" + type + "-item-delete-" + item.id + "'>";
+		loaded_item += "<a class='ui-icon ui-icon-circle-close'></a></p>";
+			
 		if(type == 'gallery') {
-			loaded_item += "<p style='display: none' class='" + type + "-delete' id='" + type + "-item-delete-" + item.id + "'><a class='ui-icon ui-icon-circle-close'></a></p>"
+			// Hide gallery information to retrieve them in gallery details
+			loaded_item += "<span style='display: none' id='gallery-hidden-details-" + item.id + "'>";
+			loaded_item += "<span id='gallery-hidden-name'>" + item.name + "</span>";
+			loaded_item += "<span id='gallery-hidden-description'>" + item.description + "</span>";
+			loaded_item += "<span id='gallery-hidden-ref-title'>" + item.ref_title + "</span>";
+			loaded_item += "<span id='gallery-hidden-ref-meta'>" + item.ref_meta + "</span>";
+			loaded_item += "</span>";
 		}
 		
-		loaded_item += "<img src='" + item.icon + "' /><br/><a class='item-title'>" + (item.name || "&nbsp;") + "</a></li>";
+		loaded_item += "<img src='" + item.icon + "' /><br/>";
+		loaded_item += "<a class='item-title'>" + (item.name || "&nbsp;") + "</a></li>";
+		
 		return loaded_item;
 	}
 	
@@ -93,6 +105,15 @@ $(document).ready(function() {
 		
 		gallery_details_div.find('#details-gallery-id').val(gallery.id);
 		gallery_details_div.find('#details-gallery-name').val(gallery.name);
+		
+		if(!gallery.ref_title) {
+			// fetch missing attributes from hidden details from gallery
+			var gallery_hidden_details = $('#gallery-hidden-details-' + gallery.id);
+			gallery.description = gallery_hidden_details.find('#gallery-hidden-description').text();
+			gallery.ref_title = gallery_hidden_details.find('#gallery-hidden-ref-title').text();
+			gallery.ref_meta = gallery_hidden_details.find('#gallery-hidden-ref-meta').text();
+		}
+		
 		gallery_details_div.find('#details-gallery-ref-title').val(gallery.ref_title);
 		gallery_details_div.find('#details-gallery-description').val(gallery.description);
 		gallery_details_div.find('#details-gallery-ref_meta').val(gallery.ref_meta);
