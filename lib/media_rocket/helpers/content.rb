@@ -2,184 +2,122 @@ module MediaRocket
   module Helpers
     module Content
       
-      def media_gallery_organize(options = {}, &block)
-
-        # <table id="organize">
-        #   <tr id="node-1">
-        #     <td>Parent</td>
-        #   </tr>
-        #   <tr id="node-2" class="child-of-node-1">
-        #     <td>Child</td>
-        #   </tr>
-        #   <tr id="node-3" class="child-of-node-2">
-        #     <td>Child</td>
-        #   </tr>
-        # </table>
-        
-        if options[:site_id]
-          site = MediaRocket::Site.first_or_create :id => options[:site_id]
-        else
-          site = options[:site] || MediaRocket::Site.first
-        end
-        
-        return "" if site.nil?
-
-        # display each gallery with its media content
-        output = ""
-        site.galleries.roots.each do |gallery|
-
-          output << build_gallery_tree(gallery)
-
-        end # site.galleries
-        
-        body = tag(:tbody, output)
-
-        tag :table, {:id => "organize", :class => "treeTable"} do
-          tag(:thead,
-            tag :tr do
-              tag(:th, "Name") <<
-              tag(:th, "Action", {:class => "action"})
-            end
-          ) << 
-          tag(:tbody, output)
-        end
-
-      end # media_gallery_organize
-      
-      def build_gallery_tree(gallery, child_of = nil)
-        
-        gallery_id = "gallery-#{gallery.id}"
-        
-        gallery_urls = self_closing_tag(:a, :rel => url(:edit_media_rocket_gallery, :id => gallery.id), :class => "edit")
-        gallery_name = tag(:td, tag(:span, gallery.name + gallery_urls, :class => "gallery"))
-        
-        gallery_action = tag :td, :class => "action" do 
-            gallery_action_add(gallery) <<
-            gallery_action_edit(gallery) <<
-            gallery_action_permission(gallery) <<
-            gallery_action_delete(gallery)
-        end
-        
-        output = tag(:tr, gallery_name + gallery_action, { :id => gallery_id, :class => "#{child_of}"})
-        
-        child_of = "media-row child-of-#{gallery_id}"
-        
-        media_icon = gallery.header_icon || 0
-        
-        gallery.medias.select{|media| media.original?}.sort{|x,y| x.position <=> y.position }.each do |media|
-          
-            media_id = "media-#{media.id}"
-            media_title = media.title
-            media_title = media_id if media_title.empty?
-          
-            media_urls = self_closing_tag(:a, :rel => url(:edit_media_rocket_media, :id => media.id), :class => "edit")
-            media_urls << self_closing_tag(:a, :rel => url(:media_rocket_media, :id => media.id), :class => "show")
-            media_name = tag(:td, tag(:span, media_title + media_urls, :class => "media"))
-            
-            media_action = tag :td, :class => "action" do  
-              media_action_drag(media) <<
-              media_action_icon(media, gallery) <<
-              media_action_edit(media) <<
-              media_action_delete(media)
-            end
-              
-          
-            output << tag(:tr, media_name + media_action, { :id => media_id, :class => child_of})
-        end
-
-        gallery.children.each do |child|
-          output << build_gallery_tree(child, child_of)
-        end
-        
-        return output
-      end
-
-      def gallery_action_delete(gallery)
-        link_to self_closing_tag(:img, :src => media_rocket_image_path("/icons/delete.png"),
-                                 :title => "Delete #{gallery.name}", :class => "icon"),
-                url(:delete_media_rocket_gallery, :id => gallery.id),
-                :rel => "#gallery-#{gallery.id}",
-                :class => "remote delete"
+      def gallery_tabs
+        "<div id='tabs'>
+        	<ul>
+        		<li class='ui-state-default ui-corner-top ui-tabs-selected'><a id='galleries-tab'><span>Galleries</span></a></li>
+        	</ul>
+        </div>"
       end
       
-      
-      def gallery_action_add(gallery)
-        form :action => url(:new_media_rocket_gallery), :method => "GET",
-             :class => "add-gallery", :rel => "#gallery-#{gallery.id}" do
-               
-          text_field(:name => "name", :value => "Ajouter sous-categorie", :class => "gallery_add") <<
-          hidden_field(:name => "parent_id", :value => gallery.id) <<
-          self_closing_tag(:input, :src => media_rocket_image_path("/icons/add.png"), 
-                           :alt => "Ajouter sous-categorie", :type => "image", :class => "icon")
-        end
+      def action_gallery_details
+        "<div id='action-gallery-details' style='display: none' class='ui-helper-reset ui-widget-content ui-corner-all'>
+
+    			<h3>Gallery Details</h3>
+
+    			<span id='details-gallery-icon'><img src='' alt=''/></span>
+
+    			<form id='gallery-details'>
+
+    				<input type='hidden' value='' id='details-gallery-id'/>
+
+    				<p>
+    					<label for='gallery[name]'>Gallery Name</label><br/>
+    					<input type='text' name='gallery[name]' value='' id='details-gallery-name'/>
+    				</p>
+
+    				<h4>SEO</h4>
+    				<p>	
+    					<label for='gallery[ref_title]'>Title</label><br/>
+    					<input type='text' name='gallery[ref_title]' value='' id='details-gallery-ref-title'/><br/>
+
+    					<label for='gallery[description]'>Description</label><br/>
+    					<input type='text' name='gallery[description]' value='' id='details-gallery-descrption'/><br/>
+
+    					<label for='gallery[ref_meta]'>Meta Keywords</label><br/>
+    					<input type='text' name='gallery[ref_meta]' value='' id='details-gallery-ref-meta'/>
+    				</p>
+
+    				<p><input type='submit' value='Modify &rarr;'></p>
+    			</form>
+    		</div>"
+  		end
+  		
+  		def action_media_details
+  		  "<div id='action-media-details' style='display: none' class='ui-helper-reset ui-widget-content ui-corner-all'>
+    			<h3>Media Details</h3>
+
+    			<span id='details-media-close' class='ui-icon ui-icon-circle-close'></span>
+
+    			<input type='hidden' value='' id='details-media-id'/>
+
+    			<form id='media-details'>
+    				<p>
+    					<label for='media[title]'>Media Name</label><br/>
+    					<input type='text' name='media[title]' value='' id='details-media-name'>
+    				</p>
+
+    				<p>
+    					<label>Media Url</label><br/>
+    					<a href='#' id='details-media-url'>&nbsp;</a>
+    				</p>
+
+    				<p><input type='submit' value='Modify &rarr;'></p>
+    			</form>
+    		</div>"
+  		end
+  		
+  		def action_accordion
+  		  "<div id='accordion'>
+    			<h3 id='action-add-gallery'><a href='#'>Add Gallery</a></h3>
+    			<div>
+    				<form action='#{url(:media_rocket_galleries)}' method='post' accept-charset='utf-8' id='gallery-add'>
+    					<p><label for='name'>Gallery Name</label><br/>
+    					<input type='text' name='gallery[name]' value='' id='gallery-name'></p>
+    					<input type='hidden' name='gallery[parent_id]' value='' id='gallery-parent'>
+    					<input type='hidden' name='gallery[site_id]' value='#{MediaRocket::Site.first.id}' id='gallery-site'>
+    					<p><input type='submit' value='Continue &rarr;'></p>
+    				</form>
+    				<p style='display: none'>Inside gallery: <span id='gallery-parent-name'></span></p>
+    			</div>
+
+    			<h3 id='action-upload-solo' style='display: none'><a href='#'>Upload One</a></h3>
+    			<div>
+    				#{media_upload_form :format => 'flat'}
+    			</div>
+
+    			<h3 id='action-upload-multi' style='display: none'><a href='#'>Upload Multi</a></h3>
+    			<div>
+    				#{media_upload_form :format => 'uploadify'}
+    			</div>
+    		</div>"
+  		end
+  		
+    	def main_action
+    	  "<div id='main-action' class='span-8'>" <<
+    	    action_gallery_details <<
+    	    action_media_details << 
+    	    action_accordion <<
+    	  "</div>"
+  	  end
+  		
+  		def main_area
+  		  "<div id='main-area' class='span-16 last ui-widget ui-helper-clearfix'>
+      		<span id='main-area-loading'>
+      			Loading...
+      		</span>
+      	</div>"
+    	end
+    	
+      def gallery_organize(options = {}, &block)
+        "<div id='organize' class='span-24'>" <<
+          main_action <<
+          main_area <<
+        "</div>"
       end
       
-      
-      def gallery_action_edit(gallery)
-        link_to self_closing_tag(:img, :src => media_rocket_image_path("/icons/folder_edit.png"),
-                                 :title => "Edit #{gallery.name}", :class => :icon),
-                url(:edit_media_rocket_gallery, :id => gallery.id) << "?height=350&width=350",
-                :title => "Edit #{gallery.name}",
-                :class => :thickbox
-      end
-      
-      def gallery_action_permission(gallery)
-        if (defined? User)
-          link_to self_closing_tag(:img, :src => media_rocket_image_path("/icons/lock.png"),
-                      :title => "Edit #{gallery.name} Permissions", :class => :icon),
-                      url(:media_rocket_gallery_permissions, :gallery_id => gallery.id) << "?height=350&width=350",
-                      :title => "Edit #{gallery.name} Permissions",
-                      :class => :thickbox
-        else
-          ""
-        end
-      end
-      
-      
-      def media_action_drag(media)
-        self_closing_tag(:img, :src => media_rocket_image_path("/icons/arrow_refresh.png"), 
-                         :title => "move #{media.title}",
-                         :id => "drag-media-#{media.id}", :class => "icon hidden drag")
-      end
-      
-      def media_action_icon(media, gallery)
-        
-        # Set flags to display one of the 2 icon
-        show_header = "hidden"
-        show_selector = ""
-        
-        if gallery.header_icon && media.id == gallery.header_icon
-          show_header = ""
-          show_selector = "hidden"
-        end
-        
-        link_to(self_closing_tag(:img, :src => media_rocket_image_path("/icons/stop.png"), 
-                                 :title => "Set #{media.title} as Gallery Icon",
-                                 :class => "icon"),
-                "#",
-                :rel => "#media-#{media.id}-gallery-#{gallery.id}",
-                :id => "icon-media-selector-#{media.id}",
-                :class => "remote icon-media-selector #{show_selector} gallery_#{gallery.id}") <<
-        self_closing_tag(:img, :src => media_rocket_image_path("/icons/accept.png"), 
-                         :title => "#{media.title} is Gallery Icon",
-                         :id => "icon-media-header-#{media.id}",
-                         :class => "icon icon-media-header #{show_header} gallery_#{gallery.id}")
-      end
-      
-      def media_action_delete(media)
-        link_to self_closing_tag(:img, :src => media_rocket_image_path("/icons/delete.png"), 
-                                 :title => "Delete #{media.title}", :class => "icon"),
-                url(:delete_media_rocket_media, :id => media.id),
-                :rel => "#media-#{media.id}",
-                :class => "remote delete"
-      end
-      
-      def media_action_edit(media)
-        link_to self_closing_tag(:img, :src => media_rocket_image_path("/icons/image_edit.png"), 
-                                 :title => "Edit #{media.title}", :class => :icon),
-                url(:edit_media_rocket_media, :id => media.id) << "?height=200&width=500",
-                :title => "Edit #{media.title}",
-                :class => :thickbox
+      def media_rocket_organize
+        gallery_tabs << gallery_organize
       end
     end
   end
