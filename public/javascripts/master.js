@@ -262,18 +262,18 @@ $(document).ready(function() {
 			$('span#gallery-parent-name').parent('p').show();
 			
 			// Display upload forms
-			if($('#action-upload-solo').attr('style') == "display: none;") {
+			if($('#action-upload-solo').is(':hidden')) {
 				$('#action-upload-solo').show('slide');
 				$('#action-upload-multi').show('slide');
 			}
 			
-			if($('#action-gallery-details').attr('style') == "display: none;")
+			if($('#action-gallery-details').is(':hidden'))
 				load_gallery_details(gallery)
 			
 		} else {
 			// Display main gallery
 			// Hide upload forms
-			if($('#action-upload-solo').attr('style') != "display: none;") {
+			if($('#action-upload-solo').is(':visible')) {
 				$('#action-upload-solo').hide('slide');
 				$('#action-upload-multi').hide('slide');
 			}
