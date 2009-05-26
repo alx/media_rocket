@@ -75,7 +75,7 @@ $(document).ready(function() {
 	// Replace temporary item if upload successful
 	
 	function replace_temp_item(type, new_item) {
-		var temp_item = $('#' + type + '-item-temp');
+		var temp_item = $('#' + type + '-item-temp').get(0);
 		temp_item.attr('id', type + '-item-' + new_item.id);
 		temp_item.find('img').attr('src', new_item.icon);
 		temp_item.find('.item-title').html(new_item.title);

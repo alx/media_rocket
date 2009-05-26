@@ -38,7 +38,8 @@ class MediaRocket::Main < MediaRocket::Application
         # Return information after success
         json = JSON.pretty_generate("media" => {:icon => @media.icon, 
                                                 :id => @media.id, 
-                                                :title => @media.title})
+                                                :title => @media.title,
+                                                :icon => @media.icon})
       end
     end # @site = ...
     
