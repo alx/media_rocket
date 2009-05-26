@@ -39,6 +39,14 @@ $(document).ready(function() {
 			loaded_item += "</span>";
 		}
 		
+		if(type == 'media') {
+			// Hide gallery information to retrieve them in gallery details
+			loaded_item += "<span style='display: none' id='media-hidden-details-" + item.id + "'>";
+			loaded_item += "<span id='gallery-hidden-name'>" + item.name + "</span>";
+			loaded_item += "<span id='gallery-hidden-description'>" + item.description + "</span>";
+			loaded_item += "</span>";
+		}
+		
 		loaded_item += "<img src='" + item.icon + "' /><br/>";
 		loaded_item += "<a class='item-title'>" + (item.name || "&nbsp;") + "</a></li>";
 		
@@ -160,6 +168,14 @@ $(document).ready(function() {
 		
 		media_details_div.find('#details-media-id').val(media.id);
 		media_details_div.find('#details-media-name').val(media.name);
+		
+		if(!media.description) {
+			// fetch missing attributes from hidden details from gallery
+			var media_hidden_details = $('#media-hidden-details-' + media.id);
+			media.description = media_hidden_details.find('#media-hidden-description').text();
+		}
+		
+		media_details_div.find('#details-media-description').val(media.description);
 		media_details_div.find('#details-media-url').attr('href', media.url);
 		media_details_div.find('#details-media-url').html(media.url);
 		

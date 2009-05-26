@@ -32,7 +32,7 @@ module MediaRocket
     					<input type='text' name='gallery[ref_title]' value='' id='details-gallery-ref-title'/><br/>
 
     					<label for='gallery[description]'>Description</label><br/>
-    					<input type='text' name='gallery[description]' value='' id='details-gallery-descrption'/><br/>
+    					<input type='text' name='gallery[description]' value='' id='details-gallery-description'/><br/>
 
     					<label for='gallery[ref_meta]'>Meta Keywords</label><br/>
     					<input type='text' name='gallery[ref_meta]' value='' id='details-gallery-ref-meta'/>
@@ -54,7 +54,10 @@ module MediaRocket
     			<form id='media-details'>
     				<p>
     					<label for='media[title]'>Media Name</label><br/>
-    					<input type='text' name='media[title]' value='' id='details-media-name'>
+    					<input type='text' name='media[title]' value='' id='details-media-name'><br/>
+    					
+    					<label for='media[description]'>Description</label><br/>
+    					<input type='text' name='media[description]' value='' id='details-media-description'/>
     				</p>
 
     				<p>
