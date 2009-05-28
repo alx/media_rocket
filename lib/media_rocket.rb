@@ -22,7 +22,7 @@ if defined?(Merb::Plugins)
     
     # Slice metadata
     self.description = "MediaRocket is a media server to upload and retrieve all kind of media!"
-    self.version = "0.0.1"
+    self.version = "1.1.0"
     self.author = "Legodata"
     
     # Stub classes loaded hook - runs before LoadClasses BootLoader

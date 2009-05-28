@@ -9,7 +9,7 @@ AUTHOR = "Alexandre Girard"
 EMAIL = "alx.girard@gmail.com"
 HOMEPAGE = "http://github.com/alx/media-rocket"
 SUMMARY = "Merb Slice that provides a media server to upload and retrieve all kind of files"
-GEM_VERSION = "1.0.4"
+GEM_VERSION = "1.1.0"
 
 spec = Gem::Specification.new do |s|
   s.rubyforge_project = 'merb'
@@ -24,6 +24,7 @@ spec = Gem::Specification.new do |s|
   s.email = EMAIL
   s.homepage = HOMEPAGE
   s.add_dependency('merb-slices', '>= 1.0.4')
+  s.add_dependency('rmagick', '>= 2.9.2')
   s.require_path = 'lib'
   s.files = %w(LICENSE README.textile Rakefile TODO) + Dir.glob("{lib,spec,app,public,stubs}/**/*")
   s.files.reject! { |fn| fn.include? "public/uploads/" }
