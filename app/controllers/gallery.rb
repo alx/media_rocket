@@ -160,7 +160,7 @@ class MediaRocket::Galleries < MediaRocket::Application
       medias = gallery.original_medias
       children_galleries = gallery.children
       
-      json = '{"gallery": ' << gallery.to_json << ", "
+      json = '{"gallery": ' << gallery.to_json
       
       unless children_galleries.empty?
         json << ', "galleries": ['
