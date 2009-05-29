@@ -99,12 +99,14 @@ class MediaRocket::Galleries < MediaRocket::Application
     end
     
     # Reformat parameters that could contain special chars
-    params[:gallery][:name]         = Base64.decode64(params[:gallery][:name]) if params[:gallery][:name]
-    params[:gallery][:description]  = Base64.decode64(params[:gallery][:description]) if params[:gallery][:description]
-    params[:gallery][:ref_title]    = Base64.decode64(params[:gallery][:ref_title]) if params[:gallery][:ref_title]
-    params[:gallery][:ref_meta]     = Base64.decode64(params[:gallery][:ref_meta]) if params[:gallery][:ref_meta]
-    
-    @gallery.update_attributes(params[:gallery]) if params[:gallery]
+    if params[:gallery]
+      params[:gallery][:name]         = Base64.decode64(params[:gallery][:name]) if params[:gallery][:name]
+      params[:gallery][:description]  = Base64.decode64(params[:gallery][:description]) if params[:gallery][:description]
+      params[:gallery][:ref_title]    = Base64.decode64(params[:gallery][:ref_title]) if params[:gallery][:ref_title]
+      params[:gallery][:ref_meta]     = Base64.decode64(params[:gallery][:ref_meta]) if params[:gallery][:ref_meta]
+      
+      @gallery.update_attributes(params[:gallery])
+    end
     
     build_json(@gallery)
   end
