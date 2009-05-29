@@ -30,7 +30,7 @@ class MediaRocket::Galleries < MediaRocket::Application
     @galleries = ::MediaRocket::Site.first.galleries.select{|gallery| gallery.parent.nil?}
     
     case params[:format]
-      when "json"  then  build_galleries_json(@galleries)
+      when "json"  then  build_galleries_json @galleries
       when "xml"   then  render :layout => false
       else  render
     end
@@ -115,35 +115,44 @@ class MediaRocket::Galleries < MediaRocket::Application
     # {
     #   "Medias":
     #   [
+    #     gallery:
+    #     { 
+    #       "id": gallery.id, 
+    #       "title": gallery.title,
+    #       "icon": gallery.icon
+    #     },
     #     galleries:
     #     {
     #       { 
-    #         "id": gallery.id, 
-    #         "title": gallery.title,
-    #         "icon": gallery.icon
+    #         "id": gallery.children[0].id, 
+    #         "title": gallery.children[0].title,
+    #         "icon": gallery.children[0].icon
     #       },
     #       ...
     #     }
     #     medias:
     #     {
     #       { 
-    #         "title": media.title, 
-    #         "url": media.url,
-    #         "icon": media.thumbnail || media.icon
+    #         "title": gallery.original_medias[0].title, 
+    #         "url": gallery.original_medias[0].url,
+    #         "icon": gallery.original_medias[0].thumbnail || media.icon
     #       },
     #       ...
     #     }
     #   ]
     # }
-    
     def build_galleries_json(galleries)
-      galleries_json = Hash[:galleries => []]
-    
-      galleries.each do |gallery|
-        galleries_json[:galleries] << gallery.to_json
+      if galleries.empty?
+        return ""
+      else
+        json = '{"galleries": ['
+        galleries.each do |gallery|
+          json << "{\"id\": #{gallery.id}, \"name\": \"#{gallery.name}\", \"icon\": \"#{gallery.icon}\"},"
+        end
+        json.gsub!(/,$/, '')
+        json << "]}"
+        json
       end
-    
-      galleries_json[:galleries].empty? ? "": JSON.pretty_generate(galleries_json)
     end
     
     def build_json(gallery)
@@ -169,5 +178,6 @@ class MediaRocket::Galleries < MediaRocket::Application
       
       JSON.pretty_generate(json)
     end
+        
   
 end

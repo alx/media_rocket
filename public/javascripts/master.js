@@ -209,7 +209,9 @@ $(document).ready(function() {
 			$("#" + div_area).disableSelection();
 		}
 			
-		$.getJSON(json_url, function(json) {
+		$.get(json_url, function(result) {
+			
+			json = JSON.parse(result);
 
 			if(json.galleries){
 				$.each(json.galleries,function(i,item) {
