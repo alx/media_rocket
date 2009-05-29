@@ -142,8 +142,8 @@ class MediaRocket::MediaFile
   end
   
   def to_json
-    "{\"id\": #{self.id}, \"name\": \"#{self.title}\", \"icon\": \"#{self.icon}\", " << 
-    "\"url\": \"#{self.url}\", \"mime\": \"#{self.mime}\"}"
+    "{\"id\": #{self.id}, \"name\": \"#{Base64.b64encode self.title}\", \"icon\": \"#{self.icon}\", " << 
+    "\"description\": \"#{Base64.b64encode self.description}\", \"url\": \"#{self.url}\", \"mime\": \"#{self.mime}\"}"
   end
   
   private

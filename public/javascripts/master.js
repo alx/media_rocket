@@ -112,7 +112,7 @@ $(document).ready(function() {
 		var gallery_details_div = $('#action-gallery-details');
 		
 		gallery_details_div.find('#details-gallery-id').val(gallery.id);
-		gallery_details_div.find('#details-gallery-name').val(gallery.name);
+		gallery_details_div.find('#details-gallery-name').val($.base64Decode(gallery.name));
 		
 		if(!gallery.ref_title) {
 			// fetch missing attributes from hidden details from gallery
@@ -122,9 +122,9 @@ $(document).ready(function() {
 			gallery.ref_meta = gallery_hidden_details.find('#gallery-hidden-ref-meta').text();
 		}
 		
-		gallery_details_div.find('#details-gallery-ref-title').val(gallery.ref_title);
-		gallery_details_div.find('#details-gallery-description').val(gallery.description);
-		gallery_details_div.find('#details-gallery-ref_meta').val(gallery.ref_meta);
+		gallery_details_div.find('#details-gallery-ref-title').val($.base64Decode(gallery.ref_title));
+		gallery_details_div.find('#details-gallery-description').val($.base64Decode(gallery.description));
+		gallery_details_div.find('#details-gallery-ref_meta').val($.base64Decode(gallery.ref_meta));
 		
 		gallery_details_div.find('#details-gallery-icon img').attr('src', gallery.icon);
 		gallery_details_div.find('#details-gallery-icon img').attr('alt', gallery.id);
@@ -167,7 +167,7 @@ $(document).ready(function() {
 		var media_details_div = $('#action-media-details');
 		
 		media_details_div.find('#details-media-id').val(media.id);
-		media_details_div.find('#details-media-name').val(media.name);
+		media_details_div.find('#details-media-name').val($.base64Decode(media.name));
 		
 		if(!media.description) {
 			// fetch missing attributes from hidden details from gallery
@@ -175,7 +175,7 @@ $(document).ready(function() {
 			media.description = media_hidden_details.find('#media-hidden-description').text();
 		}
 		
-		media_details_div.find('#details-media-description').val(media.description);
+		media_details_div.find('#details-media-description').val($.base64Decode(media.description));
 		media_details_div.find('#details-media-url').attr('href', media.url);
 		media_details_div.find('#details-media-url').html(media.url);
 		
