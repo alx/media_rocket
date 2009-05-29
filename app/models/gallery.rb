@@ -53,9 +53,9 @@ class MediaRocket::Gallery
   end
   
   def to_json
-    "{\"id\": \"#{self.id}\", \"name\": \"#{Base64.b64encode self.name}\", \"icon\": \"#{self.icon}\", " << 
-    "\"description\": \"#{Base64.b64encode self.description}\", " << 
-    "\"ref_title\": \"#{Base64.b64encode self.ref_title}\", \"ref_meta\": \"#{Base64.b64encode self.ref_meta}\"}"
+    "{\"id\": \"#{self.id}\", \"name\": \"#{if self.name then Base64.b64encode self.name}\", \"icon\": \"#{self.icon}\", " << 
+    "\"description\": \"#{if self.description then Base64.b64encode self.description}\", " << 
+    "\"ref_title\": \"#{if self.ref_title then Base64.b64encode self.ref_title}\", \"ref_meta\": \"#{if self.ref_meta then Base64.b64encode self.ref_meta}\"}"
   end
   
   # =====
