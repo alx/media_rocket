@@ -162,7 +162,7 @@ class MediaRocket::Galleries < MediaRocket::Application
       
       json = '{"gallery": ' << gallery.to_json << ", "
       
-      if children = gallery.children
+      unless children_galleries.empty?
         json << ', "galleries": ['
         children.each do |gallery|
           json << (gallery.to_json << ', ')
@@ -171,7 +171,7 @@ class MediaRocket::Galleries < MediaRocket::Application
         json << "]"
       end
       
-      if medias = gallery.original_medias
+      unless medias.empty?
         json << ', "medias": ['
         medias.each do |media|
           json << (media.to_json << ', ')
