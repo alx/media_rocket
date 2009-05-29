@@ -147,7 +147,7 @@ class MediaRocket::Galleries < MediaRocket::Application
       else
         json = '{"galleries": ['
         galleries.each do |gallery|
-          json << gallery.to_json
+          json << (gallery.to_json << ', ')
         end
         json.gsub!(/,$/, '')
         json << "]}"
@@ -163,7 +163,7 @@ class MediaRocket::Galleries < MediaRocket::Application
       json = '{"gallery": ' << gallery.to_json << ", "
       
       if children = gallery.children
-        json << '"galleries": ['
+        json << ', "galleries": ['
         children.each do |gallery|
           json << (gallery.to_json << ', ')
         end
@@ -172,11 +172,9 @@ class MediaRocket::Galleries < MediaRocket::Application
       end
       
       if medias = gallery.original_medias
-        json << '"medias": ['
+        json << ', "medias": ['
         medias.each do |media|
-          if media.original?
-            json << media.to_json
-          end
+          json << (media.to_json << ', ')
         end
         json.gsub!(/,$/, '')
         json << "]"
