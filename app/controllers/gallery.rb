@@ -164,7 +164,7 @@ class MediaRocket::Galleries < MediaRocket::Application
       
       unless children_galleries.empty?
         json << ', "galleries": ['
-        children.each do |gallery|
+        children_galleries.each do |gallery|
           json << (gallery.to_json << ', ')
         end
         json.gsub!(/,$/, '')
