@@ -142,7 +142,7 @@ class MediaRocket::MediaFile
   end
   
   def to_json
-    "{\"id\": #{self.id}, \"name\": \"#{self.title}\", \"icon\": \"#{self.icon}\"" << 
+    "{\"id\": #{self.id}, \"name\": \"#{self.title}\", \"icon\": \"#{self.icon}\", " << 
     "\"url\": \"#{self.url}\", \"mime\": \"#{self.mime}\"}"
   end
   
