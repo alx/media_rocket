@@ -38,6 +38,6 @@ class MediaRocket::Medias < MediaRocket::Application
       @media.update_attributes(params[:media]) 
     end
     
-    JSON.pretty_generate(Hash.new(:media => @media.to_json))
+    @media.to_json
   end
 end

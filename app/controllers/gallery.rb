@@ -147,7 +147,7 @@ class MediaRocket::Galleries < MediaRocket::Application
       else
         json = '{"galleries": ['
         galleries.each do |gallery|
-          json << "{\"id\": #{gallery.id}, \"name\": \"#{gallery.name}\", \"icon\": \"#{gallery.icon}\"},"
+          json << gallery.to_json
         end
         json.gsub!(/,$/, '')
         json << "]}"
@@ -160,24 +160,30 @@ class MediaRocket::Galleries < MediaRocket::Application
       medias = gallery.original_medias
       children_galleries = gallery.children
       
-      # Use Array.inject, retrieve last state of json array and add elements to it
-      #   - create empty json["galleries"] if "galleries" key doesn't exists
-      #   - add new hash in array otherwise
-      json = Hash[:gallery => nil, :galleries => [], :medias => []]
-      children_galleries.each do |child_gallery|
-        json[:galleries] << child_gallery.to_json
-      end
+      json = '{"gallery": ' << gallery.to_json << ", "
       
-      json[:gallery] = gallery.to_json
-      
-      medias.each do |media|
-        if media.original?
-          json[:medias] << media.to_json
+      if children = gallery.children
+        json << '"galleries": ['
+        children.each do |gallery|
+          json << (gallery.to_json << ', ')
         end
+        json.gsub!(/,$/, '')
+        json << "]"
       end
       
-      JSON.pretty_generate(json)
+      if medias = gallery.original_medias
+        json << '"medias": ['
+        medias.each do |media|
+          if media.original?
+            json << media.to_json
+          end
+        end
+        json.gsub!(/,$/, '')
+        json << "]"
+      end
+      
+      json << '}'
     end
         
-  
+    
 end

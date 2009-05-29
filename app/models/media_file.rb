@@ -142,11 +142,8 @@ class MediaRocket::MediaFile
   end
   
   def to_json
-     {:id => self.id,
-      :name => self.title, 
-      :url => self.url, 
-      :icon => self.icon, 
-      :mime => self.mime}
+    "{\"id\": #{self.id}, \"name\": \"#{self.title}\", \"icon\": \"#{self.icon}\"" << 
+    "\"url\": \"#{self.url}\", \"mime\": \"#{self.mime}\"}"
   end
   
   private
