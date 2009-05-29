@@ -32,18 +32,18 @@ $(document).ready(function() {
 		if(type == 'gallery') {
 			// Hide gallery information to retrieve them in gallery details
 			loaded_item += "<span style='display: none' id='gallery-hidden-details-" + item.id + "'>";
-			loaded_item += "<span id='gallery-hidden-name'>" + $.base64Decode(item.name) + "</span>";
-			loaded_item += "<span id='gallery-hidden-description'>" + $.base64Decode(item.description) + "</span>";
-			loaded_item += "<span id='gallery-hidden-ref-title'>" + $.base64Decode(item.ref_title) + "</span>";
-			loaded_item += "<span id='gallery-hidden-ref-meta'>" + $.base64Decode(item.ref_meta) + "</span>";
+			loaded_item += "<span id='gallery-hidden-name'>" + item.name + "</span>";
+			loaded_item += "<span id='gallery-hidden-description'>" + item.description + "</span>";
+			loaded_item += "<span id='gallery-hidden-ref-title'>" + item.ref_title + "</span>";
+			loaded_item += "<span id='gallery-hidden-ref-meta'>" + item.ref_meta + "</span>";
 			loaded_item += "</span>";
 		}
 		
 		if(type == 'media') {
 			// Hide gallery information to retrieve them in gallery details
 			loaded_item += "<span style='display: none' id='media-hidden-details-" + item.id + "'>";
-			loaded_item += "<span id='gallery-hidden-name'>" + $.base64Decode(item.name) + "</span>";
-			loaded_item += "<span id='gallery-hidden-description'>" + $.base64Decode(item.description) + "</span>";
+			loaded_item += "<span id='media-hidden-name'>" + item.name + "</span>";
+			loaded_item += "<span id='media-hidden-description'>" + item.description + "</span>";
 			loaded_item += "</span>";
 		}
 		
