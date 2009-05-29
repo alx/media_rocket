@@ -53,9 +53,9 @@ class MediaRocket::Gallery
   end
   
   def to_json
-    "{\"id\": #{gallery.id}, \"name\": \"#{gallery.name}\", \"icon\": \"#{gallery.icon}\"" << 
-    "\"description\": \"#{gallery.description}\", " << 
-    "\"ref_title\": \"#{gallery.ref_title}\", \"ref_meta\": \"#{gallery.ref_meta}\"}"
+    "{\"id\": #{self.id}, \"name\": \"#{self.name}\", \"icon\": \"#{self.icon}\"" << 
+    "\"description\": \"#{self.description}\", " << 
+    "\"ref_title\": \"#{self.ref_title}\", \"ref_meta\": \"#{self.ref_meta}\"}"
   end
   
   # =====
