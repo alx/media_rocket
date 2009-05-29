@@ -167,7 +167,7 @@ $(document).ready(function() {
 		var media_details_div = $('#action-media-details');
 		
 		media_details_div.find('#details-media-id').val(media.id);
-		media_details_div.find('#details-media-name').val($.base64Decode(media.name));
+		media_details_div.find('#details-media-name').val(media.name);
 		
 		if(!media.description) {
 			// fetch missing attributes from hidden details from gallery
