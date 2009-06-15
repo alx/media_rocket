@@ -17,6 +17,9 @@ module MediaRocket
         end
         s.resources :medias, ::MediaRocket::Medias
       end
+      
+      # Route to admin page for legodata-admin
+      scope.match('/admin').to(:controller => 'main', :action => 'admin').name(:admin)
 
       # Upload route
       scope.match('/upload').to(:controller => 'main', :action => 'upload').name(:upload)
