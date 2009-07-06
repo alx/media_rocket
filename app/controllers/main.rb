@@ -9,11 +9,6 @@ class MediaRocket::Main < MediaRocket::Application
     render
   end
   
-  def admin
-    @site = ::MediaRocket::Site.first
-    render
-  end
-  
   def upload
     
     json = "-1"

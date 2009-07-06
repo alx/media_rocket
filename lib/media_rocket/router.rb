@@ -3,23 +3,24 @@ module MediaRocket
     
     def self.setup(scope)
 
-      scope.identify DataMapper::Resource => :id do |s|
-        s.resources :sites, ::MediaRocket::Medias do |r|
-          r.resources :medias, ::MediaRocket::Medias
-          r.resources :galleries, ::MediaRocket::Galleries do |p|
-            p.resources :medias, ::MediaRocket::Medias
-            p.resources :permissions, ::MediaRocket::Permissions
-          end
-        end  
-        s.resources :galleries, ::MediaRocket::Galleries do |r|
-          r.resources :medias, ::MediaRocket::Medias
-          r.resources :permissions, ::MediaRocket::Permissions
-        end
-        s.resources :medias, ::MediaRocket::Medias
-      end
+      # scope.identify DataMapper::Resource => :id do |s|
+      #   s.resources :sites, ::MediaRocket::Site do |r|
+      #     r.resources :medias, ::MediaRocket::MediaFile
+      #     r.resources :galleries, ::MediaRocket::Gallery do |p|
+      #       p.resources :medias, ::MediaRocket::MediaFile
+      #       p.resources :permissions, ::MediaRocket::GalleryPermission
+      #     end
+      #   end  
+      #   s.resources :galleries, ::MediaRocket::Gallery do |r|
+      #     r.resources :medias, ::MediaRocket::MediaFile
+      #     r.resources :permissions, ::MediaRocket::GalleryPermission
+      #   end
+      #   s.resources :medias, ::MediaRocket::MediaFile
+      # end
       
       # Route to admin page for legodata-admin
-      scope.match('/admin').to(:controller => 'main', :action => 'admin').name(:admin)
+      scope.match('/gallery_builder').to(:controller => 'widget', :action => 'gallery_builder').name(:gallery_builder_admin)
+      scope.match('/media_list').to(:controller => 'widget', :action => 'media_list').name(:media_list_admin)
 
       # Upload route
       scope.match('/upload').to(:controller => 'main', :action => 'upload').name(:upload)

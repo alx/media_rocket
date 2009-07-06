@@ -1,3 +1,12 @@
+class MediaRocket::WidgetOption
+  include DataMapper::Resource
+  
+  property :id, Serial
+  property :name, String
+  property :content, String
+
+end
+
 class MediaRocket::GalleryBuilder
   include DataMapper::Resource
   
@@ -49,14 +58,5 @@ class MediaRocket::MediaList
   def front(options = {})
     self.content
   end
-
-end
-
-class MediaRocket::WidgetOption
-  include DataMapper::Resource
-  
-  property :id, Serial
-  property :name, String
-  property :content, String
 
 end
